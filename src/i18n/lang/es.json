@@ -1,0 +1,13 @@
+{
+  "greeting": "¡Hola, Mundo!",
+  "reviews": "Reseñas",
+  "reviewPlaceholder": "Escribe tu reseña",
+  "home": "Hogar",
+  "magic": "magia",
+  "cart": "Carro",
+  "table": "Mesa",
+  "order_confirmation": "Confirmación del pedido",
+  "order_confirmation_desc": "El camarero estará confirmando tu pedido en breve.",
+  "go_back": "Regresa",
+  "call_waiter": "llamar al camarero"
+}
