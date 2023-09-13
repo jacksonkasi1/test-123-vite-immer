@@ -1,9 +1,9 @@
 import { createRef } from "react";
 import Home from "../../pages/Home";
 
-const AuthRoutes = [
+const auth = [
   {
-    path: '/',
+    path: '/home',
     element: <Home />,
     nodeRef: createRef(),
     meta: {
@@ -12,4 +12,4 @@ const AuthRoutes = [
   },
 ];
 
-export default AuthRoutes;
+export default auth;

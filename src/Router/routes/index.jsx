@@ -9,7 +9,9 @@ import PrivateRoute from '../../security/PrivateRoute';
 
 // ** import Route Pages
 import { isObjEmpty } from '../../utils/index';
-import AuthRoutes from './AuthRoutes';
+
+import publicRoutes from '../../configs/router.config/router.public';
+import authRoute from '../../configs/router.config';
 
 // ** Layouts
 import BlankLayout from '../../layouts/BlankLayout';
@@ -25,7 +27,7 @@ const getLayout = {
 };
 
 // ** Merge Routes
-const Routes = [...AuthRoutes];
+const Routes = [...authRoute, ...publicRoutes];
 
 const getRouteMeta = (route) => {
   if (isObjEmpty(route.element.props)) {
