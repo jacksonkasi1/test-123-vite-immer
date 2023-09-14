@@ -9,7 +9,8 @@ const initialState = {
   themeColor: themeConfig.themeColor,
   colorLevel: themeConfig.primaryColorLevel,
   lang: themeConfig.locale,
-  root: themeConfig.root
+  root: themeConfig.root,
+  minimized: false
 };
 
 export const themeConfigs = createSlice({
@@ -25,10 +26,13 @@ export const themeConfigs = createSlice({
     },
     ChangeLang : (state, action) => {
         state.lang = action.payload
+    },
+    Minimize: (state, action) => {
+      state.minimized = !state.minimized
     }
   },
 });
 
-export const { ChangeMode, ChangeLang } = themeConfigs.actions;
+export const { ChangeMode, ChangeLang, Minimize } = themeConfigs.actions;
 
 export default themeConfigs.reducer;

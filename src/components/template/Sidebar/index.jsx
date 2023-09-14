@@ -16,8 +16,8 @@ const Sidebar = () => {
   const [active, setActive] = useState(themeConfig?.root);
 
   return (
-    <div className="fixed left-0 top-0 h-full w-[15%] bg-light_ dark:bg-dark_ border-r-[2px] border-mid_dark_ flex items-center flex-col">
-      <div className="py-2 px-2">
+    <div className="fixed left-0 top-0 h-full w-[15%] z-50  bg-light_ dark:bg-dark_ border-r-[2px] border-mid_dark_ dark:border-dark_border flex items-center flex-col">
+      <div className="py-2 px-2"> 
         <Logo width={220} />
       </div>
       <div className="flex flex-col items-center w-full gap-y-1 overflow-y-auto px-2">
@@ -28,12 +28,13 @@ const Sidebar = () => {
                 setActive(data?.path);
                 navigate(data?.path);
               }}
+              key={data?.path}
               className={`${
                 active === data?.path &&
                 `bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-white_`
               } flex py-2 cursor-pointer w-[90%] hover:bg-${
                 themeConfig.themeColor
-              }-300 dark:hover:text-white_ rounded-[5px] pl-3 items-center peer dark:text-white_`}
+              }-300 dark:hover:text-white_ hover:text-white rounded-[5px] pl-3 items-center peer dark:text-white_`}
             >
               {data?.icon}
               <p

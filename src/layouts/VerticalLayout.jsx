@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Routes as metaData } from '../Router/routes';
 import Sidebar from '../components/template/Sidebar';
+import Header from '../components/template/Header';
 
 // ** import components
 // import Navbar from '@components/Navbar';
@@ -36,7 +37,8 @@ function VerticalLayout() {
       {(meta?.layout !== 'blank' || meta?.layout === undefined) && meta && (
         <div>
           {meta?.isNotSidebar === true ? null : <Sidebar />}
-          <div>
+          {meta?.isNotHeader === true ? null : <Header className={`${!meta?.isNotSidebar ? 'left-[15%] w-[85%]' : 'left-0 w-full'}`} />}
+          <div className={`${!meta?.isNotSidebar ? 'fixed left-[15%] top-0 w-[85%]' : 'w-full'} ${!meta?.isNotHeader && 'top-[7%]'}`}>
             <Outlet />
           </div>
           {/* {meta?.isNotFooter === true ? null : <Footer />} */}

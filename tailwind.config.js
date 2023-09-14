@@ -1,21 +1,22 @@
-const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette').default
-const safeListFile = 'safelist.txt'
+const flattenColorPalette =
+  require('tailwindcss/lib/util/flattenColorPalette').default;
+const safeListFile = 'safelist.txt';
 module.exports = {
   mode: 'jit',
   content: [
-    "./src/**/*.html",
-    "./src/**/*.js",
-    "./src/**/*.jsx",
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    './safelist.txt'
+    './src/**/*.html',
+    './src/**/*.js',
+    './src/**/*.jsx',
+    './src/**/*.ts',
+    './src/**/*.tsx',
+    './safelist.txt',
   ],
   darkMode: 'class',
   theme: {
     fontFamily: {
+      inter: ['Inter']
     },
-    screens: {
-    },
+    screens: {},
     extend: {
       typography: (theme) => ({
         DEFAULT: {
@@ -40,28 +41,30 @@ module.exports = {
           600: '#fe724c',
           700: '#fe6338',
           800: '#fe5325',
-          900: '#fe4411'
+          900: '#fe4411',
         },
         white_: 'white',
-        black_:  'black',
+        black_: 'black',
         dark_: '#111827',
         mid_dark_: '#E4E7EC',
-        light_: '#f3f4f6'
-      }
-    }
+        light_dark_: '#1F2937',
+        light_: '#f3f4f6',
+        dark_border: '#374151',
+        text_dark: '#ACB0B7'
+      },
+    },
   },
   plugins: [
     ({ addUtilities, e, theme, variants }) => {
       const colors = flattenColorPalette(theme('borderColor'));
       delete colors['default'];
 
-      const colorMap = Object.keys(colors)
-        .map(color => ({
-          [`.border-t-${color}`]: {borderTopColor: colors[color]},
-          [`.border-r-${color}`]: {borderRightColor: colors[color]},
-          [`.border-b-${color}`]: {borderBottomColor: colors[color]},
-          [`.border-l-${color}`]: {borderLeftColor: colors[color]},
-        }));
+      const colorMap = Object.keys(colors).map((color) => ({
+        [`.border-t-${color}`]: { borderTopColor: colors[color] },
+        [`.border-r-${color}`]: { borderRightColor: colors[color] },
+        [`.border-b-${color}`]: { borderBottomColor: colors[color] },
+        [`.border-l-${color}`]: { borderLeftColor: colors[color] },
+      }));
       const utilities = Object.assign({}, ...colorMap);
 
       addUtilities(utilities, variants('borderColor'));
@@ -92,8 +95,9 @@ module.exports = {
         'dark:hover:text-{colors}',
         'h-{height}',
         'w-{width}',
+        'fill-{colors}',
       ],
     }),
-    require('@tailwindcss/typography')
+    require('@tailwindcss/typography'),
   ],
-}
+};
