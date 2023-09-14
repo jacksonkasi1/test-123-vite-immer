@@ -1,5 +1,6 @@
 import { createRef } from "react";
 import Home from "../../pages/Home";
+import OrderList from "../../pages/OrderList";
 
 const auth = [
   {
@@ -10,6 +11,14 @@ const auth = [
       publicRoute: true,
     },
   },
+  {
+    path: '/order-list',
+    element: <OrderList />,
+    nodeRef: createRef(),
+    meta: {
+      publicRoute: true,
+    },
+  }
 ];
 
 export default auth;

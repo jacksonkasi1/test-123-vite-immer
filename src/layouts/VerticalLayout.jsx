@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Routes as metaData } from '../Router/routes';
 import Sidebar from '../components/template/Sidebar';
 import Header from '../components/template/Header';
+import { useSelector } from 'react-redux';
 
 // ** import components
 // import Navbar from '@components/Navbar';
@@ -11,6 +12,8 @@ import Header from '../components/template/Header';
 function VerticalLayout() {
   // ** get location
   const location = useLocation(); // it's really important for get updated metaData
+
+  const themeConfig = useSelector((state) => state.themeConfigs);
 
   // ** States
   const [meta, setMeta] = useState({});
@@ -37,8 +40,8 @@ function VerticalLayout() {
       {(meta?.layout !== 'blank' || meta?.layout === undefined) && meta && (
         <div>
           {meta?.isNotSidebar === true ? null : <Sidebar />}
-          {meta?.isNotHeader === true ? null : <Header className={`${!meta?.isNotSidebar ? 'left-[15%] w-[85%]' : 'left-0 w-full'}`} />}
-          <div className={`${!meta?.isNotSidebar ? 'fixed left-[15%] top-0 w-[85%]' : 'w-full'} ${!meta?.isNotHeader && 'top-[7%]'}`}>
+          {meta?.isNotHeader === true ? null : <Header className={`transition-all duration-300 ${!meta?.isNotSidebar ? `${themeConfig.minimized ? 'left-[5%] w-[95%]' : 'left-[15%] w-[85%]'}` : 'left-0 w-full'}`} />}
+          <div className={`transition-all duration-300 dark:bg-light_dark_ min-h-[93vh] ${!meta?.isNotSidebar ? `fixed top-0 ${themeConfig.minimized ? 'left-[5%] w-[95%]' : 'left-[15%] w-[85%]'}` : 'w-full'} ${!meta?.isNotHeader && 'top-[7%]'}`}>
             <Outlet />
           </div>
           {/* {meta?.isNotFooter === true ? null : <Footer />} */}

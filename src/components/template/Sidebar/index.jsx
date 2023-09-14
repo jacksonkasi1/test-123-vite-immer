@@ -16,9 +16,13 @@ const Sidebar = () => {
   const [active, setActive] = useState(themeConfig?.root);
 
   return (
-    <div className="fixed left-0 top-0 h-full w-[15%] z-50  bg-light_ dark:bg-dark_ border-r-[2px] border-mid_dark_ dark:border-dark_border flex items-center flex-col">
-      <div className="py-2 px-2"> 
-        <Logo width={220} />
+    <div
+      className={`${
+        themeConfig?.minimized ? 'w-[5%]' : 'w-[15%]'
+      } transition-all duration-300 fixed left-0 top-0 h-full z-50  bg-light_ dark:bg-dark_ border-r-[2px] border-mid_dark_ dark:border-dark_border flex items-center flex-col`}
+    >
+      <div className={`py-2 px-2 ${themeConfig?.minimized && 'mb-3'}`}>
+        <Logo minimized={themeConfig?.minimized} width={220} />
       </div>
       <div className="flex flex-col items-center w-full gap-y-1 overflow-y-auto px-2">
         {items.map((data) => {
@@ -34,16 +38,18 @@ const Sidebar = () => {
                 `bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-white_`
               } flex py-2 cursor-pointer w-[90%] hover:bg-${
                 themeConfig.themeColor
-              }-300 dark:hover:text-white_ hover:text-white rounded-[5px] pl-3 items-center peer dark:text-white_`}
+              }-300 dark:hover:text-white_ hover:text-white rounded-[5px] items-center ${themeConfig?.minimized ? 'justify-center' : 'pl-3'} peer dark:text-white_`}
             >
               {data?.icon}
-              <p
-                className={`ml-3 ${
-                  active === data?.path && 'text-white_'
-                } dark:text-white_`}
-              >
-                {data?.level}
-              </p>
+              {!themeConfig.minimized && (
+                <p
+                  className={`ml-3 ${
+                    active === data?.path && 'text-white_'
+                  } dark:text-white_`}
+                >
+                  {data?.level}
+                </p>
+              )}
             </div>
           );
         })}

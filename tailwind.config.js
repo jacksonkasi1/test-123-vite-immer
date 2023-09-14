@@ -1,6 +1,8 @@
 const flattenColorPalette =
   require('tailwindcss/lib/util/flattenColorPalette').default;
 const safeListFile = 'safelist.txt';
+const { nextui } = require('@nextui-org/react');
+
 module.exports = {
   mode: 'jit',
   content: [
@@ -10,13 +12,22 @@ module.exports = {
     './src/**/*.ts',
     './src/**/*.tsx',
     './safelist.txt',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@nextui-org/theme/dist/components/(button|snippet|code|input).js'
   ],
   darkMode: 'class',
   theme: {
     fontFamily: {
-      inter: ['Inter']
+      inter: ['Inter'],
     },
-    screens: {},
+    screens: {
+      xs: '576px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px'
+    },
     extend: {
       typography: (theme) => ({
         DEFAULT: {
@@ -50,11 +61,12 @@ module.exports = {
         light_dark_: '#1F2937',
         light_: '#f3f4f6',
         dark_border: '#374151',
-        text_dark: '#ACB0B7'
+        text_dark: '#ACB0B7',
       },
     },
   },
   plugins: [
+    nextui(), 
     ({ addUtilities, e, theme, variants }) => {
       const colors = flattenColorPalette(theme('borderColor'));
       delete colors['default'];

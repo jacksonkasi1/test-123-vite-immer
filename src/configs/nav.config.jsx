@@ -1,15 +1,15 @@
-import { Home } from "react-feather";
+import { Home, ShoppingCart } from "react-feather";
 
 const menus = [
     {
         level: 'Home',
-        icon: <Home size={15} />,
+        icon: <Home size={20} />,
         path: '/home'
     },
     {
-        level: 'Foods',
-        icon: <Home size={15} />,
-        path: '/foods'
+        level: 'Order List',
+        icon: <ShoppingCart size={20} />,
+        path: '/order-list'
     }
 ]
 
