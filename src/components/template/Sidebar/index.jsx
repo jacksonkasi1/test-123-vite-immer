@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Logo from '../../../assets/svg/Logo';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import menus from '../../../configs/nav.config'
-
+import menus from '../../../configs/nav.config';
 
 const Sidebar = () => {
   const themeConfig = useSelector((state) => state.themeConfigs);
@@ -31,15 +30,19 @@ const Sidebar = () => {
               }}
               className={`${
                 active === data?.path &&
-                `!bg-${themeConfig.themeColor}-${themeConfig.colorLevel} !text-white_`
+                `bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-white_`
               } flex py-2 cursor-pointer w-[90%] hover:bg-${
                 themeConfig.themeColor
               }-300 dark:hover:text-white_ rounded-[5px] pl-3 items-center peer dark:text-white_`}
             >
-              {
-                data?.icon
-              }
-              <p className={`ml-3 ${active === data?.path && 'text-white_'} dark:text-white_`}>{data?.level}</p>
+              {data?.icon}
+              <p
+                className={`ml-3 ${
+                  active === data?.path && 'text-white_'
+                } dark:text-white_`}
+              >
+                {data?.level}
+              </p>
             </div>
           );
         })}
