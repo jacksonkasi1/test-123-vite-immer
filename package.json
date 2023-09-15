@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@nextui-org/button": "^2.0.20",
     "@nextui-org/react": "^2.1.12",
     "@nextui-org/system": "^2.0.9",
@@ -30,9 +32,12 @@
     "react-icons": "^4.11.0",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.15.0",
+    "react-select": "^5.7.4",
     "react-table": "^7.8.0",
     "react-transition-group": "^4.4.5",
-    "tailwind-safelist-generator": "^1.0.0"
+    "tailwind-safelist-generator": "^1.0.0",
+    "twin.macro": "^3.4.0",
+    "vite-plugin-babel-macros": "^1.0.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

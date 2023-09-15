@@ -1,6 +1,6 @@
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
-import { BrowserRouter, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import Router from "./Router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";

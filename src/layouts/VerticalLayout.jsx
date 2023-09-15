@@ -36,12 +36,12 @@ function VerticalLayout() {
   }, [location]);
 
   return (
-    <div className="w-full max-w-[100vw] overflow-x-hidden overflow-y-scroll md:max-w-4xl mx-auto h-auto">
+    <div className="">
       {(meta?.layout !== 'blank' || meta?.layout === undefined) && meta && (
         <div>
           {meta?.isNotSidebar === true ? null : <Sidebar />}
           {meta?.isNotHeader === true ? null : <Header className={`transition-all duration-300 ${!meta?.isNotSidebar ? `${themeConfig.minimized ? 'left-[5%] w-[95%]' : 'left-[15%] w-[85%]'}` : 'left-0 w-full'}`} />}
-          <div className={`transition-all duration-300 dark:bg-light_dark_ min-h-[93vh] ${!meta?.isNotSidebar ? `fixed top-0 ${themeConfig.minimized ? 'left-[5%] w-[95%]' : 'left-[15%] w-[85%]'}` : 'w-full'} ${!meta?.isNotHeader && 'top-[7%]'}`}>
+          <div className={`transition-all duration-300 dark:bg-light_dark_ min-h-[93vh] ${!meta?.isNotSidebar ? `mt-0 ${themeConfig.minimized ? 'ml-[5%] w-[95%]' : 'ml-[15%] w-[85%]'}` : 'w-full'} ${!meta?.isNotHeader && 'mt-[4%]'}`}>
             <Outlet />
           </div>
           {/* {meta?.isNotFooter === true ? null : <Footer />} */}
