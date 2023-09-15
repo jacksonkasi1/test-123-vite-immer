@@ -153,7 +153,7 @@ const DataTable = (props) => {
   return (
     <Loading loading={loading && data.length !== 0} type="cover">
       <div className=" mb-2">
-        <div style={{ minWidth: 130 }}>
+        <div style={{ width: 130 }}>
           <Select
             // size="sm"
             // menuPlacement="top"

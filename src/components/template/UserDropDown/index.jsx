@@ -6,13 +6,15 @@ import {
   DropdownItem,
   Button,
 } from '@nextui-org/react';
-import {HiOutlineLogout, HiUser} from 'react-icons/hi'
+import { HiOutlineLogout } from 'react-icons/hi';
 import { Settings, User } from 'react-feather';
+import { useNavigate } from 'react-router-dom';
 
 const UserDropDown = () => {
-  
+  const navigate = useNavigate();
+
   return (
-    <Dropdown className='!rounded-[5px] dark:bg-light_dark_'>
+    <Dropdown className="!rounded-[5px] dark:bg-light_dark_">
       <DropdownTrigger className="">
         <Button className="!bg-transparent">
           <img
@@ -31,8 +33,8 @@ const UserDropDown = () => {
           </div>
         </Button>
       </DropdownTrigger>
-      <DropdownMenu className='' aria-label="Static Actions">
-        <DropdownItem className='!bg-transparent mb-2 !cursor-default border-b-[2px] border-mid_dark_ dark:border-dark_border'>
+      <DropdownMenu className="" aria-label="Static Actions">
+        <DropdownItem className="!bg-transparent mb-2 !cursor-default border-b-[2px] border-mid_dark_ dark:border-dark_border">
           <div className="py-2 px-3 flex items-center gap-2">
             <img
               src="https://marketplace.canva.com/EAFXS8-cvyQ/1/0/1600w/canva-brown-and-light-brown%2C-circle-framed-instagram-profile-picture-2PE9qJLmPac.jpg"
@@ -47,33 +49,40 @@ const UserDropDown = () => {
             </div>
           </div>
         </DropdownItem>
-        
-        <DropdownItem  eventKey="Sign Out" className="gap-2 flex">
+
+        <DropdownItem
+          onClick={() => navigate('/profile')}
+          eventKey="Sign Out"
+          className="gap-2 flex"
+        >
           <div className="flex gap-2 dark dark:text-gray-100 items-center">
             <span className="text-xl opacity-50">
               <User size={15} />
             </span>
             <span>Profile</span>
           </div>
-				</DropdownItem>
-        <DropdownItem  eventKey="Sign Out" className="gap-2 flex">
+        </DropdownItem>
+        <DropdownItem eventKey="Sign Out" className="gap-2 flex">
           <div className="flex gap-2 dark dark:text-gray-100 items-center">
             <span className="text-xl opacity-50">
               <Settings size={15} />
             </span>
             <span>Setting</span>
           </div>
-				</DropdownItem>
-        
-				{/* <Dropdown.Item variant="divider" /> */}
-				<DropdownItem  eventKey="Sign Out" className="hover:!bg-transparent pt-2 mt-2 gap-2 flex border-t-[2px] border-mid_dark_ dark:border-dark_border">
+        </DropdownItem>
+
+        {/* <Dropdown.Item variant="divider" /> */}
+        <DropdownItem
+          eventKey="Sign Out"
+          className="hover:!bg-transparent pt-2 mt-2 gap-2 flex border-t-[2px] border-mid_dark_ dark:border-dark_border"
+        >
           <div className="flex gap-2 dark dark:text-gray-100 hover:text-light_dark_">
             <span className="text-xl opacity-50">
               <HiOutlineLogout />
             </span>
             <span>Sign Out</span>
           </div>
-				</DropdownItem>
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );
