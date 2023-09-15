@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '../../../assets/svg/Logo';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import menus from '../../../configs/nav.config';
 
 const Sidebar = () => {
   const themeConfig = useSelector((state) => state.themeConfigs);
+
+  const location = useLocation();
 
   // list of menus
   const items = menus;
@@ -13,7 +15,13 @@ const Sidebar = () => {
   // navigate
   const navigate = useNavigate();
 
-  const [active, setActive] = useState(themeConfig?.root);
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    if (location.pathname) {
+      setActive(location.pathname);
+    }
+  }, [location.pathname]);
 
   return (
     <div
@@ -38,7 +46,9 @@ const Sidebar = () => {
                 `bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-white_`
               } flex py-2 cursor-pointer w-[90%] hover:bg-${
                 themeConfig.themeColor
-              }-300 dark:hover:text-white_ hover:text-white rounded-[5px] items-center ${themeConfig?.minimized ? 'justify-center' : 'pl-3'} peer dark:text-white_`}
+              }-300 dark:hover:text-white_ hover:text-white rounded-[5px] items-center ${
+                themeConfig?.minimized ? 'justify-center' : 'pl-3'
+              } peer dark:text-white_`}
             >
               {data?.icon}
               {!themeConfig.minimized && (
