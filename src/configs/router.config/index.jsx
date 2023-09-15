@@ -3,6 +3,7 @@ import Home from "../../pages/Home";
 import OrderList from "../../pages/OrderList";
 import Profile from "../../pages/Profile";
 import Password from "../../pages/Profile/Password";
+import Notification from "../../pages/Profile/Notification";
 
 const auth = [
   {
@@ -32,6 +33,14 @@ const auth = [
   {
     path: '/profile/password',
     element: <Password />,
+    nodeRef: createRef(),
+    meta: {
+      publicRoute: true,
+    },
+  },
+  {
+    path: '/profile/notification',
+    element: <Notification />,
     nodeRef: createRef(),
     meta: {
       publicRoute: true,

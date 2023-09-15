@@ -24,10 +24,10 @@ const UserDropDown = () => {
           />
 
           <div className="ml-2 leading-5">
-            <p className="m-0 text-[14px] text-light_dark_ dark:text-text_dark">
+            <p className="m-0 text-[14px] text-light_dark_ dark:text-text_dark font-inter text-left">
               Admin
             </p>
-            <p className="m-0 text-[16px] font-semibold text-light_dark_ dark:text-text_dark">
+            <p className="m-0 text-[16px] font-semibold text-light_dark_ dark:text-text_dark font-inter">
               Emon Das
             </p>
           </div>
