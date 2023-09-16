@@ -1,8 +1,156 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 import Typography from '../../components/shared/Typography';
+import NotificationCheckBoxGroup from './NotificationCheckBoxGroup';
+import Button from '../../components/ui/Buttons';
 
 const Notification = () => {
+  const [notificationStatus, setNotificationStatus] = useState({
+    news: {
+      email: false,
+      browser: false,
+      app: false,
+    },
+    accountActivity: {
+      email: false,
+      browser: false,
+      app: false,
+    },
+    signIn: {
+      email: false,
+      browser: false,
+      app: false,
+    },
+    Reminders: {
+      email: false,
+      browser: false,
+      app: false,
+    },
+  });
+
+  const changeNewsEmail = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      news: {
+        ...notificationStatus.news,
+        email: !notificationStatus.news.email,
+      },
+    });
+  };
+
+  const changeNewsBrowser = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      news: {
+        ...notificationStatus.news,
+        browser: !notificationStatus.news.browser,
+      },
+    });
+  };
+
+  const changeNewsApp = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      news: {
+        ...notificationStatus.news,
+        app: !notificationStatus.news.app,
+      },
+    });
+  };
+
+  // activity
+  const changeActivityEmail = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      accountActivity: {
+        ...notificationStatus.accountActivity,
+        email: !notificationStatus.accountActivity.email,
+      },
+    });
+  };
+
+  const changeActivityBrowser = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      accountActivity: {
+        ...notificationStatus.accountActivity,
+        browser: !notificationStatus.accountActivity.browser,
+      },
+    });
+  };
+
+  const changeActivityApp = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      accountActivity: {
+        ...notificationStatus.accountActivity,
+        app: !notificationStatus.accountActivity.app,
+      },
+    });
+  };
+
+  // signIn
+  const changeSignInEmail = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      signIn: {
+        ...notificationStatus.signIn,
+        email: !notificationStatus.signIn.email,
+      },
+    });
+  };
+
+  const changeSignInBrowser = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      signIn: {
+        ...notificationStatus.signIn,
+        browser: !notificationStatus.signIn.browser,
+      },
+    });
+  };
+
+  const changeSignInApp = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      signIn: {
+        ...notificationStatus.signIn,
+        app: !notificationStatus.signIn.app,
+      },
+    });
+  };
+
+  // Reminders
+  const changeRemindersEmail = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      Reminders: {
+        ...notificationStatus.Reminders,
+        email: !notificationStatus.Reminders.email,
+      },
+    });
+  };
+
+  const changeRemindersBrowser = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      Reminders: {
+        ...notificationStatus.Reminders,
+        browser: !notificationStatus.Reminders.browser,
+      },
+    });
+  };
+
+  const changeRemindersApp = () => {
+    setNotificationStatus({
+      ...notificationStatus,
+      Reminders: {
+        ...notificationStatus.Reminders,
+        app: !notificationStatus.Reminders.app,
+      },
+    });
+  };
+
   return (
     <div className="p-10">
       <Header />
@@ -15,35 +163,93 @@ const Notification = () => {
           Select how you'll be notified when the following changes occur.
         </Typography>
 
-        
-<h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Identification</h3>
-<ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-        <div class="flex items-center pl-3">
-            <input id="horizontal-list-radio-license" type="checkbox" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
-            <label for="horizontal-list-radio-license" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Driver License </label>
-        </div>
-    </li>
-    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-        <div class="flex items-center pl-3">
-            <input id="horizontal-list-radio-id" type="checkbox" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
-            <label for="horizontal-list-radio-id" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">State ID</label>
-        </div>
-    </li>
-    <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-        <div class="flex items-center pl-3">
-            <input id="horizontal-list-radio-millitary" type="checkbox" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
-            <label for="horizontal-list-radio-millitary" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">US Millitary</label>
-        </div>
-    </li>
-    <li class="w-full dark:border-gray-600">
-        <div class="flex items-center pl-3">
-            <input id="horizontal-list-radio-passport" type="checkbox" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
-            <label for="horizontal-list-radio-passport" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">US Passport</label>
-        </div>
-    </li>
-</ul>
+        <div className="flex w-full justify-between items-center pb-6 border-b-[2px] border-mid_dark_ dark:border-dark_border mt-10">
+          <div className="flex w-[80%] justify-between items-center">
+            <Typography variant="P_SemiBold_H6" className="text-text_light">
+              News
+            </Typography>
 
+            <div className="w-[60%] flex items-center">
+              <NotificationCheckBoxGroup
+                email={notificationStatus.news.email}
+                setEmail={changeNewsEmail}
+                browser={notificationStatus.news.browser}
+                setBrowser={changeNewsBrowser}
+                app={notificationStatus.news.app}
+                setApp={changeNewsApp}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex w-full justify-between items-center pb-6 border-b-[2px] border-mid_dark_ dark:border-dark_border mt-6">
+          <div className="flex w-[80%] justify-between items-center">
+            <Typography variant="P_SemiBold_H6" className="text-text_light">
+              Account activity
+            </Typography>
+
+            <div className="w-[60%] flex items-center">
+              <NotificationCheckBoxGroup
+                email={notificationStatus.accountActivity.email}
+                setEmail={changeActivityEmail}
+                browser={notificationStatus.accountActivity.browser}
+                setBrowser={changeActivityBrowser}
+                app={notificationStatus.accountActivity.app}
+                setApp={changeActivityApp}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex w-full justify-between items-center pb-6 border-b-[2px] border-mid_dark_ dark:border-dark_border mt-6">
+          <div className="flex w-[80%] justify-between items-center">
+            <Typography variant="P_SemiBold_H6" className="text-text_light">
+              New device used to sign in
+            </Typography>
+
+            <div className="w-[60%] flex items-center">
+              <NotificationCheckBoxGroup
+                email={notificationStatus.signIn.email}
+                setEmail={changeSignInEmail}
+                browser={notificationStatus.signIn.browser}
+                setBrowser={changeSignInBrowser}
+                app={notificationStatus.signIn.app}
+                setApp={changeSignInApp}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex w-full justify-between items-center pb-6 mt-6">
+          <div className="flex w-[80%] justify-between items-center">
+            <Typography variant="P_SemiBold_H6" className="text-text_light">
+              Reminders
+            </Typography>
+
+            <div className="w-[60%] flex items-center">
+              <NotificationCheckBoxGroup
+                email={notificationStatus.Reminders.email}
+                setEmail={changeRemindersEmail}
+                browser={notificationStatus.Reminders.browser}
+                setBrowser={changeRemindersBrowser}
+                app={notificationStatus.Reminders.app}
+                setApp={changeRemindersApp}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="gap-x-3 w-full justify-end flex mt-10">
+          <Button
+            className="ltr:mr-2 rtl:ml-2"
+            type="button"
+          >
+            Reset
+          </Button>
+          <Button variant="solid" type="submit">
+            Update
+          </Button>
+        </div>
       </div>
     </div>
   );

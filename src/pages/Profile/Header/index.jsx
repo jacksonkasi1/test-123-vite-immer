@@ -22,10 +22,6 @@ const Header = () => {
       path: '/profile/notification',
     },
     {
-      label: 'Integration',
-      path: '/profile/integration',
-    },
-    {
       label: 'Billing',
       path: '/profile/billing',
     },
