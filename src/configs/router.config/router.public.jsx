@@ -1,7 +1,16 @@
 import { createRef } from "react";
-import Home from "../../pages/Home";
+import SignIn from "../../pages/auth/SignIn";
 
 const publicRoutes = [
-];
+    {
+        path: '/sign-in',
+        element: <SignIn />,
+        nodeRef: createRef(),
+        meta: {
+          publicRoute: true,
+          layout: 'blank'
+        },
+      }
+    ]
 
 export default publicRoutes;

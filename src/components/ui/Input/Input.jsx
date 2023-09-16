@@ -152,7 +152,7 @@ const Input = React.forwardRef((props, ref) => {
       {renderInput}
       {suffix ? (
         <div
-          className="input-suffix-end"
+          className="input-suffix-end left-2"
           ref={(node) => (suffixNode.current = node)}
         >
           {suffix}

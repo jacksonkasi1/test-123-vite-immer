@@ -101,4 +101,12 @@ body {
   .my-react-select__indicators{
     @apply !text-neutral-300 dark:!text-dark_border
   }
+
+  .rememberMe label {
+    @apply gap-x-3 items-center
+  }
+
+  .password-input input {
+    @apply !pl-[34px]
+  }
 }
