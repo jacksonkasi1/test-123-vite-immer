@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import Typography from '../../components/shared/Typography';
-import Badge from '../../components/shared/Badge';
 import Button from '../../components/ui/Buttons';
 import EditCard from '../../components/shared/Models/Billing';
+import Tag from '../../components/shared/Tag';
 
 const Billing = () => {
   // visa popup
@@ -61,7 +61,9 @@ const Billing = () => {
                         Ron Vargas •••• 0392
                       </Typography>
 
-                      <Badge>Primary</Badge>
+                      <Tag className="bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-100 rounded-md border-0 mx-2">
+                        <span className="capitalize"> Primary </span>
+                      </Tag>
                     </div>
                     <Typography
                       variant="P_Regular_H7"
@@ -114,7 +116,7 @@ const Billing = () => {
         <div className="flex w-full justify-between pb-6 mt-10">
           <div className="flex w-[80%] justify-between">
             <Typography variant="P_SemiBold_H6" className="text-text_light">
-              Credit Cards
+              Other payment methods
             </Typography>
 
             <div className="w-[60%] border-[2px] border-mid_dark_ dark:border-dark_border rounded-[5px]">

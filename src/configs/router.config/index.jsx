@@ -1,10 +1,12 @@
 import { createRef } from "react";
 import Home from "../../pages/Home";
-import OrderList from "../../pages/OrderList";
+import FoodList from "../../pages/FoodList";
 import Profile from "../../pages/Profile";
 import Password from "../../pages/Profile/Password";
 import Notification from "../../pages/Profile/Notification";
 import Billing from "../../pages/Profile/billing";
+import FoodCategory from "../../pages/FoodCategory";
+import TableManagement from "../../pages/TableManagement";
 
 const auth = [
   {
@@ -14,8 +16,20 @@ const auth = [
     meta: {},
   },
   {
-    path: '/order-list',
-    element: <OrderList />,
+    path: '/food-list',
+    element: <FoodList />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/food-category',
+    element: <FoodCategory />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/table-management',
+    element: <TableManagement />,
     nodeRef: createRef(),
     meta: {},
   },

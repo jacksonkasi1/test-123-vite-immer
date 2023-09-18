@@ -7,9 +7,19 @@ const menus = [
         path: '/home'
     },
     {
-        level: 'Order List',
+        level: 'Food List',
         icon: <ShoppingCart size={20} />,
-        path: '/order-list'
+        path: '/food-list'
+    },
+    {
+        level: 'Food Category',
+        icon: <ShoppingCart size={20} />,
+        path: '/food-category'
+    },
+    {
+        level: 'Table Management',
+        icon: <ShoppingCart size={20} />,
+        path: '/table-management'
     }
 ]
 

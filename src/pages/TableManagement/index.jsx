@@ -2,7 +2,7 @@ import DataTable from "../../components/shared/DataTable";
 import React, { useEffect, useState } from "react";
 import { columns } from "./column";
 
-const OrderList = () => {
+const TableManagement = () => {
   const [data, setData] = useState([]);
   
   const [allData, setAllData] = useState([
@@ -97,4 +97,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default TableManagement;

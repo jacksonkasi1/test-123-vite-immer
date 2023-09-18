@@ -117,4 +117,8 @@ body {
   .left-class input{
     @apply !pl-[30px]
   }
+
+  .switchers input{
+    @apply !hidden
+  }
 }
