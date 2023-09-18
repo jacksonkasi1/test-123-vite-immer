@@ -357,6 +357,7 @@ text-light_
 text-dark_border
 text-text_dark
 text-text_light
+text-mid_light_dark
 bg-inherit
 bg-current
 bg-transparent
@@ -716,6 +717,7 @@ bg-light_
 bg-dark_border
 bg-text_dark
 bg-text_light
+bg-mid_light_dark
 dark:bg-inherit
 dark:bg-current
 dark:bg-transparent
@@ -1075,6 +1077,7 @@ dark:bg-light_
 dark:bg-dark_border
 dark:bg-text_dark
 dark:bg-text_light
+dark:bg-mid_light_dark
 dark:hover:bg-inherit
 dark:hover:bg-current
 dark:hover:bg-transparent
@@ -1434,6 +1437,7 @@ dark:hover:bg-light_
 dark:hover:bg-dark_border
 dark:hover:bg-text_dark
 dark:hover:bg-text_light
+dark:hover:bg-mid_light_dark
 dark:active:bg-inherit
 dark:active:bg-current
 dark:active:bg-transparent
@@ -1793,6 +1797,7 @@ dark:active:bg-light_
 dark:active:bg-dark_border
 dark:active:bg-text_dark
 dark:active:bg-text_light
+dark:active:bg-mid_light_dark
 hover:text-inherit
 hover:text-current
 hover:text-transparent
@@ -2152,6 +2157,7 @@ hover:text-light_
 hover:text-dark_border
 hover:text-text_dark
 hover:text-text_light
+hover:text-mid_light_dark
 hover:bg-inherit
 hover:bg-current
 hover:bg-transparent
@@ -2511,6 +2517,7 @@ hover:bg-light_
 hover:bg-dark_border
 hover:bg-text_dark
 hover:bg-text_light
+hover:bg-mid_light_dark
 active:bg-inherit
 active:bg-current
 active:bg-transparent
@@ -2870,6 +2877,7 @@ active:bg-light_
 active:bg-dark_border
 active:bg-text_dark
 active:bg-text_light
+active:bg-mid_light_dark
 ring-inherit
 ring-current
 ring-transparent
@@ -3229,6 +3237,7 @@ ring-light_
 ring-dark_border
 ring-text_dark
 ring-text_light
+ring-mid_light_dark
 hover:ring-inherit
 hover:ring-current
 hover:ring-transparent
@@ -3588,6 +3597,7 @@ hover:ring-light_
 hover:ring-dark_border
 hover:ring-text_dark
 hover:ring-text_light
+hover:ring-mid_light_dark
 focus:ring-inherit
 focus:ring-current
 focus:ring-transparent
@@ -3947,6 +3957,7 @@ focus:ring-light_
 focus:ring-dark_border
 focus:ring-text_dark
 focus:ring-text_light
+focus:ring-mid_light_dark
 focus-within:ring-inherit
 focus-within:ring-current
 focus-within:ring-transparent
@@ -4306,6 +4317,7 @@ focus-within:ring-light_
 focus-within:ring-dark_border
 focus-within:ring-text_dark
 focus-within:ring-text_light
+focus-within:ring-mid_light_dark
 border-inherit
 border-current
 border-transparent
@@ -4665,6 +4677,7 @@ border-light_
 border-dark_border
 border-text_dark
 border-text_light
+border-mid_light_dark
 focus:border-inherit
 focus:border-current
 focus:border-transparent
@@ -5024,6 +5037,7 @@ focus:border-light_
 focus:border-dark_border
 focus:border-text_dark
 focus:border-text_light
+focus:border-mid_light_dark
 focus-within:border-inherit
 focus-within:border-current
 focus-within:border-transparent
@@ -5383,6 +5397,7 @@ focus-within:border-light_
 focus-within:border-dark_border
 focus-within:border-text_dark
 focus-within:border-text_light
+focus-within:border-mid_light_dark
 dark:text-inherit
 dark:text-current
 dark:text-transparent
@@ -5742,6 +5757,7 @@ dark:text-light_
 dark:text-dark_border
 dark:text-text_dark
 dark:text-text_light
+dark:text-mid_light_dark
 dark:hover:text-inherit
 dark:hover:text-current
 dark:hover:text-transparent
@@ -6101,6 +6117,7 @@ dark:hover:text-light_
 dark:hover:text-dark_border
 dark:hover:text-text_dark
 dark:hover:text-text_light
+dark:hover:text-mid_light_dark
 h-0
 h-1
 h-2
@@ -6683,3 +6700,4 @@ fill-light_
 fill-dark_border
 fill-text_dark
 fill-text_light
+fill-mid_light_dark

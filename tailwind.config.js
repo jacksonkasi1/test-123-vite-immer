@@ -44,7 +44,7 @@ module.exports = {
       }),
       colors: {
         primary: {
-          100: '#ffbfae',
+          100: '#fe734c31',
           200: '#feaf9a',
           300: '#fea087',
           400: '#fe9173',
@@ -62,7 +62,8 @@ module.exports = {
         light_: '#f3f4f6',
         dark_border: '#374151',
         text_dark: '#ACB0B7',
-        text_light: '#6b7280'
+        text_light: '#6b7280',
+        mid_light_dark: '#1F2937'
       },
     },
   },

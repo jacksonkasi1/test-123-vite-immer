@@ -109,4 +109,12 @@ body {
   .password-input input {
     @apply !pl-[34px]
   }
+
+  .card-number-input .input-suffix-end {
+    @apply absolute left-[93%] top-[13px]
+  }
+
+  .left-class input{
+    @apply !pl-[30px]
+  }
 }

@@ -51,7 +51,7 @@ const FormItem = React.forwardRef((props, ref) => {
     <div ref={ref} className={formItemClass}>
       <label
         htmlFor={htmlFor}
-        className={formLabelClass}
+        className={`${formLabelClass} text-light_dark_ dark:text-text_dark`}
         style={formLabelStyle()}
       >
         {asterisk && <span className="text-red-500 ltr:mr-1 rtl:ml-1">*</span>}
