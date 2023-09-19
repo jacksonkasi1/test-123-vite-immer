@@ -1,12 +1,22 @@
-import useSWR, { mutate } from 'swr';
+import { mutate } from 'swr';
 import axios from '@axios';
 
-
-export const login = async (unique_id, password) => {
-    const response = await axios.post('/admin/login', { unique_id, password });
-    if (response.data.success) {
-      mutate('/admin/login', response.data, false); // local mutation
+const login = async (unique_id, password) => {
+  try {
+    console.log('unique_id, password', unique_id, password);
+    const res = await axios.post('/admin/login', { unique_id, password });
+    if (res.data.success) {
+      localStorage.setItem('token', res.data.data.token);
+      mutate('admin', res.data, false); // here 'admin' is the key for the SWR cache
     }
-    return response.data;
-  };
-  
+    return res.data;
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+export default login;
