@@ -1,18 +1,31 @@
 import React, { useRef } from 'react';
+
+// ** import sub pages
 import Header from './Header';
-import Typography from '../../components/shared/Typography';
+
+// ** import shared components
+import Typography from '@shared/Typography';
+
+// ** import from redux
 import { useSelector } from 'react-redux';
+
+// ** import third party library
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
-import Input from '../../components/ui/Input/Input';
 import {
   HiOutlineGlobeAlt,
   HiOutlineMail,
   HiOutlineUserCircle,
 } from 'react-icons/hi';
-import FormItem from '../../components/ui/FormItem';
-import Select from '../../components/ui/Select';
-import Button from '../../components/ui/Buttons'
+
+// ** import components
+import Input from '@components/ui/Input/Input';
+import FormItem from '@components/ui/FormItem';
+import Select from '@components/ui/Select';
+import Button from '@components/ui/Buttons';
+
+// ** import api essential
+import { getAdminProfileApi } from '@api/admin';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -52,6 +65,9 @@ const Profile = () => {
 
   const profilePic = useRef();
 
+  // ** swr api function call
+  const { data: user } = getAdminProfileApi();
+
   return (
     <div className="p-10">
       <Header />
@@ -65,7 +81,11 @@ const Profile = () => {
         </Typography>
 
         <Formik
-          initialValues={{ name: '', email: '', timeZone: '' }}
+          initialValues={{
+            name: user?.data?.full_name,
+            email: user?.data?.email,
+            timeZone: '',
+          }}
           enableReinitialize
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting }) => {

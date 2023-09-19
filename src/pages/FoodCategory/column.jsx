@@ -5,7 +5,7 @@ import { Badge } from "reactstrap"
 const ProductColumn = ({row}) => {
 	return (
 		<div className="flex items-center">
-                <img src={'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/gnocchi-1d16725.jpg'} className="w-[40px] h-[40px] rounded-[50%]" alt="" />
+                <img src={row?.thumbnail} className="w-[40px] h-[40px] rounded-[50%]" alt="" />
 		</div>
 	)
 }
@@ -27,7 +27,7 @@ export const columns = [
         Cell: props => {
 			const row = props.row.original
             return <span className={`ml-2 rtl:mr-2 font-semibold`}>
-                {row.name}
+                {row?.name}
             </span>
         },
     },
@@ -47,8 +47,9 @@ export const columns = [
         accessor: 'totalFoods',
         sortable: true,
         Cell: props => {
+			const row = props.row.original
             return (
-                <span>20</span>
+                <span>{row?._count?.tbl_meals}</span>
             )
         },
     },

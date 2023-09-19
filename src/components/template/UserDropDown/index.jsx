@@ -1,4 +1,8 @@
 import React from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
+// ** import third party library
 import {
   Dropdown,
   DropdownTrigger,
@@ -8,10 +12,14 @@ import {
 } from '@nextui-org/react';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { Settings, User } from 'react-feather';
-import { useNavigate } from 'react-router-dom';
+
+// ** import api essential
+
+import { getAdminProfileApi } from '@api/admin';
 
 const UserDropDown = () => {
   const navigate = useNavigate();
+  const { data: user } = getAdminProfileApi();
 
   return (
     <Dropdown className="!rounded-[5px] dark:bg-light_dark_">
@@ -25,10 +33,10 @@ const UserDropDown = () => {
 
           <div className="ml-2 leading-5">
             <p className="m-0 text-[14px] text-light_dark_ dark:text-text_dark font-inter text-left">
-              Admin
+              {user?.data?.role ?? 'Admin'}
             </p>
             <p className="m-0 text-[16px] font-semibold text-light_dark_ dark:text-text_dark font-inter">
-              Emon Das
+              {user?.data?.full_name ?? 'Emon Das'}
             </p>
           </div>
         </Button>
@@ -43,9 +51,11 @@ const UserDropDown = () => {
             />
             <div>
               <div className="font-bold text-gray-900 dark:text-gray-100">
-                User01
+                {user?.data?.full_name ?? 'Emon Das'}
               </div>
-              <div className="text-xs dark:text-gray-100">user01@mail.com</div>
+              <div className="text-xs dark:text-gray-100">
+                {user?.data?.email ?? 'user01@mail.com'}
+              </div>
             </div>
           </div>
         </DropdownItem>

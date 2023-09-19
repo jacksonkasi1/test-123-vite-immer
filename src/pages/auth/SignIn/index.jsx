@@ -1,15 +1,26 @@
 import React from 'react';
-import Input from '../../../components/ui/Input';
-import Button from '../../../components/ui/Buttons';
-import Checkbox from '../../../components/ui/Checkbox';
-import FormItem from '../../../components/ui/FormItem';
-import PasswordInput from '../../../components/shared/PasswordInput';
+import { useNavigate } from 'react-router-dom'; //
+
+// ** import components
+import Input from '@components/ui/Input';
+import Button from '@components/ui/Buttons';
+import Checkbox from '@components/ui/Checkbox';
+import FormItem from '@components/ui/FormItem';
+
+// ** import shared components
+import ActionLink from '@shared/ActionLink';
+import Typography from '@shared/Typography';
+import PasswordInput from '@shared/PasswordInput';
+
+// ** import third party library
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import ActionLink from '../../../components/shared/ActionLink';
-import Typography from '../../../components/shared/Typography';
-import Logo from '../../../assets/svg/Logo';
-// import useAuth from 'utils/hooks/useAuth';
+
+// ** import assets
+import Logo from '@assets/svg/Logo';
+
+// ** import api essentials
+import login from '@api/auth';
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required('Please enter your user name'),
@@ -18,6 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignIn = (props) => {
+  const navigate = useNavigate();
+
   const {
     disableSubmit = false,
     className,
@@ -25,18 +38,14 @@ const SignIn = (props) => {
     signUpUrl = '/sign-up',
   } = props;
 
-  //   const { signIn } = useAuth();
-
   const onSignIn = async (values, setSubmitting) => {
-    // const { userName, password } = values;
-    // setSubmitting(true);
-
-    // const result = await signIn({ userName, password });
-
-    // if (result.status === 'failed') {
-    //   setMessage(result.message);
-    // }
-
+    const { userName, password } = values;
+    const uniqueID = userName;
+    setSubmitting(true);
+    const response = await login(uniqueID, password);
+    if (response.success) {
+      navigate('/home');
+    }
     setSubmitting(false);
   };
 
@@ -44,7 +53,9 @@ const SignIn = (props) => {
     <div className="grid lg:grid-cols-3 h-full w-full">
       <div
         className="bg-no-repeat bg-cover py-6 px-16 flex-col justify-between hidden lg:flex"
-        style={{ backgroundImage: `url('https://elstar.themenate.net/img/others/auth-side-bg.jpg')` }}
+        style={{
+          backgroundImage: `url('https://elstar.themenate.net/img/others/auth-side-bg.jpg')`,
+        }}
       >
         <Logo width={250} />
         <div>
