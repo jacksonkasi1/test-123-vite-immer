@@ -1,4 +1,4 @@
-import { Home, ShoppingCart } from "react-feather";
+import { Home, ShoppingCart, Table, Users } from "react-feather";
 
 const menus = [
     {
@@ -18,8 +18,23 @@ const menus = [
     },
     {
         level: 'Table Management',
-        icon: <ShoppingCart size={20} />,
+        icon: <Table size={20} />,
         path: '/table-management'
+    },
+    {
+        level: 'Feedbacks',
+        icon: <ShoppingCart size={20} />,
+        path: '/feedbacks'
+    },
+    {
+        level: 'Order Management',
+        icon: <ShoppingCart size={20} />,
+        path: '/order-management'
+    },
+    {
+        level: 'Customer Management',
+        icon: <Users size={20} />,
+        path: '/customer-management'
     }
 ]
 

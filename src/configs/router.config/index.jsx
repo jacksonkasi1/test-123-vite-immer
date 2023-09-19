@@ -7,6 +7,9 @@ import Notification from "../../pages/Profile/Notification";
 import Billing from "../../pages/Profile/billing";
 import FoodCategory from "../../pages/FoodCategory";
 import TableManagement from "../../pages/TableManagement";
+import Feedbacks from "../../pages/Feedbacks";
+import OrderManagement from "../../pages/OrderManagement";
+import CustomerManagement from "../../pages/CustomerManagement";
 
 const auth = [
   {
@@ -30,6 +33,24 @@ const auth = [
   {
     path: '/table-management',
     element: <TableManagement />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/feedbacks',
+    element: <Feedbacks />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/order-management',
+    element: <OrderManagement />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/customer-management',
+    element: <CustomerManagement />,
     nodeRef: createRef(),
     meta: {},
   },
