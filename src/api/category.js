@@ -20,7 +20,6 @@ export const getAllCategory = async (search, limit = 20, cursor, ...props) => {
         ...props,
       },
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('An error occurred at getAllCategory:', error);

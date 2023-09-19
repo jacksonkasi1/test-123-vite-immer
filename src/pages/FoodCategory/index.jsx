@@ -57,7 +57,6 @@ const FoodCategory = () => {
         setIsLoading(true);
         const data = await getAllCategory();
         // Handle the data returned from the function
-        console.log('Data received:', data.data);
         setData(data.data);
 
         // You can perform further operations with the data here
