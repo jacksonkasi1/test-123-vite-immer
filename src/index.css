@@ -63,6 +63,10 @@ body {
   width: 100%;
 }
 
+.my-react-select__control  {
+  padding: 2px 0 !important;
+}
+
 @layer components {
 
   .input-wrapper,.form-item {
@@ -120,5 +124,9 @@ body {
 
   .switchers input{
     @apply !hidden
+  }
+
+  .search .input-wrapper input {
+    @apply !pl-[10px]
   }
 }

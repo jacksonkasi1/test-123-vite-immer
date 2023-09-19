@@ -7,6 +7,7 @@ import Select from '../../components/ui/Select';
 import TableRowSkeleton from './loaders/TableRowSkeleton';
 import Loading from './Loading';
 import { useTable, usePagination, useSortBy, useRowSelect } from 'react-table';
+import TableHeader from './TableHeader';
 
 const { Tr, Th, Td, THead, TBody, Sorter } = Table;
 
@@ -150,20 +151,21 @@ const DataTable = (props) => {
     }
   };
 
+  // select change
+
   return (
     <Loading loading={loading && data.length !== 0} type="cover">
-      <div className=" mb-2">
-        <div style={{ width: 130 }}>
-          <Select
-            // size="sm"
-            // menuPlacement="top"
-            isSearchable={false}
-            value={pageSizeOption.filter((option) => option.value === pageSize)}
-            options={pageSizeOption}
-            onChange={(option) => handleSelectChange(option.value)}
-          />
-        </div>
+
+      <div className="mb-2">
+        <TableHeader
+          selectChange={(option) => handleSelectChange(option.value)}
+          pageSizeOption={pageSizeOption}
+          selectValue={pageSizeOption.filter(
+            (option) => option.value === pageSize,
+          )}
+        />
       </div>
+
       <Table {...getTableProps()}>
         <THead>
           {headerGroups.map((headerGroup) => (
