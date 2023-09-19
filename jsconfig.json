@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@src/*": ["./src/*"],
+        "@components/*": ["./src/components/*"],
+        "@utils/*": ["./src/utils/*"],
+        "@config/*": ["./src/config/*"],
+        "@shared/*": ["./src/components/shared/*"],
+        "@assets/*": ["./src/assets/*"],
+        "@icons/*": ["./src/assets/icons/*"],
+        "@svg/*": ["./src/assets/svg/*"],
+        "@illustration/*": ["./src/assets/illustration/*"],
+        "@pages/*": ["./src/pages/*"],
+        "@redux/*": ["./src/redux/*"],
+        "@env": ["./src/config"],
+        "@images/*":["./src/assets/Images/*"],
+        "@i18n":["./src/i18n"],
+        "@axios":["./axios.js"],
+        "@api/*":["./src/api/*"],
+      }
+    }
+  }
+  
