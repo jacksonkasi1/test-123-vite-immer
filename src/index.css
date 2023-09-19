@@ -37,7 +37,7 @@ body {
 .table-default thead th {
   padding: 10px 0 !important;
   text-align: start !important;
-  @apply !text-[#6b7280] dark:!text-[#f3f4f6] dark:bg-[#374151]
+  @apply !text-[#6b7280] dark:!text-[#b2b3b4] dark:bg-[#374151]
 }
 .table-default tbody tr {
   padding: 0 50px;

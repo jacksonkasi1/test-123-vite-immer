@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from '../ui/Select';
 import Input from '../ui/Input';
-import { HiOutlineSearch, HiSearch } from 'react-icons/hi';
+import { HiOutlineSearch } from 'react-icons/hi';
 import Tooltip from '../ui/Tooltip';
 
 const TableHeader = ({ selectChange, selectValue, pageSizeOption }) => {

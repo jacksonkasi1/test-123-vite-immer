@@ -54,8 +54,8 @@ const Sidebar = () => {
               {!themeConfig.minimized && (
                 <p
                   className={`ml-3 ${
-                    active === data?.path && 'text-white_'
-                  } dark:text-white_`}
+                    active === data?.path ? 'text-white_ dark:text-white_' : 'dark:text-text_dark dark:hover:text-white_'
+                  }`}
                 >
                   {data?.level}
                 </p>
