@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from '../ui/Select';
 import Input from '../ui/Input';
 import { HiOutlineSearch } from 'react-icons/hi';
 import Tooltip from '../ui/Tooltip';
+import { Button } from '@nextui-org/react';
+import { Calendar, Filter } from 'react-feather';
+import Typography from './Typography';
 
-const TableHeader = ({ selectChange, selectValue, pageSizeOption }) => {
+const TableHeader = ({
+  selectChange,
+  selectValue,
+  pageSizeOption,
+  searchValue,
+  searchOnChange,
+  searchAble,
+}) => {
+  const [filter, setFilter] = useState(false);
+  const [dateStatus, setDateStatus] = useState(false)
+
+  useEffect(() => {
+    window.addEventListener('click', () => {
+      setFilter(false);
+    });
+  }, []);
+
   return (
     <div className="flex items-center ">
       <div className="flex items-center gap-x-5 search">
@@ -18,13 +37,107 @@ const TableHeader = ({ selectChange, selectValue, pageSizeOption }) => {
             onChange={selectChange}
           />
         </div>
-        <Input
-          suffix={
-            <Tooltip title="Search for table data">
-              <HiOutlineSearch size={20} className="cursor-pointer text-lg text-text_light dark:text-text_dark" />
-            </Tooltip>
-          }
-        />
+        {searchAble && (
+          <Input
+            value={searchValue}
+            onChange={searchOnChange}
+            placeholder={'Search'}
+            suffix={
+              <Tooltip title="Search for table data">
+                <HiOutlineSearch
+                  size={20}
+                  className="text-lg text-text_light dark:text-text_dark"
+                />
+              </Tooltip>
+            }
+          />
+        )}
+      </div>
+      <div className="flex items-center justify-end w-full relative">
+        <div className='flex items-center gap-x-5'>
+          <Button
+            onClick={() => setFilter(!filter)}
+            variant="bordered"
+            className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
+          >
+            <Filter size={20} className="text-text_light" />
+            Filter
+          </Button>
+
+          <Button
+            variant="bordered"
+            className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
+          >
+            <Calendar size={20} className="text-text_light" />
+            Select Date
+          </Button>
+        </div>
+
+        {/* filter */}
+        {filter && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setFilter(true);
+            }}
+            style={{
+              boxShadow:
+                '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
+            }}
+            className="absolute right-20 top-12 w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
+          >
+            <div>
+              <Typography variant="P_Regular_H7">User Country</Typography>
+              <Select
+                options={[
+                  { value: 'france', label: 'France' },
+                  { value: 'india', label: 'India' },
+                  { value: 'russia', label: 'Russia' },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {
+          dateStatus && (
+            <div>
+
+            </div>
+          )
+        }
+        {/* <Dropdown className="dark:bg-light_dark_">
+          <DropdownTrigger>
+            <Button
+              variant="bordered"
+              className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
+            >
+              <Filter size={20} />
+              Filter
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            aria-label="Dynamic Actions"
+            className="!rounded-[5px] !w-[400px]"
+            closeOnSelect={false}
+          >
+            <DropdownItem
+              color={'default'}
+              className={
+                'dark:text-text_dark hover:!bg-transparent !cursor-default z-[999] py-20'
+              }
+            >
+              <Select
+                // size="sm"
+                // menuPlacement="top"
+                isSearchable={false}
+                value={selectValue}
+                options={pageSizeOption}
+                onChange={selectChange}
+              />
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown> */}
       </div>
     </div>
   );

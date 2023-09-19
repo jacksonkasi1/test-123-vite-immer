@@ -57,6 +57,11 @@ const FoodList = () => {
     pageSize: 10,
   });
 
+  console.log(data);
+
+  // search
+  const [searchData, setSearchData] = useState('')
+
   const onPaginationChange = (newPageIndex) => {
     console.log(newPageIndex);
     setPagingData({
@@ -99,6 +104,9 @@ const FoodList = () => {
         onSelectChange={onSelectChange}
         selectable={true}
         pagingData={pagingData}
+        searchAble={true}
+        searchOnChange={(e) => setSearchData(e.target.value)}
+        searchValue={searchData}
       />
     </div>
   );
