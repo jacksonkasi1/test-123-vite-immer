@@ -58,6 +58,9 @@ const DataTable = (props) => {
     selectable,
     skeletonAvatarProps,
     pagingData,
+    searchValue,
+    searchOnChange,
+    searchAble
   } = props;
 
   const { pageSize, pageIndex, total } = pagingData;
@@ -163,6 +166,9 @@ const DataTable = (props) => {
           selectValue={pageSizeOption.filter(
             (option) => option.value === pageSize,
           )}
+          searchOnChange={searchOnChange}
+          searchValue={searchValue}
+          searchAble={searchAble}
         />
       </div>
 

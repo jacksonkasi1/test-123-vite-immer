@@ -67,6 +67,10 @@ body {
   padding: 2px 0 !important;
 }
 
+.search input {
+  padding-left: 30px;
+}
+
 @layer components {
 
   .input-wrapper,.form-item {
@@ -124,9 +128,5 @@ body {
 
   .switchers input{
     @apply !hidden
-  }
-
-  .search .input-wrapper input {
-    @apply !pl-[10px]
   }
 }
