@@ -6,6 +6,8 @@ import Tooltip from '../ui/Tooltip';
 import { Button } from '@nextui-org/react';
 import { Calendar, Filter } from 'react-feather';
 import Typography from './Typography';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/themes/material_blue.css';
 
 const TableHeader = ({
   selectChange,
@@ -16,7 +18,7 @@ const TableHeader = ({
   searchAble,
 }) => {
   const [filter, setFilter] = useState(false);
-  const [dateStatus, setDateStatus] = useState(false)
+  const [dateStatus, setDateStatus] = useState(false);
 
   useEffect(() => {
     window.addEventListener('click', () => {
@@ -54,9 +56,12 @@ const TableHeader = ({
         )}
       </div>
       <div className="flex items-center justify-end w-full relative">
-        <div className='flex items-center gap-x-5'>
+        <div className="flex items-center gap-x-5">
           <Button
-            onClick={() => setFilter(!filter)}
+            onClick={() => {
+              setFilter(!filter)
+              setDateStatus(false)
+            }}
             variant="bordered"
             className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
           >
@@ -65,6 +70,10 @@ const TableHeader = ({
           </Button>
 
           <Button
+            onClick={() => {
+              setDateStatus(!dateStatus);
+              setFilter(false);
+            }}
             variant="bordered"
             className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
           >
@@ -99,13 +108,39 @@ const TableHeader = ({
           </div>
         )}
 
-        {
-          dateStatus && (
-            <div>
+        {dateStatus && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setFilter(true);
+            }}
+            style={{
+              boxShadow:
+                '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
+            }}
+            className="absolute right-20 top-12 w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
+          >
+             <Typography variant='P_SemiBold_H5' >Time Period</Typography>
 
-            </div>
-          )
-        }
+             <Flatpickr
+							// onClick={() =>
+							// 	setDateType({
+							// 		label: 'Date Range',
+							// 		value: 'DATE_RANGE',
+							// 	})
+							// }
+							value={new Date()}
+							id="range-picker"
+							className="form-control input mt-1"
+							// onChange={(date) => {
+							// 	setDateValue(date);
+							// }}
+							options={{
+								mode: 'range',
+							}}
+						/>
+          </div>
+        )}
         {/* <Dropdown className="dark:bg-light_dark_">
           <DropdownTrigger>
             <Button
