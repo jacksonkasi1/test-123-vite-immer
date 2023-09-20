@@ -19,7 +19,13 @@ export const getFoodList = (
   to = '',
   available = '',
 ) => {
-  const cacheKey = `admin/restaurant/meal/all?available=${available}&limit=${limit}&pageIndex=${pageIndex}&search=${search}&type=${type}&from=${from}&to=${to}`;
+  let cacheKey
+  if(from=="NaN-NaN-NaN"||to=="NaN-NaN-NaN"){
+    cacheKey = `admin/restaurant/meal/all?available=${available}&limit=${limit}&pageIndex=${pageIndex}&search=${search}&type=${type}`;
+  }else{
+    cacheKey = `admin/restaurant/meal/all?available=${available}&limit=${limit}&pageIndex=${pageIndex}&search=${search}&type=${type}&from=${from}&to=${to}`;
+    
+  }
   const { error, ...data } = useSWR(cacheKey, fetcher, {
     revalidateOnFocus: false,
   });
