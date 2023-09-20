@@ -61,6 +61,9 @@ const FoodList = () => {
 
   // search
   const [searchData, setSearchData] = useState('');
+  //date filter
+  const [dateValue, setDateValue] = useState([]);
+  const [dateSelect, setDateSelect] = useState('Today');
 
   const onPaginationChange = (newPageIndex) => {
     console.log(newPageIndex);
@@ -92,6 +95,13 @@ const FoodList = () => {
   //   setData(newData);
   // }, [])
 
+  console.log(dateValue);
+  console.log(dateSelect);
+
+  const applyDateFilter = () => {
+    console.log('Hello world');
+  };
+
   return (
     <div className="px-10 pt-10 pb-12">
       <DataTable
@@ -107,6 +117,12 @@ const FoodList = () => {
         searchAble={true}
         searchOnChange={(e) => setSearchData(e.target.value)}
         searchValue={searchData}
+        dateValue={dateValue}
+        setDateValue={setDateValue}
+        activeDateSelect={dateSelect}
+        setDateSelect={setDateSelect}
+        isDateFilter={true}
+        handleApplyDateFilter={applyDateFilter}
       />
     </div>
   );

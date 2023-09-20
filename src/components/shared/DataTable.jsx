@@ -60,7 +60,13 @@ const DataTable = (props) => {
     pagingData,
     searchValue,
     searchOnChange,
-    searchAble
+    searchAble,
+    setDateSelect,
+    activeDateSelect,
+    isDateFilter,
+    dateValue,
+    setDateValue,
+    handleApplyDateFilter
   } = props;
 
   const { pageSize, pageIndex, total } = pagingData;
@@ -169,6 +175,12 @@ const DataTable = (props) => {
           searchOnChange={searchOnChange}
           searchValue={searchValue}
           searchAble={searchAble}
+          setDateSelect={setDateSelect}
+          activeDateSelect={activeDateSelect}
+          isDateFilter={isDateFilter}
+          dateValue={dateValue}
+          setDateValue={setDateValue}
+          handleApplyDateFilter={handleApplyDateFilter}
         />
       </div>
 

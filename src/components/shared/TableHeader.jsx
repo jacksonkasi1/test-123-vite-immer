@@ -8,6 +8,7 @@ import { Calendar, Filter } from 'react-feather';
 import Typography from './Typography';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
+import { useSelector } from 'react-redux';
 
 const TableHeader = ({
   selectChange,
@@ -16,15 +17,37 @@ const TableHeader = ({
   searchValue,
   searchOnChange,
   searchAble,
+  activeDateSelect,
+  setDateSelect,
+  dateValue,
+  setDateValue,
+  isDateFilter,
+  handleApplyDateFilter
 }) => {
+  const themeConfig = useSelector((state) => state.themeConfigs);
+
   const [filter, setFilter] = useState(false);
   const [dateStatus, setDateStatus] = useState(false);
 
   useEffect(() => {
     window.addEventListener('click', () => {
       setFilter(false);
+      setDateStatus(false);
     });
   }, []);
+
+  // date filter
+  const dateFilter = [
+    'Today',
+    'Yesterday',
+    'Last Week',
+    'This Week',
+    'Last Month',
+    'This Month',
+    'Last Year',
+    'This Year',
+    'Life Time',
+  ];
 
   return (
     <div className="flex items-center ">
@@ -59,8 +82,8 @@ const TableHeader = ({
         <div className="flex items-center gap-x-5">
           <Button
             onClick={() => {
-              setFilter(!filter)
-              setDateStatus(false)
+              setFilter(!filter);
+              setDateStatus(false);
             }}
             variant="bordered"
             className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
@@ -69,17 +92,20 @@ const TableHeader = ({
             Filter
           </Button>
 
-          <Button
-            onClick={() => {
-              setDateStatus(!dateStatus);
-              setFilter(false);
-            }}
-            variant="bordered"
-            className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
-          >
-            <Calendar size={20} className="text-text_light" />
-            Select Date
-          </Button>
+
+          {isDateFilter && (
+            <Button
+              onClick={() => {
+                setDateStatus(!dateStatus);
+                setFilter(false);
+              }}
+              variant="bordered"
+              className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
+            >
+              <Calendar size={20} className="text-text_light" />
+              Select Date
+            </Button>
+          )}
         </div>
 
         {/* filter */}
@@ -112,36 +138,70 @@ const TableHeader = ({
           <div
             onClick={(e) => {
               e.stopPropagation();
-              setFilter(true);
+              setDateStatus(true);
             }}
             style={{
               boxShadow:
                 '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
             }}
-            className="absolute right-20 top-12 w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
+            className="absolute right-20 top-12 w-[450px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
           >
-             <Typography variant='P_SemiBold_H5' >Time Period</Typography>
+            <Typography variant="P_SemiBold_H5">Time Period</Typography>
 
-             <Flatpickr
-							// onClick={() =>
-							// 	setDateType({
-							// 		label: 'Date Range',
-							// 		value: 'DATE_RANGE',
-							// 	})
-							// }
-							value={new Date()}
-							id="range-picker"
-							className="form-control input mt-1"
-							// onChange={(date) => {
-							// 	setDateValue(date);
-							// }}
-							options={{
-								mode: 'range',
-							}}
-						/>
+            <Flatpickr
+              value={dateValue}
+              id="range-picker"
+              className="form-control input mt-1"
+              onChange={(date) => {
+                setDateValue(date);
+              }}
+              options={{
+                mode: 'range',
+              }}
+            />
 
-            <div className='flex items-center'>
-              <Typography variant='P_Regular_H6' >Today</Typography>
+            <div className="flex items-center gap-3 flex-wrap py-3 mt-3">
+              {dateFilter.map((data) => {
+                return (
+                  <div
+                    onClick={() => setDateSelect(data)}
+                    className={`${
+                      activeDateSelect === data &&
+                      `bg-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`
+                    } border-[1px] border-[#dfdfdf] dark:border-dark_border py-1 px-5 rounded-[50px] cursor-pointer`}
+                  >
+                    <Typography
+                      className={`${
+                        activeDateSelect === data && `!text-white_`
+                      }`}
+                      variant="P_Regular_H6"
+                    >
+                      {data}
+                    </Typography>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-3 w-full flex justify-between">
+              <Button
+                onClick={() => {
+                  setDateValue([])
+                  setDateSelect('Today')
+                  setDateStatus(false)
+                }}
+                variant="bordered"
+                className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark w-[48%]`}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleApplyDateFilter}
+                variant="bordered"
+                className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ dark:text-text_dark !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} !text-white_ border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
+              >
+                Apply
+              </Button>
             </div>
           </div>
         )}
