@@ -48,7 +48,8 @@ const TableManagement = () => {
   };
 
   console.log(dateValue);
-  console.log(dateSelect);
+  console.log(dateSelect.split(' ').join(''));
+
 
   const applyDateFilter = () => {
     console.log('Hello world');

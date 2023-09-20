@@ -9,16 +9,32 @@ import { columns } from './column';
 //  ** import api essential
 import { getFoodList } from '@api/foodList';
 
+// ** import utils
+import { formatDate } from '@src/utils';
+
 const FoodList = () => {
   // all states
   const [pageIndex, setPageIndex] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearchData] = useState('');
   const [dateValue, setDateValue] = useState([]);
-  const [dateSelect, setDateSelect] = useState('Today');
+  const [dateSelect, setDateSelect] = useState('ThisMonth');
+  const [type, setType] = useState('');
+
+
+  // formating date range
+  const fromDate = new Date(dateValue[0]);
+  const toDate = new Date(dateValue[dateValue?.length - 1]);
+  const from = formatDate(fromDate);
+  const to = formatDate(toDate);
 
   // ** calling swr api imported function
-  const foodList = getFoodList(limit, pageIndex, search);
+  const foodList = getFoodList(
+    limit,
+    pageIndex,
+    search,
+    !type?dateSelect?.split(' ')?.join(''):type, from,to,
+  );
 
   const [pagingData, setPagingData] = useState({
     total: foodList?.data?.data?.totalPages ?? 1,
@@ -45,11 +61,11 @@ const FoodList = () => {
     });
   };
 
-  console.log(dateValue);
-  console.log(dateSelect);
+  console.log('dateValue', dateValue);
+  // console.log("dateSelect",dateSelect.split(' ').join(''));
 
   const applyDateFilter = () => {
-    console.log('Hello world');
+    setType("BetWeen")
   };
 
   return (

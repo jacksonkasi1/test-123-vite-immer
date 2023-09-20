@@ -8,6 +8,14 @@ import { useSelector } from "react-redux";
  */
 export const isObjEmpty = (obj) => Object.keys(obj).length === 0;
 
+// ** formatting date mm-dd-yyyy
+export const formatDate = (date) => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}-${day}-${year}`;
+};
+
 const darkModeSelectTheme = {
     colors: {
       primary25: '#7367f01a', // for option hover bg-color

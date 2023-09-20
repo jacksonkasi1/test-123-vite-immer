@@ -1,8 +1,15 @@
 import React from 'react';
+
 import { FaAlignJustify, FaAlignLeft } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { ChangeMode, Minimize } from '../../../store/slice/themeConfig';
+
 import UserDropDown from '../UserDropDown';
+
+import { Switch } from '@nextui-org/react';
+
+import { MoonIcon } from '@assets/Icons/MoonIcon';
+import { SunIcon } from '@assets/Icons/SunIcon';
 
 const Header = ({ className }) => {
   const dispatch = useDispatch();
@@ -29,7 +36,20 @@ const Header = ({ className }) => {
           )}
         </div>
         <div className="flex items-center gap-x-2">
-          <p onClick={() => dispatch(ChangeMode())}>mode</p>
+          <Switch
+            defaultSelected
+            size="lg"
+            thumbIcon={({ isSelected, className }) =>
+              isSelected ? (
+                <SunIcon className={className} />
+              ) : (
+                <MoonIcon className={className} />
+              )
+            }
+            classNames={{ wrapper: 'bg-primary-800' }}
+            onClick={() => dispatch(ChangeMode())}
+          ></Switch>
+
           <UserDropDown />
         </div>
       </div>
