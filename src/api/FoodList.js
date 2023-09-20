@@ -13,12 +13,13 @@ const fetcher = async (url) => {
 export const getFoodList = (
   available = '',
   limit = 10,
+  pageIndex=1,
   cursor = '',
   type = '',
   from = '',
   to = '',
 ) => {
-  const cacheKey = `admin/restaurant/meal/all?available=${available}&limit=${limit}&cursor=${cursor}&type=${type}&from=${from}&to${to}`;
+  const cacheKey = `admin/restaurant/meal/all?available=${available}&limit=${limit}&pageIndex=${pageIndex}&type=${type}&from=${from}&to${to}`;
   const { error, ...data } = useSWR(cacheKey, fetcher, {
     revalidateOnFocus: false,
   });
