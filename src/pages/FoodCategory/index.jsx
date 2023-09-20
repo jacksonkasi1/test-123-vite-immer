@@ -10,112 +10,74 @@ import { columns } from './column';
 import { getAllCategory } from '@api/category';
 
 const FoodCategory = () => {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [allData, setAllData] = useState([
-    { name: 'T-Shirt1' },
-    { name: 'T-Shirt2' },
-    { name: 'T-Shirt3' },
-    { name: 'T-Shirt4' },
-    { name: 'T-Shirt5' },
-    { name: 'T-Shirt6' },
-    { name: 'T-Shirt7' },
-    { name: 'T-Shirt8' },
-    { name: 'T-Shirt9' },
-    { name: 'T-Shirt10' },
-    { name: 'T-Shirt11' },
-    { name: 'T-Shirt12' },
-    { name: 'T-Shirt13' },
-    { name: 'T-Shirt14' },
-    { name: 'T-Shirt15' },
-    { name: 'T-Shirt16' },
-    { name: 'T-Shirt17' },
-    { name: 'T-Shirt18' },
-    { name: 'T-Shirt19' },
-    { name: 'T-Shirt20' },
-    { name: 'T-Shirt21' },
-    { name: 'T-Shirt22' },
-    { name: 'T-Shirt23' },
-    { name: 'T-Shirt24' },
-    { name: 'T-Shirt25' },
-    { name: 'T-Shirt26' },
-    { name: 'T-Shirt27' },
-    { name: 'T-Shirt28' },
-    { name: 'T-Shirt29' },
-    { name: 'T-Shirt30' },
-    { name: 'T-Shirt31' },
-    { name: 'T-Shirt32' },
-  ]);
+ // all states
+ const [pageIndex, setPageIndex] = useState(1);
+ const [limit, setLimit] = useState(10);
+ const [search, setSearchData] = useState('');
+ const [dateValue, setDateValue] = useState([]);
+ const [dateSelect, setDateSelect] = useState('Today');
 
-  // ** calling api function like this to get data from a POST method api
+ // ** calling swr api imported function
+ const getAllCategoryApi = getAllCategory(limit, pageIndex, search);
 
-  useEffect(() => {
-    // Call the function to get data
-    (async () => {
-      try {
-        setIsLoading(true);
-        const data = await getAllCategory();
-        // Handle the data returned from the function
-        setData(data.data);
+ const [pagingData, setPagingData] = useState({
+   total: getAllCategoryApi?.data?.data?.totalPages ?? 1,
+   pageIndex: 1,
+   pageSize: 10,
+ });
 
-        // You can perform further operations with the data here
-      } catch (error) {
-        console.error('An error occurred:', error);
-      }
-      setIsLoading(false);
-    })();
-  }, []);
+ //setting total page data
+ useEffect(() => {
+   setPagingData({
+     ...pagingData,
+     total: !isNaN(parseInt(getAllCategoryApi?.data?.data?.totalPages))
+       ? parseInt(getAllCategoryApi?.data?.data?.totalPages) * 10
+       : 1,
+   });
+ }, [getAllCategoryApi?.data?.data?.totalPages]);
 
-  // ** later enable the pagination
-  const [pagingData, setPagingData] = useState({
-    total: allData.length,
-    pageIndex: 1,
-    pageSize: 10,
-  });
+ const onPaginationChange = (newPageIndex) => {
+   console.log(newPageIndex);
+   setPageIndex(newPageIndex);
+   setPagingData({
+     ...pagingData,
+     pageIndex: newPageIndex,
+   });
+ };
 
-  const onPaginationChange = (newPageIndex) => {
-    console.log(newPageIndex);
-    setPagingData({
-      ...pagingData,
-      pageIndex: newPageIndex,
-    });
+ console.log(dateValue);
+ console.log(dateSelect);
 
-    const temp = pagingData.pageSize * (newPageIndex - 1);
-    const newData = allData.slice(temp, temp + pagingData.pageSize);
-    console.log(newData);
-    setData(newData);
-  };
+ const applyDateFilter = () => {
+   console.log('Hello world');
+ };
 
-  const onSelectChange = (value) => {
-    setPagingData({
-      total: allData.length,
-      pageIndex: 1,
-      pageSize: value,
-    });
 
-    // Calculate the new data for the current page
-    const newData = allData.slice(0, value);
-    // setData(newData);
-  };
-
-  useEffect(() => {
-    const newData = allData.slice(0, pagingData?.pageSize);
-    // setData(newData);
-  }, []);
 
   return (
     <div className="px-10 pt-10 pb-12">
       <DataTable
-        columns={columns}
-        data={data}
-        skeletonAvatarColumns={[0]}
-        skeletonAvatarProps={{ className: 'rounded-md' }}
-        loading={isLoading}
-        // onPaginationChange={onPaginationChange}
-        onSelectChange={onSelectChange}
-        selectable={true}
-        pagingData={pagingData}
+      columns={columns}
+      data={getAllCategoryApi?.data?.data?.getCategory}
+      skeletonAvatarColumns={[0]}
+      skeletonAvatarProps={{ className: 'rounded-md' }}
+      loading={getAllCategoryApi?.isLoading}
+      onPaginationChange={onPaginationChange}
+      onSelectChange={(value) => {
+        setLimit(value);
+      }}
+      selectable={true}
+      pagingData={pagingData}
+      searchAble={true}
+      searchOnChange={(e) => setSearchData(e.target.value)}
+      searchValue={search}
+      dateValue={dateValue}
+      setDateValue={setDateValue}
+      activeDateSelect={dateSelect}
+      setDateSelect={setDateSelect}
+      isDateFilter={true}
+      handleApplyDateFilter={applyDateFilter}
       />
     </div>
   );

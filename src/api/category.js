@@ -3,25 +3,29 @@ import axios from '@axios';
 
 const fetcher = async (url) => {
   try {
-    const response = await axios.post(url);
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const getAllCategory = async (search, limit = 20, cursor, ...props) => {
-  try {
-    const response = await axios.post(
-      `admin/meal/category/all?search=${search ?? ''}&limit=${
-        limit ?? ''
-      }&cursor=${cursor ?? ''}`,
-      {
-        ...props,
-      },
-    );
-    return response.data;
-  } catch (error) {
+export const getAllCategory = (
+  limit = 10,
+  pageIndex = 1,
+  search = '',
+  type = '',
+  from = '',
+  to = '',
+) => {
+  const cacheKey = `admin/meal/category/all?search=${search ?? ''}&limit=${
+    limit ?? ''
+  }&pageIndex=${pageIndex}&type=${type}&from=${from}&to${to}`;
+  const { error, ...data } = useSWR(cacheKey, fetcher, {
+    revalidateOnFocus: false,
+  });
+  if (error) {
     console.error('An error occurred at getAllCategory:', error);
   }
+  return data;
 };
