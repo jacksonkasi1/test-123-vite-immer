@@ -196,7 +196,10 @@ const TableHeader = ({
                 Cancel
               </Button>
               <Button
-                onClick={handleApplyDateFilter}
+                onClick={(e) => {
+                  handleApplyDateFilter(e)
+                  setDateStatus(false)
+                }}
                 variant="bordered"
                 className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ dark:text-text_dark !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} !text-white_ border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
               >
