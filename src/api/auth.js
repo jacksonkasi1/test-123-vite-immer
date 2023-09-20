@@ -6,7 +6,6 @@ const login = async (unique_id, password) => {
     console.log('unique_id, password', unique_id, password);
     const res = await axios.post('/admin/login', { unique_id, password });
     if (res.data.success) {
-      localStorage.setItem('token', res.data.data.token);
       mutate('admin', res.data, false); // here 'admin' is the key for the SWR cache
     }
     return res.data;
