@@ -1,29 +1,34 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import axios from '../../axios';
 import { getAdminProfileApi } from '@api/admin';
 import { setUser } from '@src/store/slice/userSlice';
+import Spinner from '@src/components/ui/Spinner';
 
 function PrivateRoute({ children, route }) {
-
   // ** Hooks & Vars
   const userToken = localStorage.getItem('userToken');
-  const user = useSelector(state => state.userSlice.user);
+  const user = useSelector((state) => state.userSlice.user);
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(false);
 
   const getUser = async () => {
     try {
       if (userToken) {
-        if(!user?.email) {
+        if (!user?.email) {
+          setLoader(true)
           const data = await axios.get('/admin/details');
+          setLoader(false)
           const admin = data.data.data;
-          if(admin) {
-            dispatch(setUser({
-              name: admin.full_name,
-              email: admin.email,
-              role: admin.roles
-            }))
+          if (admin) {
+            dispatch(
+              setUser({
+                name: admin.full_name,
+                email: admin.email,
+                role: admin.roles,
+              }),
+            );
           }
         }
       }
@@ -48,7 +53,16 @@ function PrivateRoute({ children, route }) {
     if (!user?.email && !userToken) return <Navigate to="/sign-in" />;
   }
 
-  return <Suspense fallback={null}>{children}</Suspense>;
+  return (
+    <>
+      {loader && (
+        <div style={{zIndex: 99999999}} className="fixed left-0 top-0 w-full h-full bg-[#00000028] justify-center flex items-center">
+          <Spinner size={50} />
+        </div>
+      )}
+      <Suspense fallback={null}>{children}</Suspense>
+    </>
+  );
 }
 
 export default PrivateRoute;
