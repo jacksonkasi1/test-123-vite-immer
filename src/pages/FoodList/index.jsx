@@ -7,7 +7,7 @@ import DataTable from '@shared/DataTable';
 import { columns } from './column';
 
 //  ** import api essential
-import { getFoodList } from '@src/api/foodList';
+import { getFoodList } from '@api/foodList';
 
 const FoodList = () => {
   const [data, setData] = useState([]);
@@ -60,7 +60,7 @@ const FoodList = () => {
   console.log(data);
 
   // search
-  const [searchData, setSearchData] = useState('')
+  const [searchData, setSearchData] = useState('');
 
   const onPaginationChange = (newPageIndex) => {
     console.log(newPageIndex);

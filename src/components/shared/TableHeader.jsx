@@ -139,6 +139,10 @@ const TableHeader = ({
 								mode: 'range',
 							}}
 						/>
+
+            <div className='flex items-center'>
+              <Typography variant='P_Regular_H6' >Today</Typography>
+            </div>
           </div>
         )}
         {/* <Dropdown className="dark:bg-light_dark_">
