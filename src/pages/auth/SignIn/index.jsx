@@ -20,7 +20,7 @@ import * as Yup from 'yup';
 import Logo from '@assets/svg/Logo';
 
 // ** import api essentials
-import login from '@api/auth';
+import { login } from '@api/auth';
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required('Please enter your user name'),
@@ -44,6 +44,7 @@ const SignIn = (props) => {
     setSubmitting(true);
     const response = await login(uniqueID, password);
     if (response.success) {
+      localStorage.setItem('userToken', response.data.token);
       navigate('/home');
     }
     setSubmitting(false);

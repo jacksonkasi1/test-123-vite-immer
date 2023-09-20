@@ -1,28 +1,34 @@
 import React, { Suspense, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-// import axios from '../axios';
+import axios from '../../axios';
+import { getAdminProfileApi } from '@api/admin';
+import { setUser } from '@src/store/slice/userSlice';
 
 function PrivateRoute({ children, route }) {
 
   // ** Hooks & Vars
   const userToken = localStorage.getItem('userToken');
-
-  const user = {}
+  const user = useSelector(state => state.userSlice.user);
+  const dispatch = useDispatch();
 
   const getUser = async () => {
     try {
-      console.log('token api data');
-
       if (userToken) {
-        // const { data } = await axios.get('/api/data', {
-        //   headers: { authorization: userToken },
-        // });
-        // console.log(data);
-        // dispatch(login(data));
+        if(!user?.email) {
+          const data = await axios.get('/admin/details');
+          const admin = data.data.data;
+          if(admin) {
+            dispatch(setUser({
+              name: admin.full_name,
+              email: admin.email,
+              role: admin.roles
+            }))
+          }
+        }
       }
     } catch (error) {
-      console.log(error);
-      return <Navigate to="/login" />;
+      return <Navigate to="/sign-in" />;
     }
   };
 
@@ -35,13 +41,11 @@ function PrivateRoute({ children, route }) {
 
   if (route) {
     let restrictedRoute = false;
-
     if (route.meta) {
       restrictedRoute = route.meta.restricted;
     }
 
-    if (!userToken) return <Navigate to="/login" />;
-    if (!user) return <Navigate to="/login" />;
+    if (!user?.email && !userToken) return <Navigate to="/sign-in" />;
   }
 
   return <Suspense fallback={null}>{children}</Suspense>;

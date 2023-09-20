@@ -1,7 +1,7 @@
 import { mutate } from 'swr';
 import axios from '@axios';
 
-const login = async (unique_id, password) => {
+export const login = async (unique_id, password) => {
   try {
     console.log('unique_id, password', unique_id, password);
     const res = await axios.post('/admin/login', { unique_id, password });
@@ -18,4 +18,14 @@ const login = async (unique_id, password) => {
   }
 };
 
-export default login;
+export const logout = async (unique_id, password) => {
+  try {
+    await axios.get('/logout');
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
