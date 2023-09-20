@@ -7,7 +7,7 @@ import DataTable from '@shared/DataTable';
 import { columns } from './column';
 
 //  ** import api essential
-import { getFoodList } from '@api/FoodList';
+import { getFoodList } from '@src/api/foodList';
 
 const FoodList = () => {
   const [data, setData] = useState([]);
