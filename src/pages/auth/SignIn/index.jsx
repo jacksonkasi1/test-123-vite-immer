@@ -20,10 +20,10 @@ import * as Yup from 'yup';
 import Logo from '@assets/svg/Logo';
 
 // ** import api essentials
-import login from '@api/auth';
+import { login } from '@api/auth';
 
 const validationSchema = Yup.object().shape({
-  userName: Yup.string().required('Please enter your user name'),
+  email: Yup.string().required('Please enter your email'),
   password: Yup.string().required('Please enter your password'),
   rememberMe: Yup.bool(),
 });
@@ -39,11 +39,12 @@ const SignIn = (props) => {
   } = props;
 
   const onSignIn = async (values, setSubmitting) => {
-    const { userName, password } = values;
-    const uniqueID = userName;
+    const { email, password } = values;
+    const uniqueID = email;
     setSubmitting(true);
     const response = await login(uniqueID, password);
     if (response.success) {
+      localStorage.setItem('userToken', response.data.token);
       navigate('/home');
     }
     setSubmitting(false);
@@ -110,15 +111,15 @@ const SignIn = (props) => {
             {({ touched, errors, isSubmitting }) => (
               <Form className="w-[400px]">
                 <FormItem
-                  label="User Name"
-                  invalid={errors.userName && touched.userName}
-                  errorMessage={errors.userName}
+                  label="Email"
+                  invalid={errors.email && touched.email}
+                  errorMessage={errors.email}
                 >
                   <Field
-                    type="text"
+                    type="email"
                     autoComplete="off"
-                    name="userName"
-                    placeholder="User Name"
+                    name="email"
+                    placeholder="Email"
                     component={Input}
                   />
                 </FormItem>
