@@ -16,6 +16,11 @@ export const formatDate = (date) => {
   return `${month}-${day}-${year}`;
 };
 
+// ** to capitalize
+export function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 const darkModeSelectTheme = {
     colors: {
       primary25: '#7367f01a', // for option hover bg-color
