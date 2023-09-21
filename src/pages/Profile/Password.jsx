@@ -1,29 +1,27 @@
 import React, { useRef } from 'react';
 import Header from './Header';
 import Typography from '../../components/shared/Typography';
-import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Input from '../../components/ui/Input/Input';
-import {
-    HiOutlineLockClosed
-} from 'react-icons/hi';
+import { HiOutlineLockClosed } from 'react-icons/hi';
 import FormItem from '../../components/ui/FormItem';
 import Button from '../../components/ui/Buttons';
+import { changePassword } from '../../api/admin';
+import { errorMessage, successMessage } from '@src/utils/toastMessages';
 
 const validationSchema = Yup.object().shape({
-    currentPassword: Yup.string()
-    .required('Current Password Required'),
-    newPassword: Yup.string()
+  currentPassword: Yup.string().required('Current Password Required'),
+  newPassword: Yup.string()
     .min(8, 'Too Short!')
     .required('New Password Required'),
-    confirmPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword"), null], "Passwords don't match!"),
+  confirmPassword: Yup.string().oneOf(
+    [Yup.ref('newPassword'), null],
+    "Passwords don't match!",
+  ),
 });
 
 const Password = () => {
-  const themeConfig = useSelector((state) => state.themeConfigs);
-
   return (
     <div className="p-10">
       <Header />
@@ -37,21 +35,34 @@ const Password = () => {
         </Typography>
 
         <Formik
-          initialValues={{ currentPassword: '', newPassword: '', confirmPassword: '' }}
+          initialValues={{
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: '',
+          }}
           enableReinitialize
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
+            const update = await changePassword(
+              values.currentPassword,
+              values.newPassword,
+            );
+            console.log(update);
+            if (update.success) {
+              successMessage('Password updated successfully');
+            } else {
+              errorMessage(update.message);
+            }
             setSubmitting(true);
-            setTimeout(() => {
-              onFormSubmit(values, setSubmitting);
-            }, 1000);
+            // setTimeout(() => {
+            //   onFormSubmit(values, setSubmitting);
+            // }, 1000);
           }}
         >
           {({ values, touched, errors, isSubmitting, resetForm }) => {
             return (
               <Form>
                 <div className="mt-10">
-
                   {/* Current Password */}
                   <div className="flex w-full justify-between items-center pb-6 mt-6 border-b-[2px] border-mid_dark_ dark:border-dark_border">
                     <div className="flex w-[80%] justify-between items-center">
@@ -65,7 +76,9 @@ const Password = () => {
                       <div className="w-[60%] flex items-center">
                         <FormItem
                           label=""
-                          invalid={errors.currentPassword && touched.currentPassword}
+                          invalid={
+                            errors.currentPassword && touched.currentPassword
+                          }
                           errorMessage={errors.currentPassword}
                           className="!mb-4 relative"
                         >
@@ -129,7 +142,9 @@ const Password = () => {
                       <div className="w-[60%] flex items-center">
                         <FormItem
                           label=""
-                          invalid={errors.confirmPassword && touched.confirmPassword}
+                          invalid={
+                            errors.confirmPassword && touched.confirmPassword
+                          }
                           errorMessage={errors.confirmPassword}
                           className="!mb-4 relative"
                         >

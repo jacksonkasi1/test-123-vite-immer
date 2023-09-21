@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // ** import sub pages
 import Header from './Header';
@@ -7,7 +7,7 @@ import Header from './Header';
 import Typography from '@shared/Typography';
 
 // ** import from redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // ** import third party library
 import * as Yup from 'yup';
@@ -15,6 +15,7 @@ import { Field, Form, Formik } from 'formik';
 import {
   HiOutlineGlobeAlt,
   HiOutlineMail,
+  HiOutlinePhone,
   HiOutlineUserCircle,
 } from 'react-icons/hi';
 
@@ -25,7 +26,9 @@ import Select from '@components/ui/Select';
 import Button from '@components/ui/Buttons';
 
 // ** import api essential
-import { getAdminProfileApi } from '@api/admin';
+import { getAdminProfileApi, updateProfile } from '@api/admin';
+import { setUser } from '@src/store/slice/userSlice';
+import { errorMessage, successMessage } from '@src/utils/toastMessages';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -33,6 +36,7 @@ const validationSchema = Yup.object().shape({
     .max(12, 'Too Long!')
     .required('User Name Required'),
   email: Yup.string().email('Invalid email').required('Email Required'),
+  phone: Yup.string().required('Phone Required'),
   timeZone: Yup.string(),
 });
 
@@ -62,11 +66,35 @@ const countryOption = [
 
 const Profile = () => {
   const themeConfig = useSelector((state) => state.themeConfigs);
+  const dispatch = useDispatch();
 
   const profilePic = useRef();
 
   // ** swr api function call
-  const { data: user } = getAdminProfileApi();
+  const user = useSelector((state) => state.userSlice.user);
+
+  const [userData, setUserData] = useState({
+    name: user.name,
+    email: user.name,
+    profilePic: '',
+    timeZone: '',
+    phone: user.phone,
+  });
+
+  const [profilePicUrl, setProfilePicUrl] = useState('');
+  useEffect(() => {
+    if (user?.avatar) {
+      setProfilePicUrl(user?.avatar);
+    }
+    if (user?.email) {
+      setUserData({
+        ...userData,
+        name: user?.name,
+        email: user?.email,
+        phone: user?.phone,
+      });
+    }
+  }, [userData.profilePic, user]);
 
   return (
     <div className="p-10">
@@ -82,17 +110,36 @@ const Profile = () => {
 
         <Formik
           initialValues={{
-            name: user?.data?.full_name,
-            email: user?.data?.email,
-            timeZone: '',
+            name: userData?.name,
+            email: userData?.email,
+            phone: userData?.phone,
+            timeZone: userData?.timeZone,
           }}
           enableReinitialize
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
+            const update = await updateProfile(
+              values?.name,
+              values?.phone,
+              values?.email,
+            );
+            if (update?.success) {
+              successMessage('Updated profile successfully');
+              dispatch(
+                setUser({
+                  name: update.data.full_name,
+                  email: update.data.email,
+                  role: update.data.roles,
+                  phone: update.data.mobile,
+                }),
+              );
+            } else {
+              errorMessage(update?.message);
+            }
             setSubmitting(true);
-            setTimeout(() => {
-              onFormSubmit(values, setSubmitting);
-            }, 1000);
+            // setTimeout(() => {
+            //   onFormSubmit(values, setSubmitting);
+            // }, 1000);
           }}
         >
           {({ values, touched, errors, isSubmitting, resetForm }) => {
@@ -100,7 +147,7 @@ const Profile = () => {
               <Form>
                 <div className="mt-10">
                   {/* profile picture */}
-                  <div className="flex w-full justify-between items-center pb-6 border-b-[2px] border-mid_dark_ dark:border-dark_border">
+                  {/* <div className="flex w-full justify-between items-center pb-6 border-b-[2px] border-mid_dark_ dark:border-dark_border">
                     <div className="flex w-[80%] justify-between items-center">
                       <Typography
                         variant="P_SemiBold_H6"
@@ -112,7 +159,11 @@ const Profile = () => {
                       <div className="w-[60%] flex items-center">
                         <img
                           className="w-[50px] h-[50px] rounded-[50%]"
-                          src="https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+                          src={`${
+                            profilePicUrl
+                              ? profilePicUrl
+                              : 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80'
+                          }`}
                           alt=""
                         />
 
@@ -141,7 +192,7 @@ const Profile = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* name */}
                   <div className="flex w-full justify-between items-center pb-6 mt-6 border-b-[2px] border-mid_dark_ dark:border-dark_border">
@@ -169,6 +220,12 @@ const Profile = () => {
                             prefix={
                               <HiOutlineUserCircle className="text-xl ml-3 text-text_light" />
                             }
+                            onChange={(e) => {
+                              setUserData({
+                                ...userData,
+                                name: e.target.value,
+                              });
+                            }}
                           />
                         </FormItem>
                       </div>
@@ -201,6 +258,50 @@ const Profile = () => {
                             prefix={
                               <HiOutlineMail className="text-xl ml-3 text-text_light" />
                             }
+                            onChange={(e) => {
+                              setUserData({
+                                ...userData,
+                                email: e.target.value,
+                              });
+                            }}
+                          />
+                        </FormItem>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Phone */}
+                  <div className="flex w-full justify-between items-center pb-6 mt-6">
+                    <div className="flex w-[80%] justify-between items-center">
+                      <Typography
+                        variant="P_SemiBold_H6"
+                        className="text-text_light"
+                      >
+                        Phone
+                      </Typography>
+
+                      <div className="w-[60%] flex items-center">
+                        <FormItem
+                          label=""
+                          invalid={errors.phone && touched.phone}
+                          errorMessage={errors.phone}
+                          className="!mb-4 relative"
+                        >
+                          <Field
+                            type="number"
+                            autoComplete="off"
+                            name="phone"
+                            placeholder="Phone"
+                            component={Input}
+                            prefix={
+                              <HiOutlinePhone className="text-xl ml-3 text-text_light" />
+                            }
+                            onChange={(e) => {
+                              setUserData({
+                                ...userData,
+                                phone: e.target.value,
+                              });
+                            }}
                           />
                         </FormItem>
                       </div>
@@ -286,6 +387,13 @@ const Profile = () => {
                       variant="solid"
                       loading={isSubmitting}
                       type="submit"
+                      disabled={
+                        userData?.email === user?.email &&
+                        userData?.name === user?.name &&
+                        userData?.phone === user?.phone
+                          ? true
+                          : false
+                      }
                     >
                       {isSubmitting ? 'Updating' : 'Update'}
                     </Button>

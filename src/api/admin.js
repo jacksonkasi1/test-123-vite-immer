@@ -1,5 +1,5 @@
-import useSWR from 'swr';
 import axios from '@axios';
+import useSWR, { mutate } from 'swr';
 
 const fetcher = async (url) => {
   try {
@@ -27,3 +27,34 @@ export const getAdminProfileApi = () => {
   }
   return data;
 };
+
+export const updateProfile = async (full_name, mobile, email) => {
+  try {
+    const res = await axios.post('/admin/update', { full_name, mobile, email });
+    if (res.data.success) {
+      mutate('admin', res.data, false); // here 'admin' is the key for the SWR cache
+    }
+    return res.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response.data.message,
+    };
+  }
+}
+
+export const changePassword = async (current_pass, new_pass) => {
+  try {
+    const res = await axios.post('/admin/change-password', { current_pass, new_pass });
+    if (res.data.success) {
+      return res.data;
+    } else {
+      return res.data;
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response.data.message,
+    };
+  }
+}
