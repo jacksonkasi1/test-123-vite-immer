@@ -22,9 +22,12 @@ const TableHeader = ({
   dateValue,
   setDateValue,
   isDateFilter,
+  isMultiFilter,
   setFilterValue,
   handleApplyDateFilter,
-  handleDateFilterCancel
+  handleDateFilterCancel,
+  filterArray,
+  handleApplyDateFilter,
 }) => {
   const themeConfig = useSelector((state) => state.themeConfigs);
 
@@ -83,18 +86,19 @@ const TableHeader = ({
 
       <div className="flex items-center justify-end w-full relative">
         <div className="flex items-center gap-x-5">
-          <Button
-            onClick={() => {
-              setFilter(!filter);
-              setDateStatus(false);
-            }}
-            variant="bordered"
-            className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
-          >
-            <Filter size={20} className="text-text_light" />
-            Filter
-          </Button>
-
+          {isMultiFilter && filterArray?.length > 0 && (
+            <Button
+              onClick={() => {
+                setFilter(!filter);
+                setDateStatus(false);
+              }}
+              variant="bordered"
+              className="!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark"
+            >
+              <Filter size={20} className="text-text_light" />
+              Filter
+            </Button>
+          )}
 
           {isDateFilter && (
             <Button
@@ -113,30 +117,30 @@ const TableHeader = ({
 
         {/* filter */}
         {filter && (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setFilter(true);
-            }}
-            style={{
-              boxShadow:
-                '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
-            }}
-            className="absolute right-20 top-12 w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
-          >
-            <div>
-              <Typography variant="P_Regular_H7">Meal Category</Typography>
-              <Select
-                options={[
-                  { value: 'Non Veg', label: 'Non Veg' },
-                  { value: 'Veg', label: 'Drinks' },
-                  { value: 'Drinks', label: 'Drinks' },
-                  { value: 'Biriyani', label: 'Biriyani' },
-                  { value: 'Hot Item', label: 'Hot Item' },
-                ]}
-                setFilterValue={setFilterValue&&setFilterValue}
-              />
-            </div>
+          <div className="flex flex-col absolute z-20 right-20 top-12 gap-2  w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none">
+            {filterArray.map((filter) => (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFilter(true);
+                }}
+                style={{
+                  boxShadow:
+                    '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
+                }}
+                className="  bg-white_ dark:bg-mid_light_dark p-2  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
+              >
+                <div>
+                  <Typography variant="P_Regular_H7">
+                    {filter?.label}
+                  </Typography>
+                  <Select
+                    options={filter?.options}
+                    setFilterValue={filter?.setFilterValue}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
@@ -204,8 +208,8 @@ const TableHeader = ({
               </Button>
               <Button
                 onClick={(e) => {
-                  handleApplyDateFilter(e)
-                  setDateStatus(false)
+                  handleApplyDateFilter(e);
+                  setDateStatus(false);
                 }}
                 variant="bordered"
                 className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
@@ -249,8 +253,7 @@ const TableHeader = ({
         </Dropdown> */}
       </div>
 
-<></>
-
+      <></>
     </div>
   );
 };

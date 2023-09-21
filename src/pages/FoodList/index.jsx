@@ -12,6 +12,18 @@ import { getFoodList } from '@api/foodList';
 // ** import utils
 import { formatDate } from '@src/utils';
 
+const categoryOptions = [
+  { value: 'Non Veg', label: 'Non Veg' },
+  { value: 'Veg', label: 'Veg' },
+  { value: 'Drinks', label: 'Drinks' },
+  { value: 'Biriyani', label: 'Biriyani' },
+  { value: 'Hot Item', label: 'Hot Item' },
+];
+
+const availableOptions = [
+  { value: 'Available', label: 'Available' },
+  { value: 'Not available', label: 'Not available' },
+];
 const FoodList = () => {
   // all states
   const [pageIndex, setPageIndex] = useState(1);
@@ -22,9 +34,10 @@ const FoodList = () => {
   const [type, setType] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
+  const [available, setAvailable] = useState('');
 
   // ** calling swr api imported function
-  const foodList = getFoodList(limit, pageIndex, search, type, from, to);
+  const foodList = getFoodList(limit, pageIndex, search, type, from, to,available);
 
   const [pagingData, setPagingData] = useState({
     total: foodList?.data?.data?.totalPages ?? 1,
@@ -79,6 +92,19 @@ const FoodList = () => {
   const handleDateFilterCancel = () => {
     console.log('canceling');
   };
+  
+  const filterArray = [
+    {
+      label: 'Category',
+      options: categoryOptions,
+      setFilterValue: setSearchData,
+    },
+    {
+      label: 'Available',
+      options: availableOptions,
+      setFilterValue: setAvailable,
+    },
+  ];
 
   return (
     <div className="px-10 pt-10 pb-12">
@@ -102,7 +128,8 @@ const FoodList = () => {
         activeDateSelect={dateSelect}
         setDateSelect={setDateSelect}
         isDateFilter={true}
-        setFilterValue={setSearchData}
+        isMultiFilter={true}
+        filterArray={filterArray}
         handleApplyDateFilter={applyDateFilter}
         handleDateFilterCancel={handleDateFilterCancel}
       />

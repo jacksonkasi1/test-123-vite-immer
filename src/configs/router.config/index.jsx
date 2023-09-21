@@ -10,6 +10,7 @@ import TableManagement from "../../pages/TableManagement";
 import Feedbacks from "../../pages/Feedbacks";
 import OrderManagement from "../../pages/OrderManagement";
 import CustomerManagement from "../../pages/CustomerManagement";
+import NextFoodList from "@src/pages/NextFoodList";
 
 const auth = [
   {
@@ -75,6 +76,12 @@ const auth = [
   {
     path: '/profile/BILLING',
     element: <Billing />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path:'/next-food-list',
+    element: <NextFoodList />,
     nodeRef: createRef(),
     meta: {},
   }
