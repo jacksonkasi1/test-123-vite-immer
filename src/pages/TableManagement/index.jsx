@@ -9,16 +9,28 @@ import { columns } from './column';
 // ** import api essential
 import { getAllTable } from '@api/table';
 
+// ** import from utils
+import { formatDate } from '@src/utils';
+
 const TableManagement = () => {
   // all states
   const [pageIndex, setPageIndex] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearchData] = useState('');
   const [dateValue, setDateValue] = useState([]);
-  const [dateSelect, setDateSelect] = useState('Today');
+  const [filterValue, setFilterValue] = useState([]);
+
+  const [dateSelect, setDateSelect] = useState('ThisMonth');
+  const [type, setType] = useState('');
+
+     // formating date range
+     const fromDate = new Date(dateValue[0]);
+     const toDate = new Date(dateValue[dateValue?.length - 1]);
+     const from = formatDate(fromDate);
+     const to = formatDate(toDate);
 
   // ** calling get all table swr
-  const allTable = getAllTable(limit, pageIndex,search);
+  const allTable = getAllTable(limit, pageIndex,search, dateSelect?.split(' ')?.join(''), from,to);
 
   console.log(allTable);
 
@@ -47,12 +59,12 @@ const TableManagement = () => {
     });
   };
 
-  console.log(dateValue);
-  console.log(dateSelect.split(' ').join(''));
+  // console.log(dateValue);
+  // console.log(dateSelect.split(' ').join(''));
 
 
   const applyDateFilter = () => {
-    console.log('Hello world');
+    console.log("Hii")
   };
 
   return (
@@ -76,6 +88,8 @@ const TableManagement = () => {
         setDateValue={setDateValue}
         activeDateSelect={dateSelect}
         setDateSelect={setDateSelect}
+        filterValue={filterValue}
+        setFilterValue={setFilterValue}
         isDateFilter={true}
         handleApplyDateFilter={applyDateFilter}
       />

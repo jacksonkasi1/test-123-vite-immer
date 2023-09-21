@@ -33,7 +33,7 @@ const FoodList = () => {
     limit,
     pageIndex,
     search,
-    !type?dateSelect?.split(' ')?.join(''):type, from,to,
+    !type?dateSelect?.split(' ')?.join(''):type, from,to
   );
 
   const [pagingData, setPagingData] = useState({
@@ -61,9 +61,9 @@ const FoodList = () => {
     });
   };
 
-  console.log('dateValue', dateValue);
-  // console.log("dateSelect",dateSelect.split(' ').join(''));
-
+  // console.log(dateValue);
+  //  console.log(dateSelect);
+  
   const applyDateFilter = () => {
     setType("BetWeen")
   };

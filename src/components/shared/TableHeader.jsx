@@ -22,6 +22,8 @@ const TableHeader = ({
   dateValue,
   setDateValue,
   isDateFilter,
+  filterValue,
+  setFilterValue,
   handleApplyDateFilter
 }) => {
   const themeConfig = useSelector((state) => state.themeConfigs);
@@ -122,13 +124,16 @@ const TableHeader = ({
             className="absolute right-20 top-12 w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
           >
             <div>
-              <Typography variant="P_Regular_H7">User Country</Typography>
+              <Typography variant="P_Regular_H7">Meal Category</Typography>
               <Select
                 options={[
-                  { value: 'france', label: 'France' },
-                  { value: 'india', label: 'India' },
-                  { value: 'russia', label: 'Russia' },
+                  { value: 'Non Veg', label: 'Non Veg' },
+                  { value: 'Veg', label: 'Drinks' },
+                  { value: 'Drinks', label: 'Drinks' },
+                  { value: 'Biriyani', label: 'Biriyani' },
+                  { value: 'Hot Item', label: 'Hot Item' },
                 ]}
+             
               />
             </div>
           </div>
@@ -187,7 +192,7 @@ const TableHeader = ({
               <Button
                 onClick={() => {
                   setDateValue([])
-                  setDateSelect('Today')
+                  setDateSelect('ThisMonth')
                   setDateStatus(false)
                 }}
                 variant="bordered"

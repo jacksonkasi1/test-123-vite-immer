@@ -66,7 +66,9 @@ const DataTable = (props) => {
     isDateFilter,
     dateValue,
     setDateValue,
-    handleApplyDateFilter
+    filterValue,
+    setFilterValue,
+    handleApplyDateFilter,
   } = props;
 
   const { pageSize, pageIndex, total } = pagingData;
@@ -164,7 +166,6 @@ const DataTable = (props) => {
 
   return (
     <Loading loading={loading && data.length !== 0} type="cover">
-
       <div className="mb-2">
         <TableHeader
           selectChange={(option) => handleSelectChange(option.value)}
@@ -180,6 +181,8 @@ const DataTable = (props) => {
           isDateFilter={isDateFilter}
           dateValue={dateValue}
           setDateValue={setDateValue}
+          filterValue={filterValue}
+          setFilterValue={setFilterValue}
           handleApplyDateFilter={handleApplyDateFilter}
         />
       </div>
