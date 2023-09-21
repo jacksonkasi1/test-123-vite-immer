@@ -19,6 +19,7 @@
         "@axios":["./axios.js"],
         "@api/*":["./src/api/*"],
         "@slice/*":["./src/store/slice/*"]
+
       }
     }
   }

@@ -22,7 +22,6 @@ const TableHeader = ({
   dateValue,
   setDateValue,
   isDateFilter,
-  filterValue,
   setFilterValue,
   handleApplyDateFilter
 }) => {
@@ -80,6 +79,7 @@ const TableHeader = ({
           />
         )}
       </div>
+
       <div className="flex items-center justify-end w-full relative">
         <div className="flex items-center gap-x-5">
           <Button
@@ -133,7 +133,7 @@ const TableHeader = ({
                   { value: 'Biriyani', label: 'Biriyani' },
                   { value: 'Hot Item', label: 'Hot Item' },
                 ]}
-             
+                setFilterValue={setFilterValue&&setFilterValue}
               />
             </div>
           </div>
@@ -246,6 +246,9 @@ const TableHeader = ({
           </DropdownMenu>
         </Dropdown> */}
       </div>
+
+<></>
+
     </div>
   );
 };

@@ -20,21 +20,11 @@ const FoodList = () => {
   const [dateValue, setDateValue] = useState([]);
   const [dateSelect, setDateSelect] = useState('ThisMonth');
   const [type, setType] = useState('');
-
-
-  // formating date range
-  const fromDate = new Date(dateValue[0]);
-  const toDate = new Date(dateValue[dateValue?.length - 1]);
-  const from = formatDate(fromDate);
-  const to = formatDate(toDate);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
 
   // ** calling swr api imported function
-  const foodList = getFoodList(
-    limit,
-    pageIndex,
-    search,
-    !type?dateSelect?.split(' ')?.join(''):type, from,to
-  );
+  const foodList = getFoodList(limit, pageIndex, search, type, from, to);
 
   const [pagingData, setPagingData] = useState({
     total: foodList?.data?.data?.totalPages ?? 1,
@@ -63,9 +53,27 @@ const FoodList = () => {
 
   // console.log(dateValue);
   //  console.log(dateSelect);
-  
+
   const applyDateFilter = () => {
-    setType("BetWeen")
+    const fromDate = new Date(dateValue[0]);
+    const toDate = new Date(dateValue[dateValue?.length - 1]);
+    const convertedFrom = formatDate(fromDate);
+    const convertedTo = formatDate(toDate);
+    if (
+      convertedFrom == 'NaN-NaN-NaN' ||
+      convertedTo == 'NaN-NaN-NaN' ||
+      convertedFrom == '' ||
+      convertedTo == ''
+    ) {
+      setType(dateSelect?.split(' ')?.join(''));
+      setFrom('');
+      setTo('');
+      return;
+    } else {
+      setFrom(convertedFrom);
+      setTo(convertedTo);
+    }
+    setDateValue([]);
   };
 
   return (
@@ -90,6 +98,7 @@ const FoodList = () => {
         activeDateSelect={dateSelect}
         setDateSelect={setDateSelect}
         isDateFilter={true}
+        setFilterValue={setSearchData}
         handleApplyDateFilter={applyDateFilter}
       />
     </div>

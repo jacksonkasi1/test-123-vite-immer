@@ -19,7 +19,7 @@ export const getAllTable = (
   to = '',
 ) => {
   let cacheKey;
-  if (from == 'NaN-NaN-NaN' || to == 'NaN-NaN-NaN') {
+  if (from == 'NaN-NaN-NaN' || to == 'NaN-NaN-NaN' || from =="" || to =="") {
     cacheKey = `admin/restaurant/tbl/all?search=${search}&type=${type}&pageIndex=${pageIndex}&limit=${limit}`;
   } else {
     cacheKey = `admin/restaurant/tbl/all?search=${search}&type=BetWeen&pageIndex=${pageIndex}&from=${from}&to=${to}&limit=${limit}`;

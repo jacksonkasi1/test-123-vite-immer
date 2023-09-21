@@ -18,14 +18,15 @@ export const getAllCategory = (
   from = '',
   to = '',
 ) => {
-  let cacheKey
-  if(from=="NaN-NaN-NaN"||to=="NaN-NaN-NaN"){
-    cacheKey = `admin/meal/category/all?search=${search ?? ''}&limit=${limit ?? ''}&pageIndex=${pageIndex}&type=${type}`;
-
-  }else{
-    cacheKey = `admin/meal/category/all?search=${search ?? ''}&limit=${limit ?? ''}&pageIndex=${pageIndex}&type=BetWeen&from=${from}&to=${to}`;
-
-    
+  let cacheKey;
+  if (from == 'NaN-NaN-NaN' || to == 'NaN-NaN-NaN' || from == '' || to == '') {
+    cacheKey = `admin/meal/category/all?search=${search ?? ''}&limit=${
+      limit ?? ''
+    }&pageIndex=${pageIndex}&type=${type}`;
+  } else {
+    cacheKey = `admin/meal/category/all?search=${search ?? ''}&limit=${
+      limit ?? ''
+    }&pageIndex=${pageIndex}&type=BetWeen&from=${from}&to=${to}`;
   }
   const { error, ...data } = useSWR(cacheKey, fetcher, {
     revalidateOnFocus: false,
