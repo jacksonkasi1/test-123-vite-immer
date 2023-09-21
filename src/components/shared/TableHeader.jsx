@@ -27,7 +27,6 @@ const TableHeader = ({
   handleApplyDateFilter,
   handleDateFilterCancel,
   filterArray,
-  handleApplyDateFilter,
 }) => {
   const themeConfig = useSelector((state) => state.themeConfigs);
 
@@ -117,30 +116,52 @@ const TableHeader = ({
 
         {/* filter */}
         {filter && (
-          <div className="flex flex-col absolute z-20 right-20 top-12 gap-2  w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none">
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setFilter(true);
+            }}
+            style={{
+              boxShadow:
+                '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
+            }}
+            className="flex flex-col absolute z-20 right-20 top-12 gap-2  w-[400px] bg-white_ dark:bg-mid_light_dark p-5  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
+          >
+            {/* <div
+              onClick={(e) => {
+                e.stopPropagation();
+                setFilter(true);
+              }}
+              style={{
+                boxShadow:
+                  '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
+              }}
+              className="  bg-white_ dark:bg-mid_light_dark p-2  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
+            > */}
             {filterArray.map((filter) => (
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setFilter(true);
-                }}
-                style={{
-                  boxShadow:
-                    '0px 2.6263864040374756px 4.4648566246032715px 0px #dddcdc',
-                }}
-                className="  bg-white_ dark:bg-mid_light_dark p-2  border-[1px] border-[#dfdfdf] dark:border-dark_border !rounded-[10px] dark:!shadow-none"
-              >
-                <div>
-                  <Typography variant="P_Regular_H7">
-                    {filter?.label}
-                  </Typography>
-                  <Select
-                    options={filter?.options}
-                    setFilterValue={filter?.setFilterValue}
-                  />
-                </div>
+              <div>
+                <Typography variant="P_Regular_H7">{filter?.label}</Typography>
+                <Select
+                  options={filter?.options}
+                  setFilterValue={filter?.setFilterValue}
+                />
               </div>
             ))}
+            {/* </div> */}
+            <div className="mt-3 w-full flex justify-between">
+              <Button
+                variant="bordered"
+                className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark w-[48%]`}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="bordered"
+                className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
+              >
+                Apply
+              </Button>
+            </div>
           </div>
         )}
 
@@ -196,10 +217,10 @@ const TableHeader = ({
             <div className="mt-3 w-full flex justify-between">
               <Button
                 onClick={(e) => {
-                  setDateValue([])
-                  setDateSelect('')
-                  setDateStatus(false)
-                  handleDateFilterCancel(e)
+                  setDateValue([]);
+                  setDateSelect('');
+                  setDateStatus(false);
+                  handleDateFilterCancel(e);
                 }}
                 variant="bordered"
                 className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark w-[48%]`}
