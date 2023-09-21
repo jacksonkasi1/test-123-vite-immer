@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import axios from '../../axios';
-import { getAdminProfileApi } from '@api/admin';
 import { setUser } from '@src/store/slice/userSlice';
 import Spinner from '@src/components/ui/Spinner';
 
@@ -17,19 +16,23 @@ function PrivateRoute({ children, route }) {
     try {
       if (userToken) {
         if (!user?.email) {
-          setLoader(true)
-          const data = await axios.get('/admin/details');
-          setLoader(false)
-          const admin = data.data.data;
-          if (admin) {
-            dispatch(
-              setUser({
-                name: admin.full_name,
-                email: admin.email,
-                role: admin.roles,
-              }),
-            );
-          }
+          setLoader(true);
+          axios
+            .get('/admin/details')
+            .then((data) => {
+              if (data.data.success) {
+                if (data.data.data?.email) {
+                  dispatch(
+                    setUser({
+                      name: data.data.data.full_name,
+                      email: data.data.data.email,
+                      role: data.data.data.roles,
+                    }),
+                  );
+                }
+              }
+            })
+            .finally(() => setLoader(false));
         }
       }
     } catch (error) {
@@ -53,10 +56,24 @@ function PrivateRoute({ children, route }) {
     if (!user?.email && !userToken) return <Navigate to="/sign-in" />;
   }
 
+  const [progress, setProgress] = useState(true);
+
+  useEffect(() => {
+    const element = document.querySelectorAll('.loader');
+    if (element.length > 1) {
+      setProgress(false);
+    }
+  });
+
+  console.log(progress);
+
   return (
     <>
       {loader && (
-        <div style={{zIndex: 99999999}} className="fixed left-0 top-0 w-full h-full bg-[#00000028] justify-center flex items-center">
+        <div
+          style={{ zIndex: 99999999 }}
+          className="fixed left-0 top-0 w-full h-full bg-[#00000028] justify-center flex items-center loader"
+        >
           <Spinner size={50} />
         </div>
       )}
