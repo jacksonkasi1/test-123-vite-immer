@@ -27,6 +27,8 @@ const TableHeader = ({
   handleApplyDateFilter,
   handleDateFilterCancel,
   filterArray,
+  handleApplyMultiFilter,
+  handleMultiFilterCancel
 }) => {
   const themeConfig = useSelector((state) => state.themeConfigs);
 
@@ -152,12 +154,15 @@ const TableHeader = ({
               <Button
                 variant="bordered"
                 className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark w-[48%]`}
+                onClick={handleMultiFilterCancel}
               >
                 Cancel
               </Button>
               <Button
                 variant="bordered"
                 className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
+                onClick={handleApplyMultiFilter}
+
               >
                 Apply
               </Button>

@@ -69,7 +69,9 @@ const DataTable = (props) => {
     isMultiFilter,
     filterArray,
     handleApplyDateFilter,
-    handleDateFilterCancel
+    handleDateFilterCancel,
+    handleApplyMultiFilter,
+    handleMultiFilterCancel
   } = props;
 
   const { pageSize, pageIndex, total } = pagingData;
@@ -186,6 +188,8 @@ const DataTable = (props) => {
         filterArray={filterArray}
           handleApplyDateFilter={handleApplyDateFilter}
           handleDateFilterCancel={handleDateFilterCancel}
+          handleApplyMultiFilter={handleApplyMultiFilter}
+          handleMultiFilterCancel={handleMultiFilterCancel}
         />
       </div>
 

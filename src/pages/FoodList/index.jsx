@@ -12,20 +12,12 @@ import { getFoodList } from '@api/foodList';
 // ** import utils
 import { formatDate } from '@src/utils';
 
-const categoryOptions = [
-  { value: 'Non Veg', label: 'Non Veg' },
-  { value: 'Veg', label: 'Veg' },
-  { value: 'Drinks', label: 'Drinks' },
-  { value: 'Biriyani', label: 'Biriyani' },
-  { value: 'Hot Item', label: 'Hot Item' },
-];
+// ** importing Options
+import { availableOptions, categoryOptions } from './Options';
 
-const availableOptions = [
-  { value: 'Available', label: 'Available' },
-  { value: 'Not available', label: 'Not available' },
-];
+
 const FoodList = () => {
-  // all states
+  // all states for query for api function
   const [pageIndex, setPageIndex] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearchData] = useState('');
@@ -36,8 +28,20 @@ const FoodList = () => {
   const [to, setTo] = useState('');
   const [available, setAvailable] = useState('');
 
+  // ** stated to be consumed in multiFiler
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [availableFilter, setAvailableFilter] = useState('');
+
   // ** calling swr api imported function
-  const foodList = getFoodList(limit, pageIndex, search, type, from, to,available);
+  const foodList = getFoodList(
+    limit,
+    pageIndex,
+    search,
+    type,
+    from,
+    to,
+    available,
+  );
 
   const [pagingData, setPagingData] = useState({
     total: foodList?.data?.data?.totalPages ?? 1,
@@ -64,8 +68,8 @@ const FoodList = () => {
     });
   };
 
-  // console.log(dateValue);
-  //  console.log(dateSelect);
+
+  // ******************* Date Range and date function starts here
 
   const applyDateFilter = () => {
     const fromDate = new Date(dateValue[0]);
@@ -90,19 +94,49 @@ const FoodList = () => {
   };
 
   const handleDateFilterCancel = () => {
-    console.log('canceling');
+    setType('LifeTime');
   };
-  
+  // ******************* Date Range and date function ends here
+
+
+  // ******************* multiFilter function starts here
+  const handleApplyMultiFilter = () => {
+    if (!categoryFilter && !categoryFilter) {
+      alert("select at Least one filter")
+    } else {
+      if (categoryFilter && categoryFilter) {
+        setSearchData(categoryFilter);
+        setAvailable(availableFilter);
+      } else if (categoryFilter) {
+        setSearchData(categoryFilter);
+      } else if (availableFilter) {
+        setAvailable(availableFilter);
+      }
+    }
+  };
+
+  const handleMultiFilterCancel = () => {
+    setSearchData("");
+    setAvailable("");
+    setCategoryFilter("")
+    setAvailableFilter("")
+     
+  };
+
+  // ******************* multiFilter function ends here
+
+
+  // ** filterArray for multiFilter
   const filterArray = [
     {
       label: 'Category',
       options: categoryOptions,
-      setFilterValue: setSearchData,
+      setFilterValue: setCategoryFilter,
     },
     {
       label: 'Available',
       options: availableOptions,
-      setFilterValue: setAvailable,
+      setFilterValue: setAvailableFilter,
     },
   ];
 
@@ -132,6 +166,8 @@ const FoodList = () => {
         filterArray={filterArray}
         handleApplyDateFilter={applyDateFilter}
         handleDateFilterCancel={handleDateFilterCancel}
+        handleApplyMultiFilter={handleApplyMultiFilter}
+        handleMultiFilterCancel={handleMultiFilterCancel}
       />
     </div>
   );
