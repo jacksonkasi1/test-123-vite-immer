@@ -10,7 +10,8 @@ import { columns } from './column';
 import { getFoodList } from '@api/foodList';
 
 // ** import utils
-import { formatDate } from '@src/utils';
+import { formatDate } from '@utils';
+import { warningMessage } from '@utils/toastMessages';
 
 // ** importing Options
 import { availableOptions, categoryOptions } from './Options';
@@ -102,7 +103,7 @@ const FoodList = () => {
   // ******************* multiFilter function starts here
   const handleApplyMultiFilter = () => {
     if (!categoryFilter && !categoryFilter) {
-      alert("select at Least one filter")
+      warningMessage("Please select a filter to apply")
     } else {
       if (categoryFilter && categoryFilter) {
         setSearchData(categoryFilter);

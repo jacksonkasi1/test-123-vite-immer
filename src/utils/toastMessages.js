@@ -32,3 +32,18 @@ export const successMessage = (message) => {
     theme: mode,
   });
 };
+
+export const warningMessage = (message) => {
+  const mode = store.getState('themeConfigs').themeConfigs.mode;
+
+  return toast.warning(message, {
+    position: 'top-right',
+    autoClose: 4000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: mode,
+  });
+};

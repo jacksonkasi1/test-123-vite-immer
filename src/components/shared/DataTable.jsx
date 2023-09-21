@@ -8,6 +8,7 @@ import TableRowSkeleton from './loaders/TableRowSkeleton';
 import Loading from './Loading';
 import { useTable, usePagination, useSortBy, useRowSelect } from 'react-table';
 import TableHeader from './TableHeader';
+import Typography from './Typography';
 
 const { Tr, Th, Td, THead, TBody, Sorter } = Table;
 
@@ -185,7 +186,7 @@ const DataTable = (props) => {
           dateValue={dateValue}
           setDateValue={setDateValue}
           isMultiFilter={isMultiFilter}
-        filterArray={filterArray}
+          filterArray={filterArray}
           handleApplyDateFilter={handleApplyDateFilter}
           handleDateFilterCancel={handleDateFilterCancel}
           handleApplyMultiFilter={handleApplyMultiFilter}
@@ -218,6 +219,7 @@ const DataTable = (props) => {
             </Tr>
           ))}
         </THead>
+
         {loading && data.length === 0 ? (
           <TableRowSkeleton
             columns={columns.length}
@@ -242,6 +244,13 @@ const DataTable = (props) => {
           </TBody>
         )}
       </Table>
+      {data.length === 0 && !loading && (
+        <div className="w-full flex justify-center items-center py-5">
+          <Typography variant="P_SemiBold_H6">
+            Do not have any data to show
+          </Typography>
+        </div>
+      )}
       <div className="mt-4">
         <Pagination
           pageSize={pageSize}
