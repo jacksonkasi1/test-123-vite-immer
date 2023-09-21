@@ -22,7 +22,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const Password = () => {
-  const themeConfig = useSelector((state) => state.themeConfigs);
 
   return (
     <div className="p-10">
