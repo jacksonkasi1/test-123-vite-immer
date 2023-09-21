@@ -9,6 +9,9 @@ import { columns } from './column';
 // ** import api essential
 import { getAllCategory } from '@api/category';
 
+// ** import utils
+import { formatDate } from '@src/utils';
+
 const FoodCategory = () => {
 
  // all states
@@ -16,10 +19,16 @@ const FoodCategory = () => {
  const [limit, setLimit] = useState(10);
  const [search, setSearchData] = useState('');
  const [dateValue, setDateValue] = useState([]);
- const [dateSelect, setDateSelect] = useState('Today');
+ const [dateSelect, setDateSelect] = useState('ThisMonth');
+
+   // formating date range
+   const fromDate = new Date(dateValue[0]);
+   const toDate = new Date(dateValue[dateValue?.length - 1]);
+   const from = formatDate(fromDate);
+   const to = formatDate(toDate);
 
  // ** calling swr api imported function
- const getAllCategoryApi = getAllCategory(limit, pageIndex, search);
+ const getAllCategoryApi = getAllCategory(limit, pageIndex, search, dateSelect?.split(' ')?.join(''), from,to);
 
  const [pagingData, setPagingData] = useState({
    total: getAllCategoryApi?.data?.data?.totalPages ?? 1,
@@ -46,11 +55,11 @@ const FoodCategory = () => {
    });
  };
 
- console.log(dateValue);
- console.log(dateSelect);
+//  console.log(dateValue);
+//  console.log(dateSelect);
 
  const applyDateFilter = () => {
-   console.log('Hello world');
+  console.log("hiii")
  };
 
 

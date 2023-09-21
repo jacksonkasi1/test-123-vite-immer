@@ -5,7 +5,7 @@
         "@src/*": ["./src/*"],
         "@components/*": ["./src/components/*"],
         "@utils/*": ["./src/utils/*"],
-        "@config/*": ["./src/config/*"],
+        "@config/*": ["./src/configs/*"],
         "@shared/*": ["./src/components/shared/*"],
         "@assets/*": ["./src/assets/*"],
         "@icons/*": ["./src/assets/icons/*"],
@@ -18,6 +18,7 @@
         "@i18n":["./src/i18n"],
         "@axios":["./axios.js"],
         "@api/*":["./src/api/*"],
+        "@slice/*":["./src/store/slice/*"]
       }
     }
   }

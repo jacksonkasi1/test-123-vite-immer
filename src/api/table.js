@@ -12,14 +12,18 @@ const fetcher = async (url) => {
 
 export const getAllTable = (
   limit = 10,
-  pageIndex =1,
+  pageIndex = 1,
   search = '',
-  cursor = '',
-  type = '',
+  type = 'ThisMonth',
   from = '',
   to = '',
 ) => {
-  const cacheKey = `admin/restaurant/tbl/all?search=${search}&type=${type}&pageIndex=${pageIndex}&from=${from}&to=${to}&limit=${limit}&cursor=${cursor}`;
+  let cacheKey;
+  if (from == 'NaN-NaN-NaN' || to == 'NaN-NaN-NaN') {
+    cacheKey = `admin/restaurant/tbl/all?search=${search}&type=${type}&pageIndex=${pageIndex}&limit=${limit}`;
+  } else {
+    cacheKey = `admin/restaurant/tbl/all?search=${search}&type=BetWeen&pageIndex=${pageIndex}&from=${from}&to=${to}&limit=${limit}`;
+  }
   const { error, ...data } = useSWR(cacheKey, fetcher, {
     revalidateOnFocus: false,
   });

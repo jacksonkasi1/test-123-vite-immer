@@ -1,19 +1,28 @@
 import React from 'react';
 
-import { FaAlignJustify, FaAlignLeft } from 'react-icons/fa';
+// ** import redux
 import { useDispatch, useSelector } from 'react-redux';
-import { ChangeMode, Minimize } from '../../../store/slice/themeConfig';
+import { ChangeMode, Minimize } from '@slice/themeConfig';
 
+// ** import sub component
 import UserDropDown from '../UserDropDown';
 
+// ** import from nextUi
 import { Switch } from '@nextui-org/react';
 
-import { MoonIcon } from '@assets/Icons/MoonIcon';
-import { SunIcon } from '@assets/Icons/SunIcon';
+// ** import asstes
+import { MoonIcon } from '@icons/MoonIcon';
+import { SunIcon } from '@icons/SunIcon';
+
+// ** import from third party library
+import { FaAlignJustify, FaAlignLeft } from 'react-icons/fa';
 
 const Header = ({ className }) => {
   const dispatch = useDispatch();
   const themeConfig = useSelector((state) => state.themeConfigs.minimized);
+  const themeConfigColor = useSelector((state) => state.themeConfigs);
+
+  console.log('themeConfig', themeConfigColor?.themeColor);
 
   return (
     <div
@@ -46,7 +55,9 @@ const Header = ({ className }) => {
                 <MoonIcon className={className} />
               )
             }
-            classNames={{ wrapper: 'bg-primary-800' }}
+            classNames={{
+              wrapper: `bg-${themeConfigColor.themeColor}-${themeConfigColor.colorLevel} `,
+            }}
             onClick={() => dispatch(ChangeMode())}
           ></Switch>
 

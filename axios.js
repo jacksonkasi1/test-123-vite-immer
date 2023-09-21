@@ -1,5 +1,5 @@
 import axios from 'axios';
-import env from '@env';
+import env from '@src/configs';
 
 // Create an instance with custom configuration options
 const instance = axios.create({
