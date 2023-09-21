@@ -7,7 +7,7 @@ import DataTable from '@shared/DataTable';
 import { columns } from './column';
 
 //  ** import api essential
-import { getFoodList } from '@api/foodList';
+import { getFoodList } from '@src/api/FoodList';
 
 // ** import utils
 import { formatDate } from '@src/utils';
@@ -92,7 +92,7 @@ const FoodList = () => {
   const handleDateFilterCancel = () => {
     console.log('canceling');
   };
-  
+
   const filterArray = [
     {
       label: 'Category',

@@ -26,7 +26,7 @@ import Select from '@components/ui/Select';
 import Button from '@components/ui/Buttons';
 
 // ** import api essential
-import { getAdminProfileApi, updateProfile } from '@api/admin';
+import { updateProfile } from '@api/admin';
 import { setUser } from '@src/store/slice/userSlice';
 import { errorMessage, successMessage } from '@src/utils/toastMessages';
 
