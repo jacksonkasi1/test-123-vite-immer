@@ -1,12 +1,19 @@
 import React from 'react';
+
+// import utils
+import { selectThemeColors } from '@utils';
+
+// ** import third party library 
 import Select, { components } from 'react-select';
-import { selectThemeColors } from '../../../utils';
+
+// ** import from redux
 import { useSelector } from 'react-redux';
 
 function Selects(props) {
-  const { value, placeholder, className, options } = props;
+  const { value, placeholder, className, options,setFilterValue } = props;
 
   const SelectComponent = ({ data, ...props }) => {
+
     return (
       <components.Option {...props}>
         {data.imgPath ? (
@@ -39,6 +46,7 @@ function Selects(props) {
         style={{ height: '20px' }}
         components={{ Option: SelectComponent }}
         value={value}
+        onChange={setFilterValue?(selectedOption)=>{setFilterValue(selectedOption?.value)}:""}
         {...props}
       />
     </div>

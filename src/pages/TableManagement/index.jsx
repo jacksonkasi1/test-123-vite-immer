@@ -18,19 +18,14 @@ const TableManagement = () => {
   const [limit, setLimit] = useState(10);
   const [search, setSearchData] = useState('');
   const [dateValue, setDateValue] = useState([]);
-  const [filterValue, setFilterValue] = useState([]);
 
   const [dateSelect, setDateSelect] = useState('ThisMonth');
   const [type, setType] = useState('');
-
-     // formating date range
-     const fromDate = new Date(dateValue[0]);
-     const toDate = new Date(dateValue[dateValue?.length - 1]);
-     const from = formatDate(fromDate);
-     const to = formatDate(toDate);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
 
   // ** calling get all table swr
-  const allTable = getAllTable(limit, pageIndex,search, dateSelect?.split(' ')?.join(''), from,to);
+  const allTable = getAllTable(limit, pageIndex, search, type, from, to);
 
   console.log(allTable);
 
@@ -59,12 +54,26 @@ const TableManagement = () => {
     });
   };
 
-  // console.log(dateValue);
-  // console.log(dateSelect.split(' ').join(''));
-
-
   const applyDateFilter = () => {
-    console.log("Hii")
+    const fromDate = new Date(dateValue[0]);
+    const toDate = new Date(dateValue[dateValue?.length - 1]);
+    const convertedFrom = formatDate(fromDate);
+    const convertedTo = formatDate(toDate);
+    if (
+      convertedFrom == 'NaN-NaN-NaN' ||
+      convertedTo == 'NaN-NaN-NaN' ||
+      convertedFrom == '' ||
+      convertedTo == ''
+    ) {
+      setType(dateSelect?.split(' ')?.join(''));
+      setFrom('');
+      setTo('');
+      return;
+    } else {
+      setFrom(convertedFrom);
+      setTo(convertedTo);
+    }
+    setDateValue([]);
   };
 
   return (
@@ -88,8 +97,6 @@ const TableManagement = () => {
         setDateValue={setDateValue}
         activeDateSelect={dateSelect}
         setDateSelect={setDateSelect}
-        filterValue={filterValue}
-        setFilterValue={setFilterValue}
         isDateFilter={true}
         handleApplyDateFilter={applyDateFilter}
       />

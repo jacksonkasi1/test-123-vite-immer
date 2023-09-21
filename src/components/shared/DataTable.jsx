@@ -66,7 +66,6 @@ const DataTable = (props) => {
     isDateFilter,
     dateValue,
     setDateValue,
-    filterValue,
     setFilterValue,
     handleApplyDateFilter,
   } = props;
@@ -181,7 +180,6 @@ const DataTable = (props) => {
           isDateFilter={isDateFilter}
           dateValue={dateValue}
           setDateValue={setDateValue}
-          filterValue={filterValue}
           setFilterValue={setFilterValue}
           handleApplyDateFilter={handleApplyDateFilter}
         />
