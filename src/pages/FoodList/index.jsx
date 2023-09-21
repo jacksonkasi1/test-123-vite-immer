@@ -76,6 +76,10 @@ const FoodList = () => {
     setDateValue([]);
   };
 
+  const handleDateFilterCancel = () => {
+    console.log('canceling');
+  };
+
   return (
     <div className="px-10 pt-10 pb-12">
       <DataTable
@@ -100,6 +104,7 @@ const FoodList = () => {
         isDateFilter={true}
         setFilterValue={setSearchData}
         handleApplyDateFilter={applyDateFilter}
+        handleDateFilterCancel={handleDateFilterCancel}
       />
     </div>
   );

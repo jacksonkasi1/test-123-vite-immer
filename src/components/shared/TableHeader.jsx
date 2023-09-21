@@ -23,7 +23,8 @@ const TableHeader = ({
   setDateValue,
   isDateFilter,
   setFilterValue,
-  handleApplyDateFilter
+  handleApplyDateFilter,
+  handleDateFilterCancel
 }) => {
   const themeConfig = useSelector((state) => state.themeConfigs);
 
@@ -190,10 +191,11 @@ const TableHeader = ({
 
             <div className="mt-3 w-full flex justify-between">
               <Button
-                onClick={() => {
+                onClick={(e) => {
                   setDateValue([])
-                  setDateSelect('ThisMonth')
+                  setDateSelect('')
                   setDateStatus(false)
+                  handleDateFilterCancel(e)
                 }}
                 variant="bordered"
                 className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ dark:text-text_dark w-[48%]`}

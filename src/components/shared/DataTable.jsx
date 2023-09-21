@@ -68,6 +68,7 @@ const DataTable = (props) => {
     setDateValue,
     setFilterValue,
     handleApplyDateFilter,
+    handleDateFilterCancel
   } = props;
 
   const { pageSize, pageIndex, total } = pagingData;
@@ -182,6 +183,7 @@ const DataTable = (props) => {
           setDateValue={setDateValue}
           setFilterValue={setFilterValue}
           handleApplyDateFilter={handleApplyDateFilter}
+          handleDateFilterCancel={handleDateFilterCancel}
         />
       </div>
 
