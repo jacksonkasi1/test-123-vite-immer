@@ -133,11 +133,14 @@ const FoodList = () => {
       label: 'Category',
       options: categoryOptions,
       setFilterValue: setCategoryFilter,
+      defaultVal:categoryFilter
     },
     {
       label: 'Available',
       options: availableOptions,
       setFilterValue: setAvailableFilter,
+      defaultVal:availableFilter
+
     },
   ];
 
@@ -169,6 +172,7 @@ const FoodList = () => {
         handleDateFilterCancel={handleDateFilterCancel}
         handleApplyMultiFilter={handleApplyMultiFilter}
         handleMultiFilterCancel={handleMultiFilterCancel}
+
       />
     </div>
   );
