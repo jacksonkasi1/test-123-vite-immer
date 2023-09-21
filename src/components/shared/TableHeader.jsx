@@ -206,7 +206,7 @@ const TableHeader = ({
                   setDateStatus(false)
                 }}
                 variant="bordered"
-                className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-text_dark dark:text-text_dark border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
+                className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
               >
                 Apply
               </Button>

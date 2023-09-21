@@ -29,7 +29,6 @@ import Button from '@components/ui/Buttons';
 import { getAdminProfileApi, updateProfile } from '@api/admin';
 import { setUser } from '@src/store/slice/userSlice';
 import { errorMessage, successMessage } from '@src/utils/toastMessages';
-import { ToastContainer } from 'react-toastify';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
