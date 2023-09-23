@@ -16,10 +16,10 @@ export const INITIAL_VISIBLE_COLUMNS = [
   ];
   
  export const rowCount = [
-    { label: '10 / Page', value: 10 },
-    { label: '25 / Page', value: 25 },
-    { label: '50 / Page', value: 50 },
-    { label: '100 / Page', value: 100 },
+    { label: '10 Rows/ Page', value: 10 },
+    { label: '25 Rows/ Page', value: 25 },
+    { label: '50 Rows/ Page', value: 50 },
+    { label: '100 Rows/ Page', value: 100 },
   ];
   
   // date filter

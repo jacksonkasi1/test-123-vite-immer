@@ -347,8 +347,6 @@ const NextTable = (props) => {
     [data?.length, page, totalPages, data, searchValue],
   );
 
-
-  
   // **************************************** Functions starts here *******************************************//
   // ** set row per page limit here
   const onRowsPerPageChange = React.useCallback((value) => {
@@ -366,12 +364,15 @@ const NextTable = (props) => {
     }
   }, []);
 
+  // **************************************** Functions ends here *******************************************//
+
+  // ** header content goes here
   const topContent = React.useMemo(() => {
     return (
       <div className="flex w-full justify-between items-center">
         <div className="flex w-1/2 gap-4">
           <div className="flex justify-between  items-center">
-            <Dropdown backdrop="blur">
+            <Dropdown backdrop="blur" className="!rounded-md">
               <DropdownTrigger>
                 <Button
                   className="!border !rounded-lg !p-2.5"
@@ -420,7 +421,8 @@ const NextTable = (props) => {
             <div className="flex justify-between  items-center">
               <Dropdown
                 backdrop="blur"
-                className="flex w-80 rounded-md"
+                className="flex w-80 rounded-md hover:!bg-white hover:!outline-none hover:!ring-0 hover:!border-none "
+
                 // isOpen={isOpen}
               >
                 <DropdownTrigger>
@@ -441,6 +443,9 @@ const NextTable = (props) => {
                   variant="faded"
                   aria-label="Static Actions"
                   closeOnSelect={false}
+                  itemClasses={{
+                    base: 'hover:!bg-transparent hover:!outline-none hover:!ring-0 hover:!border-none',
+                  }}
                 >
                   <DropdownItem closeOnSelect={false}>
                     <div className="flex flex-col w-full gap-2">
@@ -478,25 +483,10 @@ const NextTable = (props) => {
                           </div>
                         ))}
 
-                      {/* <Typography variant='P_Medium_H6' className='pt-4'>Availability</Typography>
-                      <Select
-                        placeholder="Search for availability"
-                        className="max-w-xs !rounded-md"
-                        variant="bordered"
-                        classNames={{
-                          mainWrapper: 'dark:text-default-600',
-                          trigger: 'rounded-md',
-                          popover: 'rounded-md',
-                        }}
-                      >
-                        <SelectItem>
-                          <Typography variant="P_Regular_H6">animal</Typography>
-                        </SelectItem>
-                      </Select> */}
-                      <div className="mt-3 w-full flex justify-between gap-4">
+                      <div className="mt-3 w-full flex  gap-4">
                         <Button
                           variant="bordered"
-                          className={`!rounded-[5px] flex items-center gap-x-3  `}
+                          className={`!rounded-[5px] flex items-center gap-x-3  flex-1`}
                         >
                           <Typography
                             variant="P_Regular_H6"
@@ -507,7 +497,7 @@ const NextTable = (props) => {
                         </Button>
                         <Button
                           variant="bordered"
-                          className={`!rounded-[5px] flex items-center gap-x-3 `}
+                          className={`!rounded-[5px] flex items-center gap-x-3 flex-1 `}
                         >
                           <Typography
                             variant="P_Regular_H6"
@@ -602,7 +592,6 @@ const NextTable = (props) => {
     hasSearchFilter,
     dateStatus,
   ]);
-  // **************************************** Functions ends here *******************************************//
 
   return (
     <div className="pt-8 mx-10">
@@ -645,9 +634,7 @@ const NextTable = (props) => {
         <TableBody
           emptyContent={isLoading ? '' : 'No data found'}
           items={sortedItems ?? []}
-          loadingContent={
-            <SkeletonComponent/>
-          }
+          loadingContent={SkeletonComponent&&<SkeletonComponent/>}
           loadingState={loadingState}
           isLoading={isLoading}
         >

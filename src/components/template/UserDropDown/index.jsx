@@ -59,7 +59,7 @@ const UserDropDown = () => {
               src={
                 user?.avatar
                   ? user?.avatar
-                  : 'https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png'
+                  : dummyProfile
               }
               className="w-[40px] h-[40px] rounded-[50%]"
               alt=""
