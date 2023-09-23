@@ -421,7 +421,7 @@ const NextTable = (props) => {
             <div className="flex justify-between  items-center">
               <Dropdown
                 backdrop="blur"
-                className="flex w-80 rounded-md hover:!bg-white hover:!outline-none hover:!ring-0 hover:!border-none "
+                className="flex w-80 rounded-md hover:!bg-white dark:hover:!bg-gray-900 hover:!outline-none hover:!ring-0 hover:!border-none "
 
                 // isOpen={isOpen}
               >
@@ -444,15 +444,15 @@ const NextTable = (props) => {
                   aria-label="Static Actions"
                   closeOnSelect={false}
                   itemClasses={{
-                    base: 'hover:!bg-transparent hover:!outline-none hover:!ring-0 hover:!border-none',
+                    base: 'hover:!bg-white dark:hover:!bg-gray-900 hover:!outline-none hover:!ring-0 hover:!border-none',
                   }}
                 >
                   <DropdownItem closeOnSelect={false}>
-                    <div className="flex flex-col w-full gap-2">
+                    <div className="flex flex-col w-full gap-4">
                       {filterArray &&
                         filterArray?.map((filter) => (
-                          <div>
-                            <Typography variant="P_Medium_H6" className="!py-2">
+                          <div className='flex flex-col gap-1'>
+                            <Typography variant="P_Medium_H6" className="">
                               {filter?.label}
                             </Typography>
                             <Select
