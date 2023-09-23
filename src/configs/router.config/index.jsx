@@ -11,6 +11,9 @@ import Feedbacks from "../../pages/Feedbacks";
 import OrderManagement from "../../pages/OrderManagement";
 import CustomerManagement from "../../pages/CustomerManagement";
 import NextFoodList from "@src/pages/NextFoodList";
+import NextCategory from "@src/pages/NextCategory";
+import NextTable from "@src/components/NextTable";
+import NextTableManagement from "@src/pages/NextTableManagement";
 
 const auth = [
   {
@@ -82,6 +85,18 @@ const auth = [
   {
     path:'/next-food-list',
     element: <NextFoodList />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path:'/next-all-category',
+    element: <NextCategory />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path:'/next-all-table',
+    element: <NextTableManagement />,
     nodeRef: createRef(),
     meta: {},
   }

@@ -23,7 +23,6 @@ const TableHeader = ({
   setDateValue,
   isDateFilter,
   isMultiFilter,
-  setFilterValue,
   handleApplyDateFilter,
   handleDateFilterCancel,
   filterArray,

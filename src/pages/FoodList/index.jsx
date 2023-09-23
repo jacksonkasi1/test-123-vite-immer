@@ -7,7 +7,7 @@ import DataTable from '@shared/DataTable';
 import { columns } from './column';
 
 //  ** import api essential
-import { getFoodList } from '@src/api/FoodList';
+import { getFoodList } from '@api/foodList';
 
 // ** import utils
 import { formatDate } from '@utils';

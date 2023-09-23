@@ -14,6 +14,7 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import { Settings, User } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { logout } from '@src/api/auth';
+import dummyProfile from '@assets/Images/dummyProfile.png'
 
 // ** import api essential
 
@@ -35,7 +36,7 @@ const UserDropDown = () => {
             src={
               user?.avatar
                 ? user?.avatar
-                : 'https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png'
+                : dummyProfile
             }
             className="w-[40px] h-[40px] rounded-[50%]"
             alt=""

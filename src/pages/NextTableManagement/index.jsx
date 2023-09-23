@@ -1,30 +1,25 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 
 // ** import table data
-import { columns, availableOptions, categoryOptions } from './data';
+import { columns, statusOptions } from './data';
 
 // ** import components
 import NextTable from '@components/NextTable';
 
 // ** import api
-import { getFoodList } from '@api/foodList';
+import { getAllTable } from '@api/table';
 
 // ** import from next ui
 import { Pagination } from '@nextui-org/react';
-import SkeletonFoodList from './SkeletonFoodList';
 
-export default function NextFoodList() {
+export default function NextTableManagement() {
   // ** states for query parameters
   const [pageIndex, setPageIndex] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState('');
 
-  // ** stated to be consumed in multiFiler
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [availableFilter, setAvailableFilter] = useState('');
-
   // ** calling api with swr
-  const foodList = getFoodList(limit, pageIndex, search);
+  const allTable = getAllTable(limit, pageIndex, search);
 
   // ** custom classes for table
   const classNames = React.useMemo(
@@ -52,45 +47,22 @@ export default function NextFoodList() {
     [],
   );
 
-  // ** filterArray for multiFilter
-  const filterArray = [
-    {
-      label: 'Category',
-      options: categoryOptions,
-      setFilterValue: setCategoryFilter,
-      defaultVal: categoryFilter,
-      placeholder: 'Check for category',
-    },
-    {
-      label: 'Available',
-      options: availableOptions,
-      setFilterValue: setAvailableFilter,
-      defaultVal: availableFilter,
-      placeholder: 'Check for availability',
-    },
-  ];
-
   return (
     <div>
       <NextTable
         classNames={classNames}
-        data={foodList?.data?.data?.meals}
+        data={allTable?.data?.data?.isTableExist}
         columns={columns}
+        statusOptions={statusOptions}
         page={pageIndex}
         setPage={setPageIndex}
         rowsPerPage={limit}
         setRowsPerPage={setLimit}
-        totalPages={foodList?.data?.data?.totalPages}
-        isLoading={foodList?.isLoading}
-        isMultiFilter={true}
+        totalPages={allTable?.data?.data?.totalPages}
+        isLoading={allTable?.isLoading}
         isDateFilter={true}
-        searchAble={true}
-        tblTitle={'All Meals'}
-        setSearchValue={setSearch}
-        filterArray={filterArray}
-        SkeletonComponent={SkeletonFoodList}
         bottomContent={
-          foodList?.data?.data?.totalPages > 0 ? (
+          allTable?.data?.data?.totalPages > 0 ? (
             <div className="py-2 px-2 flex justify-between items-center">
               <Pagination
                 showControls
@@ -99,12 +71,15 @@ export default function NextFoodList() {
                 }}
                 color="default"
                 page={pageIndex}
-                total={foodList?.data?.data?.totalPages}
+                total={allTable?.data?.data?.totalPages}
                 onChange={(page) => setPageIndex(page)}
               />
             </div>
           ) : null
         }
+        searchAble={true}
+        setSearchValue={setSearch}
+        tblTitle={'All Tables'}
       />
     </div>
   );
