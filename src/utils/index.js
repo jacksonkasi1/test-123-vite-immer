@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import Resizer from 'react-image-file-resizer';
 
 /**
  * Checks if an object is empty.
@@ -20,6 +21,34 @@ export const formatDate = (date) => {
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+/**
+ * Resize an image file while maintaining its aspect ratio.
+ *
+ * @param {File} file - The image file to be resized.
+ * @param {number} maxWidth - The maximum width for the resized image.
+ * @param {number} maxHeight - The maximum height for the resized image.
+ * @returns {Promise<string>} A Promise that resolves to a base64-encoded resized image.
+ * @throws {Error} If there is an error during the resizing process.
+ */
+export const resizeImage = (file, maxWidth, maxHeight) => {
+  return new Promise((resolve, reject) => {
+    Resizer.imageFileResizer(
+      file,
+      maxWidth,
+      maxHeight,
+      'WEBP', // output format
+      70, // quality
+      0, // rotation
+      (uri) => {
+        resolve(uri);
+      },
+      'base64', // output type
+      maxWidth, // output width
+      maxHeight, // output height
+    );
+  });
+};
 
 const darkModeSelectTheme = {
     colors: {

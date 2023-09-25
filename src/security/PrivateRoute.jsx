@@ -27,7 +27,8 @@ function PrivateRoute({ children, route }) {
                       name: data.data.data.full_name,
                       email: data.data.data.email,
                       role: data.data.data.roles,
-                      phone: data.data.data.mobile
+                      phone: data.data.data.mobile,
+                      avatar:data?.data?.data?.profile_pic
                     }),
                   );
                 }

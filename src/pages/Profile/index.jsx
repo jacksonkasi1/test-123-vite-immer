@@ -27,8 +27,14 @@ import Button from '@components/ui/Buttons';
 
 // ** import api essential
 import { updateProfile } from '@api/admin';
-import { setUser } from '@src/store/slice/userSlice';
-import { errorMessage, successMessage } from '@src/utils/toastMessages';
+import { setUser } from '@slice/userSlice';
+import { errorMessage, successMessage } from '@utils/toastMessages';
+
+// ** import assets
+import dummyProfile from '@assets/Images/dummyProfile.png';
+import { Image, Skeleton } from '@nextui-org/react';
+import { resizeImage } from '@src/utils';
+import cn from '@src/utils/cn';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -75,11 +81,12 @@ const Profile = () => {
 
   const [userData, setUserData] = useState({
     name: user.name,
-    email: user.name,
-    profilePic: '',
+    email: user.email,
     timeZone: '',
     phone: user.phone,
   });
+
+  const [toRemoveProfilePic, setToRemoveProfilePic] = useState('');
 
   const [profilePicUrl, setProfilePicUrl] = useState('');
   useEffect(() => {
@@ -93,8 +100,20 @@ const Profile = () => {
         email: user?.email,
         phone: user?.phone,
       });
+      setToRemoveProfilePic(user?.avatar);
     }
   }, [userData.profilePic, user]);
+
+  // ** image url for cropImage component
+  const handleImageUpload = async (event) => {
+    try {
+      const file = event?.target?.files[0];
+      const resizedImage = await resizeImage(file, 500, 500);
+      setProfilePicUrl(resizedImage);
+    } catch (error) {
+      console.log('error->>>>>>>>>>>>>>>>>', error);
+    }
+  };
 
   return (
     <div className="p-10">
@@ -122,6 +141,8 @@ const Profile = () => {
               values?.name,
               values?.phone,
               values?.email,
+              toRemoveProfilePic,
+              profilePicUrl,
             );
             if (update?.success) {
               successMessage('Updated profile successfully');
@@ -131,15 +152,13 @@ const Profile = () => {
                   email: update.data.email,
                   role: update.data.roles,
                   phone: update.data.mobile,
+                  avatar: update.data.profile_pic,
                 }),
               );
             } else {
               errorMessage(update?.message);
             }
             setSubmitting(true);
-            // setTimeout(() => {
-            //   onFormSubmit(values, setSubmitting);
-            // }, 1000);
           }}
         >
           {({ values, touched, errors, isSubmitting, resetForm }) => {
@@ -147,7 +166,7 @@ const Profile = () => {
               <Form>
                 <div className="mt-10">
                   {/* profile picture */}
-                  {/* <div className="flex w-full justify-between items-center pb-6 border-b-[2px] border-mid_dark_ dark:border-dark_border">
+                  <div className="flex w-full justify-between items-center pb-6 border-b-[2px] border-mid_dark_ dark:border-dark_border">
                     <div className="flex w-[80%] justify-between items-center">
                       <Typography
                         variant="P_SemiBold_H6"
@@ -156,31 +175,46 @@ const Profile = () => {
                         Avatar
                       </Typography>
 
-                      <div className="w-[60%] flex items-center">
-                        <img
-                          className="w-[50px] h-[50px] rounded-[50%]"
-                          src={`${
-                            profilePicUrl
-                              ? profilePicUrl
-                              : 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80'
-                          }`}
-                          alt=""
-                        />
+                      <div className="w-3/5 flex items-center">
+                        <Skeleton
+                          className="w-20 h-20 rounded-full"
+                          isLoaded={user.email}
+                        >
+                          <Image
+                            disableSkeleton
+                            className="w-20 h-20 rounded-full"
+                            src={`${
+                              profilePicUrl ? profilePicUrl : dummyProfile
+                            }`}
+                            alt=""
+                          />
+                        </Skeleton>
 
                         <div className="ml-7 flex items-center gap-x-5">
                           <Typography
                             variant="P_SemiBold_H6"
-                            className="cursor-pointer text-red-600 dark:!text-red-600"
+                            className={cn(
+                              ' dark:!text-red-600',
+                              user.avatar == profilePicUrl
+                                ? 'cursor-default text-red-300'
+                                : 'cursor-pointer text-red-600',
+                            )}
+                            onClick={() => {
+                              if (user.avatar == profilePicUrl) {
+                                return;
+                              }
+                              setProfilePicUrl(user?.avatar);
+                            }}
                           >
                             Remove
                           </Typography>
 
                           <Typography
+                            variant="P_SemiBold_H6"
+                            className={`cursor-pointer text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
                             onClick={() => {
                               profilePic.current.click();
                             }}
-                            variant="P_SemiBold_H6"
-                            className={`cursor-pointer text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
                           >
                             Upload
                           </Typography>
@@ -188,11 +222,12 @@ const Profile = () => {
                             type="file"
                             ref={profilePic}
                             className="hidden"
+                            onChange={handleImageUpload}
                           />
                         </div>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
 
                   {/* name */}
                   <div className="flex w-full justify-between items-center pb-6 mt-6 border-b-[2px] border-mid_dark_ dark:border-dark_border">
@@ -388,6 +423,7 @@ const Profile = () => {
                       loading={isSubmitting}
                       type="submit"
                       disabled={
+                        profilePicUrl == user?.avatar &&
                         userData?.email === user?.email &&
                         userData?.name === user?.name &&
                         userData?.phone === user?.phone

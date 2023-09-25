@@ -6,6 +6,7 @@ const initialState = {
     avatar: '',
     name: '',
     email: '',
+    profile_pic:'',
     role: '',
     phone: ''
   },

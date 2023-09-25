@@ -28,9 +28,10 @@ export const getAdminProfileApi = () => {
   return data;
 };
 
-export const updateProfile = async (full_name, mobile, email) => {
+export const updateProfile = async (full_name, mobile, email,toRemoveProfilePic,profilePicUrl) => {
   try {
-    const res = await axios.post('/admin/update', { full_name, mobile, email });
+    const newProfilePic=profilePicUrl
+    const res = await axios.post('/admin/update', { full_name, mobile, email,toRemoveProfilePic, newProfilePic });
     if (res.data.success) {
       mutate('admin', res.data, false); // here 'admin' is the key for the SWR cache
     }

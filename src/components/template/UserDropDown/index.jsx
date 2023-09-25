@@ -12,19 +12,29 @@ import {
 } from '@nextui-org/react';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { Settings, User } from 'react-feather';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@src/api/auth';
 import dummyProfile from '@assets/Images/dummyProfile.png'
+import { setUser } from '@slice/userSlice';
 
 // ** import api essential
 
 const UserDropDown = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice.user);
+  const dispatch=useDispatch()
 
   const signOut = async () => {
     await logout('/logout');
     localStorage.clear('userToken');
+    dispatch(setUser({
+      avatar: '',
+      name: '',
+      email: '',
+      profile_pic:'',
+      role: '',
+      phone: ''
+    }))
     navigate('/sign-in');
   };
 
