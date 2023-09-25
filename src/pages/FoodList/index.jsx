@@ -34,6 +34,7 @@ const FoodList = () => {
   const [availableFilter, setAvailableFilter] = useState('');
 
   // ** calling swr api imported function
+ //  ** category is missing in react data table component
   const foodList = getFoodList(
     limit,
     pageIndex,

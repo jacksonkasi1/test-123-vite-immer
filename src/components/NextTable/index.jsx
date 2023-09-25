@@ -95,6 +95,8 @@ const NextTable = (props) => {
     });
   }, []);
 
+  const [value, setValue] = React.useState(new Set([]));
+
   const loadingState = isLoading || data?.length === 0 ? 'loading' : 'idle';
 
   const hasSearchFilter = Boolean(filterValue);
@@ -417,13 +419,14 @@ const NextTable = (props) => {
           )}
         </div>
         <div className="flex w-1/2 justify-end gap-4">
+          {/* <Button onClick={()=>setIsOpen(true)}>hiii</Button> */}
           {isMultiFilter && (
             <div className="flex justify-between  items-center">
               <Dropdown
+                isOpen={isOpen}
+                onOpenChange={(open) => setIsOpen(open)}
                 backdrop="blur"
                 className="flex w-80 rounded-md hover:!bg-white dark:hover:!bg-gray-900 hover:!outline-none hover:!ring-0 hover:!border-none "
-
-                // isOpen={isOpen}
               >
                 <DropdownTrigger>
                   <Button
@@ -450,21 +453,19 @@ const NextTable = (props) => {
                   <DropdownItem closeOnSelect={false}>
                     <div className="flex flex-col w-full gap-4">
                       {filterArray &&
-                        filterArray?.map((filter) => (
-                          <div className='flex flex-col gap-1'>
+                        filterArray?.map((filter, index) => (
+                          <div className="flex flex-col gap-1">
                             <Typography variant="P_Medium_H6" className="">
                               {filter?.label}
                             </Typography>
                             <Select
+                              key={index}
                               className="max-w-xs !rounded-md"
-                              onSelect={(value) => {
-                                filter.setFilterValue(value);
-                              }}
+                              onChange={(e) =>
+                                filter.setFilterValue(e.target.value)
+                              }
+                              selectedKeys={[filter.selectedValue]}
                               placeholder={filter.placeholder}
-                              defaultValue={{
-                                label: filter?.defaultVal,
-                                value: filter?.defaultVal,
-                              }}
                               variant="bordered"
                               classNames={{
                                 mainWrapper: 'dark:text-default-600',
@@ -473,10 +474,8 @@ const NextTable = (props) => {
                               }}
                             >
                               {filter?.options?.map((item) => (
-                                <SelectItem>
-                                  <Typography variant="P_Regular_H6">
-                                    {item.label}
-                                  </Typography>
+                                <SelectItem key={item.value} value={item.value}>
+                                  {item.label}
                                 </SelectItem>
                               ))}
                             </Select>
@@ -487,6 +486,10 @@ const NextTable = (props) => {
                         <Button
                           variant="bordered"
                           className={`!rounded-[5px] flex items-center gap-x-3  flex-1`}
+                          onClick={() => {
+                            handleMultiFilterCancel();
+                            setIsOpen(false);
+                          }}
                         >
                           <Typography
                             variant="P_Regular_H6"
@@ -498,6 +501,10 @@ const NextTable = (props) => {
                         <Button
                           variant="bordered"
                           className={`!rounded-[5px] flex items-center gap-x-3 flex-1 `}
+                          onClick={() => {
+                            handleApplyMultiFilter();
+                            setIsOpen(false);
+                          }}
                         >
                           <Typography
                             variant="P_Regular_H6"
@@ -532,6 +539,7 @@ const NextTable = (props) => {
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
+                    setDateStatus(true);
                   }}
                   style={{
                     boxShadow:
@@ -542,10 +550,14 @@ const NextTable = (props) => {
                   <Typography variant="P_SemiBold_H5">Time Period</Typography>
 
                   <Flatpickr
+                    value={dateValue}
                     id="range-picker"
                     className="form-control input mt-1"
                     options={{
                       mode: 'range',
+                    }}
+                    onChange={(date) => {
+                      setDateValue(date);
                     }}
                   />
 
@@ -553,9 +565,20 @@ const NextTable = (props) => {
                     {dateFilter.map((data) => {
                       return (
                         <div
-                          className={` border-[1px] border-[#dfdfdf] dark:border-dark_border py-1 px-5 rounded-[50px] cursor-pointer`}
+                          onClick={() => setDateSelect(data)}
+                          className={`${
+                            activeDateSelect === data &&
+                            `bg-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`
+                          } border-[1px] border-[#dfdfdf] dark:border-dark_border py-1 px-5 rounded-[50px] cursor-pointer`}
                         >
-                          <Typography variant="P_Regular_H6">{data}</Typography>
+                          <Typography
+                            className={`${
+                              activeDateSelect === data && `!text-white_`
+                            }`}
+                            variant="P_Regular_H6"
+                          >
+                            {data}
+                          </Typography>
                         </div>
                       );
                     })}
@@ -565,12 +588,22 @@ const NextTable = (props) => {
                     <Button
                       variant="bordered"
                       className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ w-[48%]`}
+                      onClick={(e) => {
+                        setDateValue([]);
+                        setDateSelect('');
+                        setDateStatus(false);
+                        handleDateFilterCancel(e);
+                      }}
                     >
                       <Typography variant="P_Regular_H6">Cancel</Typography>
                     </Button>
                     <Button
                       variant="bordered"
                       className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_`}
+                      onClick={(e) => {
+                        handleApplyDateFilter(e);
+                        setDateStatus(false);
+                      }}
                     >
                       <Typography variant="P_Regular_H6">Apply</Typography>
                     </Button>
@@ -590,7 +623,11 @@ const NextTable = (props) => {
     rowsPerPage,
     data?.length,
     hasSearchFilter,
+    filterArray,
+    isOpen,
     dateStatus,
+    dateValue,
+    activeDateSelect,
   ]);
 
   return (
@@ -634,7 +671,7 @@ const NextTable = (props) => {
         <TableBody
           emptyContent={isLoading ? '' : 'No data found'}
           items={sortedItems ?? []}
-          loadingContent={SkeletonComponent&&<SkeletonComponent/>}
+          loadingContent={SkeletonComponent && <SkeletonComponent />}
           loadingState={loadingState}
           isLoading={isLoading}
         >

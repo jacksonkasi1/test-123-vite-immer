@@ -14,16 +14,17 @@ export const getFoodList = (
   limit = 10,
   pageIndex = 1,
   search = '',
-  type = 'ThisMonth',
+  category='',
+  type = '',
   from = '',
   to = '',
   available,
 ) => {
   let cacheKey;
   if (from == 'NaN-NaN-NaN' || to == 'NaN-NaN-NaN' || from == '' || to == '') {
-    cacheKey = `admin/restaurant/meal/all?available=${available=="Available"?true:available=="Not available"?false:""}&limit=${limit}&pageIndex=${pageIndex}&search=${search}&type=${type}`;
+    cacheKey = `admin/restaurant/meal/all?available=${available=="Available"?true:available=="Not available"?false:""}&limit=${limit}&pageIndex=${pageIndex}&search=${search}&type=${type}&category=${category}`;
   } else {
-    cacheKey = `admin/restaurant/meal/all?available=${available=="Available"?true:available=="Not available"?false:""}&limit=${limit}&pageIndex=${pageIndex}&search=${search}&type=BetWeen&from=${from}&to=${to}`;
+    cacheKey = `admin/restaurant/meal/all?available=${available=="Available"?true:available=="Not available"?false:""}&limit=${limit}&pageIndex=${pageIndex}&search=${search}&type=BetWeen&from=${from}&to=${to}&category=${category}`;
   }
   const { error, ...data } = useSWR(cacheKey, fetcher, {
     revalidateOnFocus: false,
