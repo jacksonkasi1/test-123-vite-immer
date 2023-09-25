@@ -12,14 +12,22 @@ import { getAllTable } from '@api/table';
 // ** import from next ui
 import { Pagination } from '@nextui-org/react';
 
+// ** import utils
+import { formatDate } from '@src/utils';
+
 export default function NextTableManagement() {
   // ** states for query parameters
   const [pageIndex, setPageIndex] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState('');
+  const [dateValue, setDateValue] = useState([]);
+  const [dateSelect, setDateSelect] = useState('ThisMonth');
+  const [type, setType] = useState('');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
 
   // ** calling api with swr
-  const allTable = getAllTable(limit, pageIndex, search);
+  const allTable = getAllTable(limit, pageIndex, search,type,from,to);
 
   // ** custom classes for table
   const classNames = React.useMemo(
@@ -47,6 +55,35 @@ export default function NextTableManagement() {
     [],
   );
 
+      // ******************* Date Range and date function starts here
+
+      const applyDateFilter = () => {
+        const fromDate = new Date(dateValue[0]);
+        const toDate = new Date(dateValue[dateValue?.length - 1]);
+        const convertedFrom = formatDate(fromDate);
+        const convertedTo = formatDate(toDate);
+        if (
+          convertedFrom == 'NaN-NaN-NaN' ||
+          convertedTo == 'NaN-NaN-NaN' ||
+          convertedFrom == '' ||
+          convertedTo == ''
+        ) {
+          setType(dateSelect?.split(' ')?.join(''));
+          setFrom('');
+          setTo('');
+          return;
+        } else {
+          setFrom(convertedFrom);
+          setTo(convertedTo);
+        }
+        setDateValue([]);
+      };
+    
+      const handleDateFilterCancel = () => {
+        setType('LifeTime');
+      };
+      // ******************* Date Range and date function ends here
+
   return (
     <div>
       <NextTable
@@ -61,6 +98,12 @@ export default function NextTableManagement() {
         totalPages={allTable?.data?.data?.totalPages}
         isLoading={allTable?.isLoading}
         isDateFilter={true}
+        handleApplyDateFilter={applyDateFilter}
+        handleDateFilterCancel={handleDateFilterCancel}
+        setDateSelect={setDateSelect}
+        activeDateSelect={dateSelect}
+        dateValue={dateValue}
+        setDateValue={setDateValue}
         bottomContent={
           allTable?.data?.data?.totalPages > 0 ? (
             <div className="py-2 px-2 flex justify-between items-center">

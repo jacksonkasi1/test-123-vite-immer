@@ -12,15 +12,24 @@ import { getAllCategory } from '@api/category';
 // ** import from next ui
 import { Pagination } from '@nextui-org/react';
 
+// ** import utils
+import { formatDate } from '@src/utils';
+
 export default function NextCategory() {
 
   // ** states for query parameters
   const [pageIndex, setPageIndex] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState('');
+  const [dateValue, setDateValue] = useState([]);
+  const [dateSelect, setDateSelect] = useState('ThisMonth');
+  const [type, setType] = useState('');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+
 
   // ** calling api with swr
-  const getAllCategoryApi = getAllCategory(limit, pageIndex,search);
+  const getAllCategoryApi = getAllCategory(limit, pageIndex,search,type,from,to);
 
   // ** custom classes for table
   const classNames = React.useMemo(
@@ -48,6 +57,36 @@ export default function NextCategory() {
     [],
   );
 
+    // ******************* Date Range and date function starts here
+
+    const applyDateFilter = () => {
+      const fromDate = new Date(dateValue[0]);
+      const toDate = new Date(dateValue[dateValue?.length - 1]);
+      const convertedFrom = formatDate(fromDate);
+      const convertedTo = formatDate(toDate);
+      if (
+        convertedFrom == 'NaN-NaN-NaN' ||
+        convertedTo == 'NaN-NaN-NaN' ||
+        convertedFrom == '' ||
+        convertedTo == ''
+      ) {
+        setType(dateSelect?.split(' ')?.join(''));
+        setFrom('');
+        setTo('');
+        return;
+      } else {
+        setFrom(convertedFrom);
+        setTo(convertedTo);
+      }
+      setDateValue([]);
+    };
+  
+    const handleDateFilterCancel = () => {
+      setType('LifeTime');
+    };
+    // ******************* Date Range and date function ends here
+
+
   return (
     <div>
       <NextTable
@@ -62,6 +101,12 @@ export default function NextCategory() {
         totalPages={getAllCategoryApi?.data?.data?.totalPages}
         isLoading={getAllCategoryApi?.isLoading}
         isDateFilter={true}
+        handleApplyDateFilter={applyDateFilter}
+        handleDateFilterCancel={handleDateFilterCancel}
+        setDateSelect={setDateSelect}
+        activeDateSelect={dateSelect}
+        dateValue={dateValue}
+        setDateValue={setDateValue}
         bottomContent={
           getAllCategoryApi?.data?.data?.totalPages > 0 ? (
             <div className="py-2 px-2 flex justify-between items-center">

@@ -12,8 +12,10 @@ import { getFoodList } from '@api/foodList';
 // ** import from next ui
 import { Pagination } from '@nextui-org/react';
 import SkeletonFoodList from './SkeletonFoodList';
-import { warningMessage } from '@src/utils/toastMessages';
-import { formatDate } from '@src/utils';
+
+// ** import utils
+import { warningMessage } from '@utils/toastMessages';
+import { formatDate } from '@utils';
 
 export default function NextFoodList() {
   // ** states for query parameters
