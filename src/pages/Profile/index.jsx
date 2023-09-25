@@ -176,19 +176,14 @@ const Profile = () => {
                       </Typography>
 
                       <div className="w-3/5 flex items-center">
-                        <Skeleton
+                        <img
+                          disableSkeleton
                           className="w-20 h-20 rounded-full"
-                          isLoaded={user.email}
-                        >
-                          <Image
-                            disableSkeleton
-                            className="w-20 h-20 rounded-full"
-                            src={`${
-                              profilePicUrl ? profilePicUrl : dummyProfile
-                            }`}
-                            alt=""
-                          />
-                        </Skeleton>
+                          src={`${
+                            profilePicUrl ? profilePicUrl : dummyProfile
+                          }`}
+                          alt=""
+                        />
 
                         <div className="ml-7 flex items-center gap-x-5">
                           <Typography
