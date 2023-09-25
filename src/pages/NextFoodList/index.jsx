@@ -11,11 +11,14 @@ import { getFoodList } from '@api/foodList';
 
 // ** import from next ui
 import { Pagination } from '@nextui-org/react';
-import SkeletonFoodList from './SkeletonFoodList';
+
 
 // ** import utils
 import { warningMessage } from '@utils/toastMessages';
 import { formatDate } from '@utils';
+
+// ** import sub pages
+import TableSkeleton from './TableSkeleton';
 
 export default function NextFoodList() {
   // ** states for query parameters
@@ -161,7 +164,7 @@ export default function NextFoodList() {
         tblTitle={'All Meals'}
         setSearchValue={setSearch}
         filterArray={filterArray}
-        SkeletonComponent={SkeletonFoodList}
+        SkeletonComponent={TableSkeleton}
         handleApplyMultiFilter={handleApplyMultiFilter}
         handleMultiFilterCancel={handleMultiFilterCancel}
         handleApplyDateFilter={applyDateFilter}

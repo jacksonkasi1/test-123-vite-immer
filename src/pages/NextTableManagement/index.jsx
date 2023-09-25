@@ -15,6 +15,9 @@ import { Pagination } from '@nextui-org/react';
 // ** import utils
 import { formatDate } from '@src/utils';
 
+// ** import sub pages
+import SkeletonFoodList from './TableSkeleton';
+
 export default function NextTableManagement() {
   // ** states for query parameters
   const [pageIndex, setPageIndex] = useState(1);
@@ -104,6 +107,7 @@ export default function NextTableManagement() {
         activeDateSelect={dateSelect}
         dateValue={dateValue}
         setDateValue={setDateValue}
+        SkeletonComponent={SkeletonFoodList}
         bottomContent={
           allTable?.data?.data?.totalPages > 0 ? (
             <div className="py-2 px-2 flex justify-between items-center">

@@ -1,7 +1,10 @@
-import { Skeleton } from '@nextui-org/react';
 import React from 'react';
 
-const SkeletonFoodList = () => {
+// ** import from next ui
+import { Skeleton } from '@nextui-org/react';
+
+
+const TableSkeleton = () => {
   // Create an empty array with a length of 10 and fill it with undefined
   const repeatedElements = Array(8).fill(0);
   console.log('repeatedElements', repeatedElements);
@@ -33,4 +36,4 @@ const SkeletonFoodList = () => {
   );
 };
 
-export default SkeletonFoodList;
+export default TableSkeleton;

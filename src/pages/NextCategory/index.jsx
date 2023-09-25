@@ -15,6 +15,9 @@ import { Pagination } from '@nextui-org/react';
 // ** import utils
 import { formatDate } from '@src/utils';
 
+// ** import sub pages
+import TableSkeleton from './TableSkeleton';
+
 export default function NextCategory() {
 
   // ** states for query parameters
@@ -107,6 +110,7 @@ export default function NextCategory() {
         activeDateSelect={dateSelect}
         dateValue={dateValue}
         setDateValue={setDateValue}
+        SkeletonComponent={TableSkeleton}
         bottomContent={
           getAllCategoryApi?.data?.data?.totalPages > 0 ? (
             <div className="py-2 px-2 flex justify-between items-center">

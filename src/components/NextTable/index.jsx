@@ -419,7 +419,6 @@ const NextTable = (props) => {
           )}
         </div>
         <div className="flex w-1/2 justify-end gap-4">
-          {/* <Button onClick={()=>setIsOpen(true)}>hiii</Button> */}
           {isMultiFilter && (
             <div className="flex justify-between  items-center">
               <Dropdown
@@ -552,7 +551,7 @@ const NextTable = (props) => {
                   <Flatpickr
                     value={dateValue}
                     id="range-picker"
-                    className="form-control input mt-1"
+                    className="form-control input mt-1 hover:!bg-primary-100 cursor-pointer"
                     options={{
                       mode: 'range',
                     }}
@@ -569,7 +568,7 @@ const NextTable = (props) => {
                           className={`${
                             activeDateSelect === data &&
                             `bg-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`
-                          } border-[1px] border-[#dfdfdf] dark:border-dark_border py-1 px-5 rounded-[50px] cursor-pointer`}
+                          } border-[1px] border-[#dfdfdf] dark:border-dark_border py-1 px-5 rounded-[50px] dark:hover:bg-none hover:!bg-primary-600 cursor-pointer`}
                         >
                           <Typography
                             className={`${
@@ -599,7 +598,7 @@ const NextTable = (props) => {
                     </Button>
                     <Button
                       variant="bordered"
-                      className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_`}
+                      className={`!rounded-[5px] w-[48%] flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
                       onClick={(e) => {
                         handleApplyDateFilter(e);
                         setDateStatus(false);
