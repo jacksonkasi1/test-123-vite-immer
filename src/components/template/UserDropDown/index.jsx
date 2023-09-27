@@ -58,13 +58,13 @@ const UserDropDown = () => {
 
           <div className="ml-2 leading-5">
             <Typography
-              variant="P_Regular_H6"
+              variant="P_Regular_H7"
               className="m-0 text-light_dark_ dark:text-text_dark font-inter text-left pe-2"
             >
               {user?.role}
             </Typography>
             <Typography
-              variant="P_Regular_H6"
+              variant="P_Regular_H7"
               className="m-0 font-semibold text-light_dark_ dark:text-text_dark font-inter"
             >
               {user?.name}

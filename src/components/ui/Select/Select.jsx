@@ -10,7 +10,7 @@ import Select, { components } from 'react-select';
 import { useSelector } from 'react-redux';
 
 function Selects(props) {
-  const { value, placeholder, className, options,setFilterValue } = props;
+  const { value, placeholder, className, options,onChange } = props;
 
   const SelectComponent = ({ data, ...props }) => {
 
@@ -46,7 +46,7 @@ function Selects(props) {
         style={{ height: '20px' }}
         components={{ Option: SelectComponent }}
         value={value}
-        onChange={setFilterValue?(selectedOption)=>{setFilterValue(selectedOption?.value)}:""}
+        onChange={onChange}
         {...props}
       />
     </div>

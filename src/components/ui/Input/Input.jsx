@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { CONTROL_SIZES, SIZES } from '../../../utils/constant';
+import { CONTROL_SIZES, SIZES } from '@utils/constant';
 import isEmpty from 'lodash/isEmpty';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';

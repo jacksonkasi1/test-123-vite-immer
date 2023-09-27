@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-// import ** shared components
+// ** import shared components
 import Typography from '@shared/Typography';
 
 // ** import ui component
@@ -25,7 +25,8 @@ import {
 // ** import form redux
 import { useSelector } from 'react-redux';
 
-// ** import sub Pages
+// ** import schema
+import { validationSchema } from './schema';
 
 // ** import utils
 import { resizeImage } from '@utils';
@@ -34,23 +35,66 @@ import { errorMessage, successMessage } from '@utils/toastMessages';
 import Loader from '@ui/Loader';
 
 // ** import from Formik
-import * as Yup from 'yup';
-import { Field, Form, Formik } from 'formik';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import FormikErrorFocus from 'formik-error-focus';
 
-const dropDownData = [
-  { value: 'Halal', name: 'Halal' },
-  { value: 'Veg', name: 'Veg' },
-  { value: 'Non veg', name: 'Non veg' },
-  { value: 'Indian', name: 'Indian' },
-];
+// ** import apis
+import { getAllCategory } from '@api/category';
+import { getRestaurants } from '@api/restaurants';
+
 const AddMeals = () => {
   const themeConfig = useSelector((state) => state.themeConfigs);
+  let limit = '';
+  const allCategory = getAllCategory(limit);
+  const allRestaurants = getRestaurants(limit);
+
+  const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
+    value: item.name,
+    name: item.name,
+    id: item.category_id,
+  }));
+
+  const restaurantData = allRestaurants?.data?.data?.data?.map((item) => ({
+    value: item.name,
+    name: item.name,
+    id: item.restaurant_id,
+  }));
 
   // ** form states
   const [categoryPicUrl, setCategoryPicUrl] = useState('');
   const [errorCPic, setErrorCPic] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [categoryArray, setCategoryArray] = useState([]);
+  const [restaurantsArray, setRestaurantsArray] = useState([]);
+  const [optValues, setOptValues] = React.useState(new Set([]));
+  const [optRValues, setOptRValues] = React.useState(new Set([]));
+
+  // ** handle the select change
+  const handleSelectionChange = (
+    e,
+    dataArray,
+    setDataArray,
+    data,
+    setOptValues,
+  ) => {
+    console.log(e.target.value);
+    const selectedValues = e.target.value.split(',');
+
+    // Create a new Set to store unique i.id values
+    const uniqueIds = new Set();
+
+    data?.map((i) => {
+      if (selectedValues.includes(i.name)) {
+        uniqueIds.add(i.id);
+      }
+      return i;
+    });
+
+    setOptValues(new Set(selectedValues));
+
+    // Updated DataArray With Unique Value
+    setDataArray([...uniqueIds]);
+  };
 
   // ** handle loading
   const [loader, setLoader] = useState(false);
@@ -66,8 +110,12 @@ const AddMeals = () => {
     }
   };
 
-  const submitHandler = async () => {
+  const submitHandler = async (values, { setSubmitting }) => {
     event.preventDefault();
+    console.log('hiiiiiiiiiii');
+
+    console.log('values', values);
+
     // try {
     //   setLoader(true);
     //   const payLoadObj = {
@@ -88,29 +136,6 @@ const AddMeals = () => {
     // }
   };
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Name is required'),
-    description: Yup.string()
-      .min(5, 'Description too short!')
-      .max(300, 'Description too long!')
-      .required('Description is required'),
-    category: Yup.string()
-      .min(2, 'Category name is too short!')
-      .max(50, 'Category name is too long!')
-      .required('Category is required'),
-    timeFrom: Yup.string().required('Start time is required'),
-    timeTo: Yup.string().required('End time is required'),
-    totalPrice: Yup.number()
-      .min(0, 'Total price should be 0 or more')
-      .required('Total price is required'),
-    tag: Yup.string()
-      .max(30, 'Tag name is too long.')
-      .required('Tag name is required'),
-  });
-
   return (
     <div className="py-4 px-6">
       <Loader isLoading={loader} />
@@ -129,9 +154,7 @@ const AddMeals = () => {
         }}
         enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          console.log('values', values);
-        }}
+        onSubmit={() => submitHandler(values, { setSubmitting })}
       >
         {({ values, touched, errors, isSubmitting, resetForm }) => {
           return (
@@ -176,15 +199,27 @@ const AddMeals = () => {
                       Short Description
                     </Typography>
 
-                    <Textarea
+                    <Field name="description">
+                      {({ field }) => (
+                        <Textarea
+                          {...field}
+                          className="mb-1"
+                          id="description"
+                          placeholder="type description here..."
+                          classNames={{
+                            inputWrapper:
+                              'bg-primary_white dark:bg-transparent shadow-none border-[1px] rounded-md',
+                            input:
+                              'rounded-lg bg-primary_white dark:!bg-transparent dark:text-default-600 shadow-none',
+                          }}
+                        />
+                      )}
+                    </Field>
+
+                    <ErrorMessage
                       name="description"
-                      placeholder="type description here..."
-                      classNames={{
-                        inputWrapper:
-                          'bg-primary_white dark:bg-transparent shadow-none border-[1px] rounded-md ',
-                        input:
-                          ' rounded-lg bg-primary_white dark:!bg-transparent dark:text-default-600 shadow-none ',
-                      }}
+                      component="div"
+                      className="text-danger"
                     />
                   </div>
                 </div>
@@ -225,6 +260,16 @@ const AddMeals = () => {
                     items={dropDownData}
                     isMultiline={true}
                     name="category"
+                    selectedKeys={optValues}
+                    onChange={(e) =>
+                      handleSelectionChange(
+                        e,
+                        categoryArray,
+                        setCategoryArray,
+                        dropDownData,
+                        setOptValues,
+                      )
+                    }
                     classNames={{
                       mainWrapper:
                         'dark:text-default-600 !bg-transparent border rounded-md',
@@ -235,20 +280,20 @@ const AddMeals = () => {
                     renderValue={(items) => {
                       return (
                         <div className="flex flex-wrap gap-2">
-                          {items.map((item, index) => (
-                            <Chip key={index}>{item.props.value}</Chip>
+                          {items?.map((item, index) => (
+                            <Chip key={index}>{item?.props?.value}</Chip>
                           ))}
                         </div>
                       );
                     }}
                   >
-                    {dropDownData.map((drop) => (
+                    {dropDownData?.map((drop) => (
                       <SelectItem
-                        key={drop.name}
-                        value={drop.name}
+                        key={drop?.name}
+                        value={drop?.name}
                         className="dark:text-default-600"
                       >
-                        {drop.name}
+                        {drop?.name}
                       </SelectItem>
                     ))}
                   </Select>
@@ -260,11 +305,14 @@ const AddMeals = () => {
                   </Typography>
                   <div className="flex gap-2">
                     <Typography variant="P_Medium_H6">Visibility</Typography>
-                    <Switch isSelected={isVisible} />
+                    <Switch
+                      isSelected={isVisible}
+                      onValueChange={setIsVisible}
+                    />
                   </div>
                 </div>
-                <div className=" border-[1px] shadow w-full flex rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
-                  <div className="flex flex-col gap-2 w-1/2">
+                <div className=" border-[1px] shadow w-full flex  rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
+                  <div className="flex flex-col gap-2 w-1/2 ">
                     <Typography
                       variant="P_SemiBold_H6"
                       className="text-text_light"
@@ -362,12 +410,19 @@ const AddMeals = () => {
                   variant="bordered"
                   className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ `}
                   type="button"
+                  onClick={() => {
+                    resetForm();
+                    setCategoryPicUrl('');
+                    setIsVisible(true);
+                    setOptValues(new Set([]));
+                    setOptRValues(new Set([]));
+                  }}
                 >
                   <Typography variant="P_Regular_H6">Reset</Typography>
                 </Button>
                 <Button
                   variant="bordered"
-                  className={`!rounded-[5px] cursor-pointer flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
+                  className={`!rounded-[5px] cursor-pointer flex items-center gap-x-3 text-text-light_ text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
                   type="submit"
                 >
                   <Typography variant="P_Regular_H6">
