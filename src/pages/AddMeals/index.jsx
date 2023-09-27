@@ -4,23 +4,17 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@shared/Typography';
 
 // ** import ui component
+import Select from '@ui/Select';
 import Input from '@ui/Input';
 import ImageUpload from '@ui/ImageUpload';
 import FormItem from '@ui/FormItem';
+import Loader from '@ui/Loader';
 
 // ** import assets
 import noImage from '@assets/Images/noImage.jpg';
 
 // ** import from next ui
-import {
-  Button,
-  Chip,
-  Image,
-  Select,
-  SelectItem,
-  Switch,
-  Textarea,
-} from '@nextui-org/react';
+import { Button, Chip, Image, Switch, Textarea } from '@nextui-org/react';
 
 // ** import form redux
 import { useSelector } from 'react-redux';
@@ -32,69 +26,33 @@ import { validationSchema } from './schema';
 import { resizeImage } from '@utils';
 import { errorMessage, successMessage } from '@utils/toastMessages';
 
-import Loader from '@ui/Loader';
-
 // ** import from Formik
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import FormikErrorFocus from 'formik-error-focus';
 
 // ** import apis
 import { getAllCategory } from '@api/category';
-import { getRestaurants } from '@api/restaurants';
+
+// ** import third party library
+import { Clock } from 'react-feather';
 
 const AddMeals = () => {
   const themeConfig = useSelector((state) => state.themeConfigs);
-  let limit = '';
-  const allCategory = getAllCategory(limit);
-  const allRestaurants = getRestaurants(limit);
+  const [searchValue, setSearchValue] = useState('');
+
+  let limit = 10;
+  const allCategory = getAllCategory(limit, 1, searchValue);
 
   const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
     value: item.name,
-    name: item.name,
+    label: item.name,
     id: item.category_id,
-  }));
-
-  const restaurantData = allRestaurants?.data?.data?.data?.map((item) => ({
-    value: item.name,
-    name: item.name,
-    id: item.restaurant_id,
   }));
 
   // ** form states
   const [categoryPicUrl, setCategoryPicUrl] = useState('');
   const [errorCPic, setErrorCPic] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [categoryArray, setCategoryArray] = useState([]);
-  const [restaurantsArray, setRestaurantsArray] = useState([]);
-  const [optValues, setOptValues] = React.useState(new Set([]));
-  const [optRValues, setOptRValues] = React.useState(new Set([]));
-
-  // ** handle the select change
-  const handleSelectionChange = (
-    e,
-    dataArray,
-    setDataArray,
-    data,
-    setOptValues,
-  ) => {
-    console.log(e.target.value);
-    const selectedValues = e.target.value.split(',');
-
-    // Create a new Set to store unique i.id values
-    const uniqueIds = new Set();
-
-    data?.map((i) => {
-      if (selectedValues.includes(i.name)) {
-        uniqueIds.add(i.id);
-      }
-      return i;
-    });
-
-    setOptValues(new Set(selectedValues));
-
-    // Updated DataArray With Unique Value
-    setDataArray([...uniqueIds]);
-  };
 
   // ** handle loading
   const [loader, setLoader] = useState(false);
@@ -112,9 +70,14 @@ const AddMeals = () => {
 
   const submitHandler = async (values, { setSubmitting }) => {
     event.preventDefault();
-    console.log('hiiiiiiiiiii');
 
-    console.log('values', values);
+    const payLoad = {
+      ...values,
+      category: categoryArray,
+      thumbnail: [categoryPicUrl],
+      is_available: isVisible,
+    };
+    console.log('values', payLoad);
 
     // try {
     //   setLoader(true);
@@ -136,6 +99,15 @@ const AddMeals = () => {
     // }
   };
 
+  const handleChange = (selectedValues) => {
+    // Handle selected values here
+    console.log('Selected Values:', selectedValues);
+  };
+
+  const handleInputChange = (inputValue) => {
+    setSearchValue(inputValue);
+  };
+
   return (
     <div className="py-4 px-6">
       <Loader isLoading={loader} />
@@ -154,13 +126,16 @@ const AddMeals = () => {
         }}
         enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={() => submitHandler(values, { setSubmitting })}
+        onSubmit={(values, { setSubmitting }) => {
+          submitHandler(values, { setSubmitting });
+          // console.log({ values });
+        }}
       >
         {({ values, touched, errors, isSubmitting, resetForm }) => {
           return (
             <Form>
               <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-4 gap-4">
-                <div className=" md:row-span-2 border-[1px] shadow w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-6 gap-8">
+                <div className=" md:row-span-2 border-[1px] shadow-sm w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-6 gap-8">
                   <div>
                     <Typography
                       variant="P_SemiBold_H6"
@@ -181,12 +156,6 @@ const AddMeals = () => {
                           name="name"
                           placeholder="Name"
                           component={Input}
-                          //   onChange={(e) => {
-                          //     setUserData({
-                          //       ...userData,
-                          //       name: e.target.value,
-                          //     });
-                          //   }}
                         />
                       </FormItem>
                     </div>
@@ -223,14 +192,14 @@ const AddMeals = () => {
                     />
                   </div>
                 </div>
-                <div className="md:row-span-2 border-[1px] shadow w-full flex flex-col justify-center rounded-lg bg-primary-white border-mid-dark p-6 gap-3">
+                <div className="md:row-span-2 border-[1px] shadow-sm w-full flex flex-col justify-center rounded-lg bg-primary-white border-mid-dark p-6 gap-3">
                   <Typography variant="P_Regular_H6">Meal Image</Typography>
 
                   <div className="flex w-full gap-6">
                     <div className="flex justify-center items-start flex-[1] rounded-xl">
                       <Image
                         src={categoryPicUrl ? categoryPicUrl : noImage}
-                        className="flex w-36 h-36"
+                        className="flex w-36 h-36 object-cover"
                         fallbackSrc={noImage}
                       />
                     </div>
@@ -247,7 +216,7 @@ const AddMeals = () => {
                     </div>
                   </div>
                 </div>
-                <div className=" border-[1px] shadow w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-6 gap-2">
+                <div className=" border-[1px] shadow-sm w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-6 gap-2">
                   <Typography
                     variant="P_SemiBold_H6"
                     className="text-text_light"
@@ -255,50 +224,18 @@ const AddMeals = () => {
                     Category
                   </Typography>
                   <Select
-                    className="w-full !rounded-md"
-                    selectionMode="multiple"
-                    items={dropDownData}
-                    isMultiline={true}
-                    name="category"
-                    selectedKeys={optValues}
-                    onChange={(e) =>
-                      handleSelectionChange(
-                        e,
-                        categoryArray,
-                        setCategoryArray,
-                        dropDownData,
-                        setOptValues,
-                      )
-                    }
-                    classNames={{
-                      mainWrapper:
-                        'dark:text-default-600 !bg-transparent border rounded-md',
-                      trigger: 'rounded-md !py-0 h-10 !bg-transparent',
-                      popover: 'rounded-md',
-                      value: 'pb-2',
-                    }}
-                    renderValue={(items) => {
-                      return (
-                        <div className="flex flex-wrap gap-2">
-                          {items?.map((item, index) => (
-                            <Chip key={index}>{item?.props?.value}</Chip>
-                          ))}
-                        </div>
-                      );
-                    }}
-                  >
-                    {dropDownData?.map((drop) => (
-                      <SelectItem
-                        key={drop?.name}
-                        value={drop?.name}
-                        className="dark:text-default-600"
-                      >
-                        {drop?.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    isMulti
+                    isSearchable
+                    cacheOptions
+                    defaultOptions
+                    options={dropDownData}
+                    onChange={handleChange}
+                    onInputChange={handleInputChange} // Handle user input changes
+                    inputValue={searchValue} // Controlled input value to sync with user input
+                    isLoading={allCategory?.isLoading}
+                  />
                 </div>
-                <div className="flex justify-between items-center border-[1px] shadow w-full  rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
+                <div className="flex justify-between items-center border-[1px] shadow-sm w-full  rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
                   <Typography variant="P_Regular_H6">
                     Turning visibility off will not show this product in the
                     user app and website
@@ -311,7 +248,7 @@ const AddMeals = () => {
                     />
                   </div>
                 </div>
-                <div className=" border-[1px] shadow w-full flex  rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
+                <div className=" border-[1px] shadow-sm w-full flex  rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
                   <div className="flex flex-col gap-2 w-1/2 ">
                     <Typography
                       variant="P_SemiBold_H6"
@@ -324,12 +261,17 @@ const AddMeals = () => {
                       errorMessage={errors.timeFrom}
                       className="!mb-4 relative"
                     >
-                      <Field
+                      <Input
                         type="time"
                         autoComplete="off"
                         name="timeFrom"
                         placeholder="Name"
                         component={Input}
+                        suffix={
+                          <div className="relative left-56">
+                            <Clock />
+                          </div>
+                        }
                       />
                     </FormItem>
                   </div>
@@ -351,11 +293,16 @@ const AddMeals = () => {
                         name="timeTo"
                         placeholder="Name"
                         component={Input}
+                        suffix={
+                          <div className="relative left-56">
+                            <Clock />
+                          </div>
+                        }
                       />
                     </FormItem>
                   </div>
                 </div>
-                <div className=" border-[1px] shadow w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-8 ">
+                <div className=" border-[1px] shadow-sm w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-8 ">
                   <Typography
                     variant="P_SemiBold_H6"
                     className="text-text_light"
@@ -376,7 +323,7 @@ const AddMeals = () => {
                     />
                   </FormItem>
                 </div>
-                <div className=" border-[1px] shadow w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-8 ">
+                <div className=" border-[1px] shadow-sm w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-8 ">
                   <Typography
                     variant="P_SemiBold_H6"
                     className="text-text_light"
@@ -414,8 +361,6 @@ const AddMeals = () => {
                     resetForm();
                     setCategoryPicUrl('');
                     setIsVisible(true);
-                    setOptValues(new Set([]));
-                    setOptRValues(new Set([]));
                   }}
                 >
                   <Typography variant="P_Regular_H6">Reset</Typography>
