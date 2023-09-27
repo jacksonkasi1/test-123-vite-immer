@@ -14,13 +14,8 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  Pagination,
   Select,
   SelectItem,
-  Popover,
-  Spinner,
-  Skeleton,
-  Card,
 } from '@nextui-org/react';
 
 // ** import icons
@@ -70,6 +65,7 @@ const NextTable = (props) => {
     SkeletonComponent,
     filterArray,
     bottomContent,
+    noRowsLimit,
     handleApplyDateFilter,
     handleDateFilterCancel,
     handleApplyMultiFilter,
@@ -212,7 +208,7 @@ const NextTable = (props) => {
                 variant="P_Regular_H6"
                 className="capitalize text-default-600"
               >
-                {cellValue}
+                ₹ {cellValue}
               </Typography>
             </div>
           );
@@ -372,52 +368,56 @@ const NextTable = (props) => {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex w-full justify-between items-center">
-        <div className="flex w-1/2 gap-4">
-          <div className="flex justify-between  items-center">
-            <Dropdown backdrop="blur" className="!rounded-md">
-              <DropdownTrigger>
-                <Button
-                  className="!border !rounded-lg !p-2.5"
-                  variant="bordered"
-                >
-                  <Typography variant="P_Regular_H6">
-                    {rowsPerPage + ' Rows/Page'}
-                  </Typography>
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu variant="faded" aria-label="Static Actions">
-                {rowCount.map((row) => (
-                  <DropdownItem
-                    key={row.value}
-                    value={row.value}
-                    onClick={() => onRowsPerPageChange(row.value)}
+        {!noRowsLimit && (
+          <div className="flex w-1/2 gap-4">
+            <div className="flex justify-between  items-center">
+              <Dropdown backdrop="blur" className="!rounded-md">
+                <DropdownTrigger>
+                  <Button
+                    className="!border !rounded-lg !p-2.5"
+                    variant="bordered"
                   >
-                    <Typography variant="P_Regular_H6">{row.label}</Typography>
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-          {searchAble && (
-            <div className="flex flex-auto  justify-between gap-3 items-end">
-              <Input
-                isClearable
-                classNames={{
-                  base: 'w-full sm:max-w-[44%] ',
-                  inputWrapper: 'border-1 py-1 box-content',
-                  input: `text-text-light_  dark:text-default-600`,
-                }}
-                placeholder="Search"
-                size="sm"
-                startContent={<SearchIcon className="text-default-300" />}
-                value={searchValue}
-                variant="bordered"
-                onClear={() => setSearchValue('')}
-                onValueChange={onSearchChange}
-              />
+                    <Typography variant="P_Regular_H6">
+                      {rowsPerPage + ' Rows/Page'}
+                    </Typography>
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu variant="faded" aria-label="Static Actions">
+                  {rowCount.map((row) => (
+                    <DropdownItem
+                      key={row.value}
+                      value={row.value}
+                      onClick={() => onRowsPerPageChange(row.value)}
+                    >
+                      <Typography variant="P_Regular_H6">
+                        {row.label}
+                      </Typography>
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
             </div>
-          )}
-        </div>
+            {searchAble && (
+              <div className="flex flex-auto  justify-between gap-3 items-end">
+                <Input
+                  isClearable
+                  classNames={{
+                    base: 'w-full sm:max-w-[44%] ',
+                    inputWrapper: 'border-1 py-1 box-content',
+                    input: `text-text-light_  dark:text-default-600`,
+                  }}
+                  placeholder="Search"
+                  size="sm"
+                  startContent={<SearchIcon className="text-default-300" />}
+                  value={searchValue}
+                  variant="bordered"
+                  onClear={() => setSearchValue('')}
+                  onValueChange={onSearchChange}
+                />
+              </div>
+            )}
+          </div>
+        )}
         <div className="flex w-1/2 justify-end gap-4">
           {isMultiFilter && (
             <div className="flex justify-between  items-center">
@@ -453,7 +453,7 @@ const NextTable = (props) => {
                     <div className="flex flex-col w-full gap-4">
                       {filterArray &&
                         filterArray?.map((filter, index) => (
-                          <div className="flex flex-col gap-1">
+                          <div className="flex flex-col gap-1" key={index}>
                             <Typography variant="P_Medium_H6" className="">
                               {filter?.label}
                             </Typography>
@@ -473,8 +473,15 @@ const NextTable = (props) => {
                               }}
                             >
                               {filter?.options?.map((item) => (
-                                <SelectItem key={item.value} value={item.value}>
+                                <SelectItem
+                                  key={item.value}
+                                  value={item.value}
+                                  className="dark:text-default-600"
+                                >
+                                  {/* <Typography variant='P_Regular_H7'> */}
+
                                   {item.label}
+                                  {/* </Typography> */}
                                 </SelectItem>
                               ))}
                             </Select>

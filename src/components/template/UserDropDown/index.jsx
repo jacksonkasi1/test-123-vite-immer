@@ -21,7 +21,9 @@ import { logout } from '@api/auth';
 
 // ** import assets
 import dummyProfile from '@assets/Images/dummyProfile.png';
-import Typography from '@src/components/shared/Typography';
+
+// ** import shared components
+import Typography from '@shared/Typography';
 
 const UserDropDown = () => {
   const navigate = useNavigate();

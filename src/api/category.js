@@ -10,6 +10,7 @@ const fetcher = async (url) => {
   }
 };
 
+// ** get api for getting all category
 export const getAllCategory = (
   limit = 10,
   pageIndex = 1,
@@ -35,4 +36,17 @@ export const getAllCategory = (
     console.error('An error occurred at getAllCategory:', error);
   }
   return data;
+};
+
+
+// ** post api for creating category
+export const addCategory = async ({ ...payLoadObj }) => {
+  try {
+    const response = await axios.post(`/admin/meal/category/add`, {
+      ...payLoadObj,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred at addCategory:', error);
+  }
 };

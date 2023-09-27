@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+
+// ** import sub components
 import Header from './Header';
-import Typography from '../../components/shared/Typography';
-import Button from '../../components/ui/Buttons';
-import EditCard from '../../components/shared/Models/Billing';
-import Tag from '../../components/shared/Tag';
+
+// ** import shared and ui components
+import Typography from '@shared/Typography';
+import Tag from '@shared/Tag';
+import Button from '@ui/Buttons';
+import EditCard from '@shared/Models/Billing';
 
 const Billing = () => {
   // visa popup
@@ -62,7 +66,13 @@ const Billing = () => {
                       </Typography>
 
                       <Tag className="bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-100 rounded-md border-0 mx-2">
-                        <span className="capitalize"> Primary </span>
+                        <Typography
+                          variant="P_Medium_H7"
+                          className="capitalize"
+                        >
+                          {' '}
+                          Primary{' '}
+                        </Typography>
                       </Tag>
                     </div>
                     <Typography

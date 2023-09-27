@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import Resizer from 'react-image-file-resizer';
 
 /**

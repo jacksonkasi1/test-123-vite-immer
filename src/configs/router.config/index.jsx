@@ -10,6 +10,8 @@ import CustomerManagement from "@pages/CustomerManagement";
 import NextFoodList from "@pages/NextFoodList";
 import NextCategory from "@pages/NextCategory";
 import NextTableManagement from "@pages/NextTableManagement";
+import AddCategory from "@pages/AddCategory";
+import AddMeals from "@pages/AddMeals";
 
 const auth = [
   {
@@ -25,8 +27,20 @@ const auth = [
     meta: {},
   },
   {
+    path: '/add-meal',
+    element: <AddMeals />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
     path: '/food-category',
     element: <NextCategory />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/add-food-category',
+    element: <AddCategory />,
     nodeRef: createRef(),
     meta: {},
   },

@@ -14,6 +14,7 @@ export default defineConfig({
       '@axios': path.resolve(__dirname, 'axios.js'),
       '@api': path.resolve(__dirname, 'src/api'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@ui': path.resolve(__dirname, 'src/components/ui'),
       '@shared': path.resolve(__dirname, 'src/components/shared'),
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@icons': path.resolve(__dirname, 'src/assets/Icons'),

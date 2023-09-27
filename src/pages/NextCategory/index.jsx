@@ -18,11 +18,11 @@ import { formatDate } from '@src/utils';
 // ** import sub pages
 import TableSkeleton from './TableSkeleton';
 
-export default function NextCategory() {
+export default function NextCategory({lim,data,noSkeleton,noPagination,noSearch,noDateFilter,noRowsLimit}) {
 
   // ** states for query parameters
   const [pageIndex, setPageIndex] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(lim??10);
   const [search, setSearch] = useState('');
   const [dateValue, setDateValue] = useState([]);
   const [dateSelect, setDateSelect] = useState('ThisMonth');
@@ -94,7 +94,7 @@ export default function NextCategory() {
     <div>
       <NextTable
         classNames={classNames}
-        data={getAllCategoryApi?.data?.data?.getCategory}
+        data={data??getAllCategoryApi?.data?.data?.getCategory}
         columns={columns}
         statusOptions={statusOptions}
         page={pageIndex}
@@ -103,16 +103,16 @@ export default function NextCategory() {
         setRowsPerPage={setLimit}
         totalPages={getAllCategoryApi?.data?.data?.totalPages}
         isLoading={getAllCategoryApi?.isLoading}
-        isDateFilter={true}
+        isDateFilter={!noDateFilter}
         handleApplyDateFilter={applyDateFilter}
         handleDateFilterCancel={handleDateFilterCancel}
         setDateSelect={setDateSelect}
         activeDateSelect={dateSelect}
         dateValue={dateValue}
         setDateValue={setDateValue}
-        SkeletonComponent={TableSkeleton}
+        SkeletonComponent={!noSkeleton&&TableSkeleton}
         bottomContent={
-          getAllCategoryApi?.data?.data?.totalPages > 0 ? (
+          !noPagination&&getAllCategoryApi?.data?.data?.totalPages > 0 ? (
             <div className="py-2 px-2 flex justify-between items-center">
               <Pagination
                 showControls
@@ -127,9 +127,10 @@ export default function NextCategory() {
             </div>
           ) : null
         }
-        searchAble={true}
+        searchAble={!noSearch}
         setSearchValue={setSearch}
         tblTitle={"All Category"}
+        noRowsLimit={noRowsLimit}
       />
     </div>
   );

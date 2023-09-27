@@ -7,6 +7,7 @@
         "@utils/*": ["./src/utils/*"],
         "@config/*": ["./src/configs/*"],
         "@shared/*": ["./src/components/shared/*"],
+        "@ui/*": ["./src/components/ui/*"],
         "@assets/*": ["./src/assets/*"],
         "@icons/*": ["./src/assets/icons/*"],
         "@svg/*": ["./src/assets/svg/*"],
@@ -19,7 +20,6 @@
         "@axios":["./axios.js"],
         "@api/*":["./src/api/*"],
         "@slice/*":["./src/store/slice/*"]
-
       }
     }
   }

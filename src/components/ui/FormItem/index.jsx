@@ -68,7 +68,7 @@ const FormItem = React.forwardRef((props, ref) => {
         <AnimatePresence mode='wait'>
           {invalid && (
             <motion.div
-              className="form-explain"
+              className="form-explain text-danger !pt-2 top-10"
               initial={initialStyle}
               animate={enterStyle}
               exit={exitStyle}

@@ -12,9 +12,19 @@ const menus = [
         path: '/food-list'
     },
     {
+        level: 'Add Meal',
+        icon: <ShoppingCart size={20} />,
+        path: '/add-meal'
+    },
+    {
         level: 'Food Category',
         icon: <ShoppingCart size={20} />,
         path: '/food-category'
+    },
+    {
+        level: 'Add Food Category',
+        icon: <ShoppingCart size={20} />,
+        path: '/add-food-category'
     },
     {
         level: 'Table Management',

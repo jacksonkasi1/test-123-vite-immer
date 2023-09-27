@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Logo from '../../../assets/svg/Logo';
-import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+// ** import assets
+import Logo from '@assets/svg/Logo';
+
+// ** import redux
+import { useSelector } from 'react-redux';
+
+// ** import navConfig
 import menus from '../../../configs/nav.config';
 
 const Sidebar = () => {
@@ -54,7 +60,9 @@ const Sidebar = () => {
               {!themeConfig.minimized && (
                 <p
                   className={`ml-3 ${
-                    active === data?.path ? 'text-white_ dark:text-white_' : 'dark:text-text_dark dark:hover:text-white_'
+                    active === data?.path
+                      ? 'text-white_ dark:text-white_'
+                      : 'dark:text-text_dark dark:hover:text-white_'
                   }`}
                 >
                   {data?.level}

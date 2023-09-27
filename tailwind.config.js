@@ -63,12 +63,14 @@ module.exports = {
         dark_border: '#374151',
         text_dark: '#ACB0B7',
         text_light: '#6b7280',
-        mid_light_dark: '#1F2937'
+        mid_light_dark: '#1F2937',
+        primary_white:"#fff",
+        danger: '#FE2129',  
       },
     },
   },
   plugins: [
-    nextui(), 
+ 
     ({ addUtilities, e, theme, variants }) => {
       const colors = flattenColorPalette(theme('borderColor'));
       delete colors['default'];
@@ -113,5 +115,56 @@ module.exports = {
       ],
     }),
     require('@tailwindcss/typography'),
+
+    nextui(
+      {
+      prefix: "nextui", // prefix for themes variables
+      addCommonColors: true, // override common colors (e.g. "blue", "green", "pink").
+      defaultTheme: "light", // default theme from the themes object
+      defaultExtendTheme: "light", // default theme to extend on custom themes
+      themes: {
+        
+        light: {
+          colors: {
+            background: "#FFFFFF",
+            foreground: "#120806",
+            primary: {
+              50: '#ffebe0',
+              100: '#ffc7b0',
+              200: '#ff9f7f',
+              300: '#fe734d',
+              400: '#fd5b1c',
+              500: '#e35103',
+              600: '#b24a01',
+              700: '#803d00',
+              800: '#4e2900',
+              900: '#1f0f00',
+              DEFAULT: "#FE724C",
+              foreground: "#ffffff",
+            },
+            focus: "#FE724C",
+          },
+        },
+        dark: {
+          colors: {
+            blue: {
+              50: '#ffebe0',
+              100: '#ffc7b0',
+              200: '#ff9f7f',
+              300: '#fe734d',
+              400: '#fd5b1c',
+              500: '#e35103',
+              600: '#b24a01',
+              700: '#803d00',
+              800: '#4e2900',
+              900: '#1f0f00',
+              DEFAULT: "#FE724C",
+              foreground: "#ffffff",
+            },
+            focus: "#FE724C",
+          },
+        },
+      },
+    }), 
   ],
 };
