@@ -2,10 +2,10 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { store } from '../store';
 
-export const errorMessage = (message) => {
+const showToast = (type, message) => {
   const mode = store.getState('themeConfigs').themeConfigs.mode;
 
-  return toast.error(message, {
+  return toast[type](message, {
     position: 'top-right',
     autoClose: 4000,
     hideProgressBar: false,
@@ -17,32 +17,9 @@ export const errorMessage = (message) => {
   });
 };
 
-export const successMessage = (message) => {
-  const mode = store.getState('themeConfigs').themeConfigs.mode;
-
-  return toast.success(message, {
-    position: 'top-right',
-    autoClose: 4000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: mode,
-  });
-};
-
-export const warningMessage = (message) => {
-  const mode = store.getState('themeConfigs').themeConfigs.mode;
-
-  return toast.warning(message, {
-    position: 'top-right',
-    autoClose: 4000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: mode,
-  });
+export const toasterX = {
+  success: (message) => showToast('success', message),
+  error: (message) => showToast('error', message),
+  warning: (message) => showToast('warning', message),
+  info: (message) => showToast('info', message),
 };

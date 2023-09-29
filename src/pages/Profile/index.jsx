@@ -28,7 +28,7 @@ import Button from '@components/ui/Buttons';
 // ** import api essential
 import { updateProfile } from '@api/admin';
 import { setUser } from '@slice/userSlice';
-import { errorMessage, successMessage } from '@utils/toastMessages';
+import { toasterX } from '@utils/toastMessages';
 
 // ** import assets
 import dummyProfile from '@assets/Images/dummyProfile.png';
@@ -145,7 +145,7 @@ const Profile = () => {
               profilePicUrl,
             );
             if (update?.success) {
-              successMessage('Updated profile successfully');
+              toasterX.success('Updated profile successfully');
               dispatch(
                 setUser({
                   name: update.data.full_name,
@@ -156,7 +156,7 @@ const Profile = () => {
                 }),
               );
             } else {
-              errorMessage(update?.message);
+              toasterX.error(update?.message);
             }
             setSubmitting(true);
           }}

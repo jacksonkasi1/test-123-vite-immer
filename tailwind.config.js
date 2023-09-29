@@ -44,15 +44,18 @@ module.exports = {
       }),
       colors: {
         primary: {
-          100: '#fe734c31',
-          200: '#feaf9a',
-          300: '#fea087',
-          400: '#fe9173',
-          500: '#fe8160',
-          600: '#fe724c',
-          700: '#fe6338',
-          800: '#fe5325',
-          900: '#fe4411',
+          50: '#ffebe0',
+          100: '#ffc7b0',
+          200: '#ff9f7f',
+          300: '#fe734d',
+          400: '#fd5b1c',
+          500: '#e35103',
+          600: '#fd5b1c',
+          700: '#803d00',
+          800: '#4e2900',
+          900: '#1f0f00',
+          DEFAULT: "#FE724C",
+          foreground: "#ffffff",
         },
         white_: 'white',
         black_: 'black',
@@ -116,14 +119,13 @@ module.exports = {
     }),
     require('@tailwindcss/typography'),
 
-    nextui(
+       nextui(
       {
       prefix: "nextui", // prefix for themes variables
       addCommonColors: true, // override common colors (e.g. "blue", "green", "pink").
       defaultTheme: "light", // default theme from the themes object
       defaultExtendTheme: "light", // default theme to extend on custom themes
       themes: {
-        
         light: {
           colors: {
             background: "#FFFFFF",
@@ -135,26 +137,7 @@ module.exports = {
               300: '#fe734d',
               400: '#fd5b1c',
               500: '#e35103',
-              600: '#b24a01',
-              700: '#803d00',
-              800: '#4e2900',
-              900: '#1f0f00',
-              DEFAULT: "#FE724C",
-              foreground: "#ffffff",
-            },
-            focus: "#FE724C",
-          },
-        },
-        dark: {
-          colors: {
-            blue: {
-              50: '#ffebe0',
-              100: '#ffc7b0',
-              200: '#ff9f7f',
-              300: '#fe734d',
-              400: '#fd5b1c',
-              500: '#e35103',
-              600: '#b24a01',
+              600: '#fd5b1c',
               700: '#803d00',
               800: '#4e2900',
               900: '#1f0f00',
@@ -165,6 +148,6 @@ module.exports = {
           },
         },
       },
-    }), 
+    }),
   ],
 };

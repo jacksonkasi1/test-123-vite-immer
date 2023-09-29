@@ -8,7 +8,7 @@ import { HiOutlineLockClosed } from 'react-icons/hi';
 import FormItem from '../../components/ui/FormItem';
 import Button from '../../components/ui/Buttons';
 import { changePassword } from '../../api/admin';
-import { errorMessage, successMessage } from '@src/utils/toastMessages';
+import { toasterX } from '@src/utils/toastMessages';
 
 const validationSchema = Yup.object().shape({
   currentPassword: Yup.string().required('Current Password Required'),
@@ -49,9 +49,9 @@ const Password = () => {
             );
             console.log(update);
             if (update.success) {
-              successMessage('Password updated successfully');
+              toasterX.success('Password updated successfully');
             } else {
-              errorMessage(update.message);
+              toasterX.error(update.message);
             }
             setSubmitting(true);
             // setTimeout(() => {

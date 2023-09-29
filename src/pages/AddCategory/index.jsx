@@ -22,15 +22,15 @@ import NextCategory from '../NextCategory';
 
 // ** import utils
 import { resizeImage } from '@utils';
-import { errorMessage, successMessage } from '@utils/toastMessages';
+import {toasterX } from '@utils/toastMessages';
 
 // ** import api
 import { addCategory, getAllCategory } from '@api/category';
 
 const AddCategory = () => {
+  const limit = 7;
   const themeConfig = useSelector((state) => state.themeConfigs);
 
-  let limit = 7;
   const getCategory = getAllCategory(limit);
   // ** form states
   const [categoryPicUrl, setCategoryPicUrl] = useState('');
@@ -49,7 +49,7 @@ const AddCategory = () => {
       setCategoryPicUrl(resizedImage);
       setErrorCPic(false);
     } catch (error) {
-      console.log('error--->', error);
+      console.error('Error created at handleImageUpload', error);
     }
   };
 
@@ -70,7 +70,7 @@ const AddCategory = () => {
         thumbnail: categoryPicUrl,
       };
       await addCategory(payLoadObj);
-      successMessage('Category added successfully');
+      toasterX.success('Category added successfully');
       setErrorCName(false);
       setErrorCPic(false);
       setCategoryName('');
@@ -80,7 +80,7 @@ const AddCategory = () => {
       getCategory.mutate();
     } catch (error) {
       setLoader(false);
-      errorMessage('Some problem occurred');
+      toasterX.error('Something went wrong while add new category');
     }
   };
 

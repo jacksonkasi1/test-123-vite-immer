@@ -14,7 +14,7 @@ import { Pagination } from '@nextui-org/react';
 
 
 // ** import utils
-import { warningMessage } from '@utils/toastMessages';
+import { toasterX } from '@utils/toastMessages';
 import { formatDate } from '@utils';
 
 // ** import sub pages
@@ -125,7 +125,7 @@ export default function NextFoodList() {
   // ******************* multiFilter function starts here
   const handleApplyMultiFilter = () => {
     if (!categoryFilter && !availableFilter) {
-      warningMessage('Please select a filter to apply');
+      toasterX.warning('Please select a filter to apply');
     } else {
       if (categoryFilter && availableFilter) {
         setCategory(categoryFilter);
