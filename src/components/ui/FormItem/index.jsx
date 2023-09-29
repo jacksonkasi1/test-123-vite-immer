@@ -10,6 +10,7 @@ const FormItem = React.forwardRef((props, ref) => {
     label,
     labelClass,
     errorMessage,
+    errorClassName,
     invalid,
     className,
     asterisk,
@@ -68,7 +69,7 @@ const FormItem = React.forwardRef((props, ref) => {
         <AnimatePresence mode='wait'>
           {invalid && (
             <motion.div
-              className="form-explain text-danger !pt-2 top-10"
+              className={`form-explain text-danger!pt-2 ${errorClassName} `}
               initial={initialStyle}
               animate={enterStyle}
               exit={exitStyle}

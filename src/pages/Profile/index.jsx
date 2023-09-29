@@ -178,7 +178,7 @@ const Profile = () => {
                       <div className="w-3/5 flex items-center">
                         <img
                           disableSkeleton
-                          className="w-20 h-20 rounded-full"
+                          className="w-20 h-20 object-cover rounded-full"
                           src={`${
                             profilePicUrl ? profilePicUrl : dummyProfile
                           }`}

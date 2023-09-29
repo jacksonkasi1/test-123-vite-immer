@@ -2,7 +2,7 @@
 export const INITIAL_VISIBLE_COLUMNS = [
     'thumbnail',
     'name',
-    'category',
+    'tbl_category',
     'price',
     'is_available',
     'actions',

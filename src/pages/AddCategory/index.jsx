@@ -114,7 +114,7 @@ const AddCategory = () => {
           <div className="flex justify-center items-start flex-[1] rounded-xl">
             <Image
               src={categoryPicUrl ? categoryPicUrl : noImage}
-              className="flex w-36 h-36"
+              className="flex object-fit w-36 h-36"
               fallbackSrc={noImage}
             />
           </div>

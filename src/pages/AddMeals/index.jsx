@@ -23,21 +23,23 @@ import { validationSchema } from './schema';
 
 // ** import utils
 import { resizeImage } from '@utils';
-import {toasterX } from '@utils/toastMessages';
+import { toasterX } from '@utils/toastMessages';
 
 // ** import from Formik
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import FormikErrorFocus from 'formik-error-focus';
 
-// ** import apis
-import { getAllCategory } from '@api/category';
-
 // ** import third party library
-import { Clock } from 'react-feather';
+import { Clock, XCircle } from 'react-feather';
 
 // ** import sub components
 import AddProductVariation from './AddProductVariation';
 import AddSizePriceComponent from './AddSizePriceComponent';
+
+// ** import apis
+import { addMeal } from '@api/foodList';
+import { getAllCategory } from '@api/category';
+import { getRestaurants } from '@src/api/restaurants';
 
 const tagOptions = [
   { label: 'Veg', value: 'Veg_Food', icon: <VegSvg /> },
@@ -51,6 +53,7 @@ const AddMeals = () => {
 
   // swr api call
   const allCategory = getAllCategory(limit, 1, searchValue);
+  const restaurantDetail = getRestaurants();
 
   const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
     value: item.name,
@@ -59,17 +62,17 @@ const AddMeals = () => {
   }));
 
   // ** form states
-  const [mealPicUrl, setMealPicUrl] = useState('');
   const [errorCPic, setErrorCPic] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [mealPicUrls, setMealPicUrls] = useState([]); // state to store multiple images
 
   // ** state as props
   const [variations, setVariations] = useState([
     {
-      name: '',
+      title: '',
       required: '',
-      selectType: '',
-      options: [{ name: '', price: '' }],
+      type: '',
+      options: [{ name: '', price: '', thumbnail: '' }],
     },
   ]);
   const [inputFields, setInputFields] = useState([{ size: '', price: '' }]);
@@ -81,59 +84,95 @@ const AddMeals = () => {
   const [loader, setLoader] = useState(false);
 
   // ** handle Image upload
+
   const handleImageUpload = async (event) => {
+    if (mealPicUrls.length == 5) {
+      toasterX.info('Please remove one image to upload more');
+      return;
+    }
     try {
-      const file = event?.target?.files[0];
-      const resizedImage = await resizeImage(file, 500, 500);
-      setMealPicUrl(resizedImage);
+      const files = event?.target?.files;
+      let imageUrls = [...mealPicUrls]; // Spread current images into a new array to avoid losing previous uploads
+
+      for (let i = 0; i < files.length; i++) {
+        const resizedImage = await resizeImage(files[i], 500, 500);
+        imageUrls.push(resizedImage); // Add each new upload to the array
+      }
+
+      setMealPicUrls(imageUrls);
       setErrorCPic(false);
     } catch (error) {
-      console.error('error at handleImageUpload addMeal.js:', error);
+      console.error('error at handleImageUpload:', error);
     }
   };
 
-  const submitHandler = async (values, { setSubmitting }) => {
+  const handleImageDelete = (urlToDelete) => {
+    const imageUrls = mealPicUrls.filter((url) => url !== urlToDelete);
+    setMealPicUrls(imageUrls);
+  };
+
+  const submitHandler = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     event.preventDefault();
-    const sizes = JSON.stringify(inputFields);
-    const addOn = JSON.stringify(variations);
+
+    if (!restaurantDetail?.data?.data?.data?.[0]?.restaurant_id) {
+      toasterX.warning('No restaurants associated with your id');
+      return;
+    }
+
+    if (mealPicUrls.length == 0) {
+      setErrorCPic(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     let categoryArray = [];
 
     selectValues.map((val) => {
       categoryArray.push(val.id);
     });
 
-    const tagValue = values?.tag?.value;
-    const payLoad = {
+    const time_availablity = values.timeFrom && values.timeTo ? true : false;
+
+    const tagValue = values?.tags?.value;
+    const payLoadObj = {
       ...values,
+      start_hour: values.timeFrom,
+      end_hour: values.timeTo,
       tags: tagValue,
-      thumbnail: [mealPicUrl],
+      thumbnail: mealPicUrls,
       is_available: isVisible,
       category: categoryArray,
-      sizes,
-      addOn,
+      sizes: inputFields,
+      variations,
+      time_availablity,
+      restaurant_id: restaurantDetail?.data?.data?.data?.[0]?.restaurant_id,
     };
-    console.log('values', payLoad);
-    setSubmitting(false);
-
-    // try {
-    //   setLoader(true);
-    //   const payLoadObj = {
-    //     name: categoryName,
-    //     thumbnail: mealPicUrl,
-    //   };
-    //   await addCategory(payLoadObj);
-    //   successMessage('Category added successfully');
-    //   setErrorCName(false);
-    //   setErrorCPic(false);
-    //   setCategoryName('');
-    //   setMealPicUrl('');
-    //   setLoader(false);
-    //   setSubmitted(true);
-    // } catch (error) {
-    //   setLoader(false);
-      // toasterX.error('Some problem while add meals');
-    // }
+    console.log('values', payLoadObj);
+    try {
+      setLoader(true);
+      await addMeal(payLoadObj);
+      toasterX.success('Meal added successfully');
+      setErrorCPic(false);
+      setMealPicUrls('');
+      setLoader(false);
+      setSubmitting(false);
+      resetForm();
+      setIsVisible(true);
+      setSelectValues([]);
+      setInputFields([{ size: '', price: '' }]);
+      setVariations([
+        {
+          title: '',
+          required: '',
+          type: '',
+          options: [{ name: '', price: '', thumbnail: '' }],
+        },
+      ]);
+    } catch (error) {
+      setLoader(false);
+      toasterX.error('Some problem while adding meal');
+    }
   };
 
   const handleChange = (selectedValues) => {
@@ -180,12 +219,12 @@ const AddMeals = () => {
           category: '',
           timeFrom: '',
           timeTo: '',
-          totalPrice: '',
+          price: '',
           tags: '',
         }}
         enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           submitHandler(values, { setSubmitting });
           // console.log({ values });
         }}
@@ -254,16 +293,43 @@ const AddMeals = () => {
                 <div className="md:row-span-2 border-[1px] shadow-sm w-full flex flex-col justify-center rounded-lg bg-primary-white border-mid-dark p-6 gap-3">
                   <Typography variant="P_Regular_H6">Meal Image</Typography>
 
-                  <div className="flex w-full gap-6">
-                    <div className="flex justify-center items-start flex-[1] rounded-xl">
-                      <Image
-                        src={mealPicUrl ? mealPicUrl : noImage}
-                        className="flex w-36 h-36 object-cover"
-                        fallbackSrc={noImage}
-                      />
+                  <div className="flex flex-col w-full gap-6">
+                    <div className="flex gap-3  items-start">
+                      {mealPicUrls.length == 0 ? (
+                        <div className="flex justify-center items-start flex-[1] rounded-xl">
+                          <Image
+                            src={noImage}
+                            className="flex w-36 h-36 object-cover"
+                            fallbackSrc={noImage}
+                          />
+                        </div>
+                      ) : (
+                        mealPicUrls.map((url, index) => (
+                          <div
+                            key={index}
+                            className="relative w-max flex   justify-center items-start flex-[1] rounded-xl"
+                          >
+                            <div className="relative">
+                              {' '}
+                              {/* Add relative div here */}
+                              <Image
+                                src={url ? url : noImage}
+                                className="flex w-36 h-36 object-cover"
+                                fallbackSrc={noImage}
+                              />
+                              <XCircle
+                                className="absolute top-1 cursor-pointer right-1 fill-primary_white text-danger z-10"
+                                onClick={() => handleImageDelete(url)}
+                              />{' '}
+                              {/* Button to delete image */}
+                            </div>
+                          </div>
+                        ))
+                      )}
                     </div>
+
                     <div className="flex flex-col w-full flex-start flex-[3] justify-end">
-                      <ImageUpload uploadHandler={handleImageUpload} />
+                      <ImageUpload uploadHandler={handleImageUpload} multiple />
                       {errorCPic && (
                         <Typography
                           variant="P_Regular_H7"
@@ -391,14 +457,14 @@ const AddMeals = () => {
                     Total Price
                   </Typography>
                   <FormItem
-                    invalid={errors.totalPrice && touched.totalPrice}
-                    errorMessage={errors.totalPrice}
+                    invalid={errors.price && touched.price}
+                    errorMessage={errors.price}
                     className="!mb-4 relative pt-2"
                   >
                     <Field
                       type="text"
                       autoComplete="off"
-                      name="totalPrice"
+                      name="price"
                       placeholder="eg:100"
                       component={Input}
                     />
@@ -461,16 +527,16 @@ const AddMeals = () => {
                   type="button"
                   onClick={() => {
                     resetForm();
-                    setMealPicUrl('');
+                    setMealPicUrls([]);
                     setIsVisible(true);
-                    setSelectValues([])
+                    setSelectValues([]);
                     setInputFields([{ size: '', price: '' }]);
                     setVariations([
                       {
-                        name: '',
+                        title: '',
                         required: '',
-                        selectType: '',
-                        options: [{ name: '', price: '',image:'' }],
+                        type: '',
+                        options: [{ name: '', price: '', thumbnail: '' }],
                       },
                     ]);
                   }}

@@ -32,7 +32,7 @@ const OptionComponent = ({
       setPicUrl(resizedImage);
 
       // Optionally, you can also update the optionData with the image information
-      const optionWithImage = { ...optionData, image: resizedImage };
+      const optionWithImage = { ...optionData, thumbnail: resizedImage };
       handleOptionChange(index, optionWithImage);
     } catch (error) {
       console.error('Error created at handleImageUpload', error);
@@ -106,7 +106,7 @@ const VariationComponent = ({
   };
 
   const addOption = () => {
-    const options = [...variationData.options, { name: '', price: '' }];
+    const options = [...variationData.options, { name: '', price: '' ,thumbnail:'' }];
     handleVariationChange(index, { ...variationData, options });
   };
 
@@ -125,7 +125,7 @@ const VariationComponent = ({
     } else {
       console.log('name:', name);
       setSelectionType(name);
-      const variation = { ...variationData, selectType: name };
+      const variation = { ...variationData, type: name };
       handleVariationChange(index, variation);
     }
   };
@@ -135,8 +135,8 @@ const VariationComponent = ({
       <div className="grid grid-cols-3 gap-4">
         <Input
           className="border p-1 px-3 mr-2"
+          name="title"
           placeholder="Name"
-          name="name"
           value={variationData.name}
           onChange={handleChange}
         />
@@ -144,8 +144,8 @@ const VariationComponent = ({
           <Typography variant="P_Medium_H7">Selection Type</Typography>
 
           <Checkbox
-            name="multiple"
-            isSelected={selectionType == 'multiple'}
+            name="Multi"
+            isSelected={selectionType == 'Multi'}
             onChange={handleCheckedChange}
             color="primary"
           >
@@ -153,8 +153,8 @@ const VariationComponent = ({
           </Checkbox>
 
           <Checkbox
-            name="single"
-            isSelected={selectionType == 'single'}
+            name="Single"
+            isSelected={selectionType == 'Single'}
             onChange={handleCheckedChange}
             color="primary"
           >
@@ -219,7 +219,12 @@ const AddProductVariation = ({ variations, setVariations }) => {
   const addVariation = () => {
     setVariations([
       ...variations,
-      { name: '', options: [{ name: '', price: '' }] },
+      {
+        title: '',
+        required: '',
+        type: '',
+        options: [{ name: '', price: '',thumbnail:"" }],
+      },
     ]);
   };
 

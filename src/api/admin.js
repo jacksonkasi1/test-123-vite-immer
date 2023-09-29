@@ -28,10 +28,46 @@ export const getAdminProfileApi = () => {
   return data;
 };
 
-export const updateProfile = async (full_name, mobile, email,toRemoveProfilePic,profilePicUrl) => {
+// ** admin signUp V2
+export const adminSignUp = async ({ ...payLoadObj }) => {
   try {
-    const newProfilePic=profilePicUrl
-    const res = await axios.post('/admin/update', { full_name, mobile, email,toRemoveProfilePic, newProfilePic });
+    const response = await axios.post(`admin/signup/v2`, {
+      ...payLoadObj,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred at adminSignUp:', adminSignUp);
+  }
+};
+
+// ** admin signUp V2
+export const adminVerify = async (otp) => {
+  try {
+    const response = await axios.post(`admin/verify`, {
+      otp,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred at adminVerify:', adminVerify);
+  }
+};
+
+export const updateProfile = async (
+  full_name,
+  mobile,
+  email,
+  toRemoveProfilePic,
+  profilePicUrl,
+) => {
+  try {
+    const newProfilePic = profilePicUrl;
+    const res = await axios.post('/admin/update', {
+      full_name,
+      mobile,
+      email,
+      toRemoveProfilePic,
+      newProfilePic,
+    });
     if (res.data.success) {
       mutate('admin', res.data, false); // here 'admin' is the key for the SWR cache
     }
@@ -42,11 +78,14 @@ export const updateProfile = async (full_name, mobile, email,toRemoveProfilePic,
       message: error.response.data.message,
     };
   }
-}
+};
 
 export const changePassword = async (current_pass, new_pass) => {
   try {
-    const res = await axios.post('/admin/change-password', { current_pass, new_pass });
+    const res = await axios.post('/admin/change-password', {
+      current_pass,
+      new_pass,
+    });
     if (res.data.success) {
       return res.data;
     } else {
@@ -58,4 +97,4 @@ export const changePassword = async (current_pass, new_pass) => {
       message: error.response.data.message,
     };
   }
-}
+};

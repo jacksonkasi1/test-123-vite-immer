@@ -190,14 +190,16 @@ const NextTable = (props) => {
               </Typography>
             </div>
           );
-        case 'category':
+        case 'tbl_category':
           return (
             <div className="flex flex-col">
               <Typography
                 variant="P_Regular_H6"
                 className="capitalize text-default-600"
               >
-                {cellValue ?? 'N/A'}
+                {cellValue?.[0]?.name +
+                  (cellValue?.[1]?.name ? ', ' + cellValue?.[1]?.name : '') +
+                  '...' ?? 'N/A'}
               </Typography>
             </div>
           );
@@ -677,7 +679,9 @@ const NextTable = (props) => {
         <TableBody
           emptyContent={isLoading ? '' : 'No data found'}
           items={sortedItems ?? []}
-          loadingContent={SkeletonComponent && <SkeletonComponent />}
+          loadingContent={
+            SkeletonComponent && (isLoading ? <SkeletonComponent /> : '')
+          }
           loadingState={loadingState}
           isLoading={isLoading}
         >

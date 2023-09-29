@@ -44,6 +44,7 @@ const UserDropDown = () => {
       }),
     );
     navigate('/sign-in');
+    window.location.reload();
   };
 
   return (
@@ -52,7 +53,7 @@ const UserDropDown = () => {
         <Button className="!bg-transparent">
           <img
             src={user?.avatar ? user?.avatar : dummyProfile}
-            className="w-[40px] h-[40px] rounded-[50%]"
+            className="w-[40px] h-[40px] rounded-[50%] object-cover"
             alt=""
           />
 
@@ -77,7 +78,7 @@ const UserDropDown = () => {
           <div className="py-2 px-3 flex items-center gap-2">
             <img
               src={user?.avatar ? user?.avatar : dummyProfile}
-              className="w-[40px] h-[40px] rounded-[50%]"
+              className="w-[40px] h-[40px] rounded-[50%] object-cover"
               alt=""
             />
             <div>

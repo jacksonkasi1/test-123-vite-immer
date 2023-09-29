@@ -50,7 +50,7 @@ export const getFoodList = (
 // ** post api for creating category
 export const addMeal = async ({ ...payLoadObj }) => {
   try {
-    const response = await axios.post(`/admin/restaurant/meal/add`, {
+    const response = await axios.post(`admin/restaurant/meal/add-v2?lang_key=en`, {
       ...payLoadObj,
     });
     return response.data;

@@ -3,10 +3,27 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { CONTROL_SIZES, SIZES } from '@utils/constant';
 import isEmpty from 'lodash/isEmpty';
-import isNil from 'lodash/isNil';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 
+/**
+ * Input component for handling user input.
+ *
+ * @param {object} props - The component's props.
+ * @param {string} [props.asElement='input'] - The HTML element to use for the input.
+ * @param {string} [props.className=''] - Additional CSS class names for styling.
+ * @param {boolean} [props.disabled=false] - Whether the input is disabled.
+ * @param {boolean} [props.invalid=false] - Whether the input is in an invalid state.
+ * @param {string} [props.prefix] - A prefix element or string to display before the input.
+ * @param {string} [props.size] - The size of the input, one of 'lg', 'sm', or 'md'.
+ * @param {string} [props.suffix] - A suffix element or string to display after the input.
+ * @param {boolean} [props.unstyle=false] - Whether to apply default styles to the input.
+ * @param {string} props.type - The type of input ('text' by default).
+ * @param {object} props.style - Inline styles to apply to the input.
+ * @param {object} props.field - The field object for form management (e.g., from Formik).
+ * @param {object} props.form - The form object for form management (e.g., from Formik).
+ * @returns {JSX.Element} The Input component.
+ */
 const Input = React.forwardRef((props, ref) => {
   const {
     asElement: Component,
@@ -16,7 +33,6 @@ const Input = React.forwardRef((props, ref) => {
     prefix,
     size,
     suffix,
-    textArea,
     type,
     style,
     unstyle,
@@ -35,18 +51,6 @@ const Input = React.forwardRef((props, ref) => {
   const [suffixGutter, setSuffixGutter] = useState(0);
 
   const inputSize = size;
-
-  const fixControlledValue = (val) => {
-    if (typeof val === 'undefined' || val === null) {
-      return '';
-    }
-    return val;
-  };
-
-  if ('value' in props) {
-    rest.value = fixControlledValue(props.value);
-    delete rest.defaultValue;
-  }
 
   const isInvalid = useMemo(() => {
     let validate = false;
@@ -70,12 +74,10 @@ const Input = React.forwardRef((props, ref) => {
   }`;
   const inputClass = classNames(
     inputDefaultClass,
-    !textArea && inputSizeClass,
     !isInvalid && inputFocusClass,
     !prefix && !suffix ? className : '',
     disabled && 'input-disabled',
-    isInvalid && 'input-invalid',
-    textArea && 'input-textarea',
+    isInvalid && 'input-invalid'
   );
 
   const prefixNode = useRef();
@@ -87,10 +89,6 @@ const Input = React.forwardRef((props, ref) => {
     }
     const prefixNodeWidth = prefixNode?.current?.offsetWidth;
     const suffixNodeWidth = suffixNode?.current?.offsetWidth;
-
-    if (isNil(prefixNodeWidth) && isNil(suffixNodeWidth)) {
-      return;
-    }
 
     if (prefixNodeWidth) {
       setPrefixGutter(prefixNodeWidth);
@@ -132,8 +130,6 @@ const Input = React.forwardRef((props, ref) => {
     ...rest,
   };
 
-  const renderTextArea = <textarea style={style} {...inputProps}></textarea>;
-
   const renderInput = (
     <Component style={{ ...affixGutterStyle(), ...style }} {...inputProps} />
   );
@@ -162,10 +158,6 @@ const Input = React.forwardRef((props, ref) => {
   );
 
   const renderChildren = () => {
-    if (textArea) {
-      return renderTextArea;
-    }
-
     if (prefix || suffix) {
       return renderAffixInput;
     } else {
@@ -175,18 +167,6 @@ const Input = React.forwardRef((props, ref) => {
 
   return renderChildren();
 });
-
-Input.propTypes = {
-  asElement: PropTypes.string,
-  type: PropTypes.string,
-  className: PropTypes.string,
-  size: PropTypes.oneOf([SIZES.LG, SIZES.SM, SIZES.MD]),
-  value: PropTypes.any,
-  invalid: PropTypes.bool,
-  suffix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  prefix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  unstyle: PropTypes.bool,
-};
 
 Input.defaultProps = {
   type: 'text',

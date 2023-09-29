@@ -2,7 +2,7 @@ import foodImg from "@assets/Images/vegNoodles.png"
 const columns = [
   { name: 'Food Image', uid: 'thumbnail'},
   { name: 'Food Name', uid: 'name', sortable: true },
-  { name: 'Category', uid: 'category'},
+  { name: 'Category', uid: 'tbl_category'},
   { name: 'Price', uid: 'price', sortable: true },
   { name: 'STATUS', uid: 'is_available', sortable: true },
   { name: 'ACTIONS', uid: 'actions' },

@@ -10,6 +10,12 @@ body {
   font-family: 'Inter', sans-serif !important;
 }
 
+:root {
+  --primary-white-color: #fff; 
+  --primary-danger-color: #FE0000; 
+  --primary-success-color: #34CC67; 
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 6px;

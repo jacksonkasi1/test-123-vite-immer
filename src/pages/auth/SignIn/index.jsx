@@ -61,25 +61,20 @@ const SignIn = (props) => {
         <Logo width={250} />
         <div>
           <div className="mb-6 flex items-center gap-4">
-            {/* <Avatar
-              className="border-2 border-white"
-              shape="circle"
-              src="/img/avatars/thumb-10.jpg"
-            /> */}
             <div className="text-white">
-              <div className="font-semibold text-base">Brittany Hale</div>
-              <span className="opacity-80">CTO, Onward</span>
+              <Typography className="text-primary_white" variant='P_Regular_H6'>Brittany Hale</Typography>
+              <Typography variant='P_Regular_H6' className="opacity-80 ps-2 text-primary_white">CTO, Onward</Typography>
             </div>
           </div>
-          <Typography variant="P_Regular_H7">
+          <Typography variant="P_Regular_H7" className='text-primary_white'>
             Hungry meh let you manage your restaurants needs and apply things
             effectively.
           </Typography>
         </div>
-        <span className="text-white">
+        <Typography variant='P_Regular_H7'  className="text-primary_white">
           Copyright &copy; {`${new Date().getFullYear()}`}{' '}
-          <span className="font-semibold">{`Hungry Meh`}</span>{' '}
-        </span>
+          <Typography variant='P_Regular_H7' className="text-primary_white">{`Hungry Meh`}</Typography>{' '}
+        </Typography>
       </div>
       <div className="col-span-2 flex flex-col justify-center items-center bg-white dark:bg-gray-800">
         <div
@@ -154,7 +149,7 @@ const SignIn = (props) => {
                   {isSubmitting ? 'Signing in...' : 'Sign In'}
                 </Button>
                 <div className="mt-4 text-center">
-                  <span>Don't have an account yet? </span>
+                  <Typography variant='P_Regular_H7'>Don't have an account yet? </Typography>
                   <ActionLink to={signUpUrl}>Sign up</ActionLink>
                 </div>
               </Form>

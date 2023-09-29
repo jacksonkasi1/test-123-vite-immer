@@ -11,7 +11,7 @@ export const validationSchema = Yup.object().shape({
     .required('Description is required'),
   timeFrom: Yup.string(),
   timeTo: Yup.string(),
-  totalPrice: Yup.number()
+  price: Yup.number()
     .min(0, 'Total price should be 0 or more')
     .required('Total price is required'),
   tags: Yup.object().required('Tag is required'),

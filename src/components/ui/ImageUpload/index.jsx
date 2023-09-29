@@ -1,12 +1,19 @@
+import Typography from '@shared/Typography';
 import React, { useRef } from 'react';
 
-// ** import shared components
-import Typography from '@shared/Typography';
+/**
+ * ImageUpload component for handling file uploads.
+ *
+ * @param {object} props - The component's props.
+ * @param {string} props.className - Additional CSS class names for styling.
+ * @param {function} props.uploadHandler - Callback function to handle file upload changes.
+ * @returns {JSX.Element} The ImageUpload component.
+ */
 const ImageUpload = ({ className, uploadHandler }) => {
   const imgUploadElement = useRef();
 
   return (
-    <div >
+    <div>
       <input
         className="hidden"
         name="imgUpload"

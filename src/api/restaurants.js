@@ -10,7 +10,7 @@ const fetcher = async (url) => {
   }
 };
 
-export const getRestaurants = (limit = 10, cursor="", search = '') => {
+export const getRestaurants = (limit = "", cursor="", search = '') => {
   const cacheKey = `/admin/restaurant/get?limit=${limit}&cursor=${cursor}&search=${search}`;
 
   const { error, ...data } = useSWR(cacheKey, fetcher, {

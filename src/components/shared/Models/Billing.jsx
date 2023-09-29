@@ -7,16 +7,19 @@ import {
   ModalBody,
   useDisclosure,
 } from '@nextui-org/react';
-import Button from '../../ui/Buttons';
-import Typography from '../Typography';
+
+// ** import ui components
+import Button from '@ui/Buttons';
+import Input from '@ui/Input';
+import FormItem from '@ui/FormItem';
+import Tooltip from '@ui/Tooltip';
+import Checkbox from '@ui/Checkbox';
+
+// ** import third party library
 import { Field, Form, Formik } from 'formik';
-import Input from '../../ui/Input';
-import FormItem from '../../ui/FormItem';
 import NumberFormat from 'react-number-format';
 import * as Yup from 'yup';
-import Checkbox from '../../ui/Checkbox';
 import { HiCreditCard, HiCalendar, HiInformationCircle } from 'react-icons/hi';
-import Tooltip from '../../ui/Tooltip';
 
 export default function EditCard({ openModal }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -27,7 +30,7 @@ export default function EditCard({ openModal }) {
     }
   }, [openModal]);
 
-  const CrediCardInput = (props) => {
+  const CreditCardInput = (props) => {
     return (
       <Input
         {...props}
@@ -64,13 +67,13 @@ export default function EditCard({ openModal }) {
 
   const NumberFormatInput = ({ onValueChange, ...rest }) => {
     return (
-        <NumberFormat
-          customInput={Input}
-          type="text"
-          onValueChange={onValueChange}
-          autoComplete="off"
-          {...rest}
-        />
+      <NumberFormat
+        customInput={Input}
+        type="text"
+        onValueChange={onValueChange}
+        autoComplete="off"
+        {...rest}
+      />
     );
   };
 
@@ -128,14 +131,7 @@ export default function EditCard({ openModal }) {
                 Edit Credit Card
               </ModalHeader>
               <ModalBody>
-                {/* <div>
-                  <Typography
-                    variant="P_SemiBold_H6"
-                    className="text-text_light"
-                  >
-                    Card holder name
-                  </Typography>
-                </div> */}
+      
                 <Formik
                   initialValues={{
                     cardHolderName: '',
@@ -177,7 +173,7 @@ export default function EditCard({ openModal }) {
                                 form={form}
                                 field={field}
                                 placeholder="•••• •••• •••• ••••"
-                                customInput={CrediCardInput}
+                                customInput={CreditCardInput}
                                 format="#### #### #### ####"
                                 onValueChange={(e) => {
                                   form.setFieldValue(field.name, e.value);
