@@ -22,7 +22,7 @@ import NextCategory from '../NextCategory';
 
 // ** import utils
 import { resizeImage } from '@utils';
-import {toasterX } from '@utils/toastMessages';
+import { toasterX } from '@utils/toastMessages';
 
 // ** import api
 import { addCategory, getAllCategory } from '@api/category';
@@ -149,7 +149,12 @@ const AddCategory = () => {
             className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ !bg-${themeConfig.themeColor}-${themeConfig.colorLevel} text-${themeConfig.themeColor}-${themeConfig.colorLevel} dark:text-${themeConfig.themeColor}-${themeConfig.colorLevel} border-${themeConfig.themeColor}-${themeConfig.colorLevel}`}
             type="submit"
           >
-            <Typography variant="P_Regular_H6">Submit</Typography>
+            <Typography
+              variant="P_Regular_H6"
+              className="!border-none !text-primary_white"
+            >
+              Submit
+            </Typography>
           </Button>
         </div>
       </form>
