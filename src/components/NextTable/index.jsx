@@ -197,9 +197,11 @@ const NextTable = (props) => {
                 variant="P_Regular_H6"
                 className="capitalize text-default-600"
               >
-                {cellValue?.[0]?.name +
-                  (cellValue?.[1]?.name ? ', ' + cellValue?.[1]?.name : '') +
-                  '...' ?? 'N/A'}
+                {cellValue?.[0]?.name
+                  ? cellValue?.[0]?.name +
+                    (cellValue?.[1]?.name ? ', ' + cellValue?.[1]?.name : '') +
+                    '...'
+                  : 'N/A'}
               </Typography>
             </div>
           );

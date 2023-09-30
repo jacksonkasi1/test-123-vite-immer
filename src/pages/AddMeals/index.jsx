@@ -39,7 +39,7 @@ import AddSizePriceComponent from './AddSizePriceComponent';
 // ** import apis
 import { addMeal } from '@api/foodList';
 import { getAllCategory } from '@api/category';
-import { getRestaurants } from '@src/api/restaurants';
+import { getRestaurants } from '@api/restaurants';
 
 const tagOptions = [
   { label: 'Veg', value: 'Veg_Food', icon: <VegSvg /> },
@@ -114,6 +114,8 @@ const AddMeals = () => {
   const submitHandler = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     event.preventDefault();
+
+    resetForm();
 
     if (!restaurantDetail?.data?.data?.data?.[0]?.restaurant_id) {
       toasterX.warning('No restaurants associated with your id');
@@ -225,11 +227,11 @@ const AddMeals = () => {
         enableReinitialize
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
-          submitHandler(values, { setSubmitting });
+          submitHandler(values, { setSubmitting, resetForm });
           // console.log({ values });
         }}
       >
-        {({ values, touched, errors, isSubmitting, resetForm }) => {
+        {({ values, touched, errors, isSubmitting }) => {
           return (
             <Form>
               <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-4 gap-4">

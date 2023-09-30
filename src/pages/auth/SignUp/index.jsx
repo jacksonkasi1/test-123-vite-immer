@@ -18,10 +18,11 @@ import * as Yup from 'yup';
 // ** import assets
 import Logo from '@assets/svg/Logo';
 
+// ** import utils
+import { toasterX } from '@utils/toastMessages';
+
 // ** import api essentials
-import { login } from '@api/auth';
-import { adminSignUp } from '@src/api/admin';
-import { toasterX } from '@src/utils/toastMessages';
+import { adminSignUp } from '@api/admin';
 
 const validationSchema = Yup.object().shape({
   org_name: Yup.string().required('Please enter your organization name'),
@@ -45,20 +46,25 @@ const SignUp = (props) => {
     const payloadObj = { ...values };
     setSubmitting(true);
 
-    const response = await adminSignUp(payloadObj);
-    setSubmitting(false);
+    try {
+      const response = await adminSignUp(payloadObj);
 
-    if (response?.success) {
-      //   localStorage.setItem('userToken', response.data.token);
-      console.log('response', response);
-      toasterX.success('SignUp successful please check your email to verify');
-      resetForm()
-      navigate(`/verify?=${response?.data?.org_id}`);
-    } else {
-      console.error('Error while signing up', response?.message);
-      toasterX.error(error?.message ?? 'Error while signing up');
+      if (response?.success) {
+        //   localStorage.setItem('userToken', response.data.token);
+        console.log('response:', response);
+        toasterX.success('SignUp successful please check your email to verify');
+        resetForm();
+        navigate(`/verify?token=${response?.data?.token}`);
+      } else {
+        console.log('Error while signing up', response?.message);
+        toasterX.error(response?.message ?? 'Error while signing up');
+      }
+      setSubmitting(false);
+    } catch (error) {
+      console.error('Error while signing up', error);
+      setSubmitting(false);
     }
-
+    setSubmitting(false);
   };
 
   return (

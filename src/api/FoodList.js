@@ -55,6 +55,6 @@ export const addMeal = async ({ ...payLoadObj }) => {
     });
     return response.data;
   } catch (error) {
-    console.error('An error occurred at addMeal:', addMeal);
+    console.error('An error occurred at addMeal:', error);
   }
 };

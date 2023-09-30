@@ -5,15 +5,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   font-family: 'Inter', sans-serif !important;
 }
 
 :root {
-  --primary-white-color: #fff; 
-  --primary-danger-color: #FE0000; 
-  --primary-success-color: #34CC67; 
+  --primary-white-color: #fff;
+  --primary-danger-color: #fe0000;
+  --primary-success-color: #34cc67;
 }
 
 /* width */
@@ -36,25 +35,25 @@ body {
   background: #555;
 }
 
-.table-default  {
+.table-default {
   margin-top: 20px;
 }
 
 .table-default thead th {
   padding: 10px 0 !important;
   text-align: start !important;
-  @apply !text-[#6b7280] dark:!text-[#b2b3b4] dark:bg-[#374151]
+  @apply !text-[#6b7280] dark:!text-[#b2b3b4] dark:bg-[#374151];
 }
 .table-default tbody tr {
   padding: 0 50px;
-  @apply border-b-[2px] border-[#e5e7eb] dark:border-[#374151]
+  @apply border-b-[2px] border-[#e5e7eb] dark:border-[#374151];
 }
 .table-default tbody tr:last-child {
   border: 0 !important;
 }
 .table-default tbody tr td {
   padding: 13px 0 !important;
-  @apply !text-[#6b7280] dark:!text-[#949DAB]
+  @apply !text-[#6b7280] dark:!text-[#949DAB];
 }
 
 .table-default tbody tr td:first-child {
@@ -69,7 +68,7 @@ body {
   width: 100%;
 }
 
-.my-react-select__control  {
+.my-react-select__control {
   padding: 2px 0 !important;
 }
 
@@ -78,9 +77,9 @@ body {
 }
 
 @layer components {
-
-  .input-wrapper,.form-item {
-    @apply !w-full
+  .input-wrapper,
+  .form-item {
+    @apply !w-full;
   }
 
   .my-react-select-container .my-react-select__control {
@@ -96,7 +95,7 @@ body {
   }
 
   .my-react-select-container .my-react-select__option {
-    @apply text-neutral-600 dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-light_dark_ dark:hover:bg-dark_ dark:placeholder:!text-text_dark ;
+    @apply text-neutral-600 dark:text-neutral-200 bg-neutral-100 hover:bg-neutral-200 dark:bg-light_dark_ dark:hover:bg-dark_ dark:placeholder:!text-text_dark;
   }
   /* .my-react-select-container .my-react-select__option--is-focused {
     @apply bg-neutral-200 dark:bg-neutral-800;
@@ -112,38 +111,38 @@ body {
     @apply text-neutral-600 dark:text-neutral-200;
   }
 
-  .my-react-select__indicators{
-    @apply !text-neutral-300 dark:!text-dark_border
+  .my-react-select__indicators {
+    @apply !text-neutral-300 dark:!text-dark_border;
   }
 
   .rememberMe label {
-    @apply gap-x-3 items-center
+    @apply gap-x-3 items-center;
   }
 
   .password-input input {
-    @apply !pl-[34px]
+    @apply !pl-[34px];
   }
 
   .card-number-input .input-suffix-end {
-    @apply absolute left-[93%] top-[13px]
+    @apply absolute left-[93%] top-[13px];
   }
 
-  .left-class input{
-    @apply !pl-[30px]
+  .left-class input {
+    @apply !pl-[30px];
   }
 
-  .switchers input{
-    @apply !hidden
+  .switchers input {
+    @apply !hidden;
   }
 }
 
 /*For fixing time input click anywhere to open default popup */
 
-input[type="time"] {
+input[type='time'] {
   position: relative;
 }
 
-input[type="time"]::-webkit-calendar-picker-indicator {
+input[type='time']::-webkit-calendar-picker-indicator {
   display: block;
   top: 0;
   right: 0;
@@ -151,4 +150,23 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   width: 100%;
   position: absolute;
   background: transparent;
+}
+
+/* for verify test*/
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+.stop-blink {
+  animation: none;
 }

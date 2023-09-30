@@ -22,7 +22,7 @@ const menus = [
         path: '/food-category'
     },
     {
-        level: 'Add Food Category',
+        level: 'Add Category',
         icon: <ShoppingCart size={20} />,
         path: '/add-food-category'
     },

@@ -12,47 +12,46 @@ import Typography from '@shared/Typography';
 // ** import assets
 import Logo from '@assets/svg/Logo';
 
-// ** third party library
-import OtpInput from 'react-otp-input';
-
 // ** import utils
 import { toasterX } from '@utils/toastMessages';
 
 // ** import api essentials
-import { adminVerify } from '@api/admin';
+import { adminForgetPassword } from '@api/admin';
 
-const Verify = () => {
+const ForgetPassword = (props) => {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (otp) => {
-    setOtp(otp);
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+    setEmailError(false);
   };
 
-  const handleVerify = async () => {
-    if (otp.length <= 5) {
-      toasterX.warning('Please enter a valid otp');
+  const handleSubmit = async () => {
+    if (email?.length == '' || !email) {
+      setEmailError(true);
       return;
     }
     try {
       setIsLoading(true);
-      const response = await adminVerify(otp);
-      console.log('response', response);
+      const response = await adminForgetPassword(email);
+      console.log('response forget password', response);
 
       if (response?.success) {
         console.log('response', response);
-        toasterX.success('Verified successfully');
+        toasterX.success('Now you can reset your password');
         setIsLoading(false);
 
-        navigate(`/sign-in`);
+        navigate(`/reset-password`);
       } else {
         console.log('Error while verifying', response);
-        toasterX.log(response?.message ?? 'Error while verifying');
+        toasterX.error(response?.message ?? 'Error in reset password');
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('Error while Verifying', error);
+      console.error('Error in reset password', error);
       setIsLoading(false);
     }
   };
@@ -99,34 +98,32 @@ const Verify = () => {
           className={`w-full h-[100vh] flex flex-col gap-6 justify-center items-center`}
         >
           <div className="mb-1 w-[400px]">
-            <Typography variant="P_SemiBold_H4"> Verify OTP 💬</Typography>
+            <Typography variant="P_SemiBold_H4">Enter your Email</Typography>
             <Typography variant="P_Regular_H6" className="!block">
-              We sent a verification code to your email. Enter the code from the
+              We will send you a verification code to your email. Enter the
               email in the field below.
             </Typography>
           </div>
-          <div className="flex flex-col gap-2">
-            <Typography variant="P_Medium_H5" className="!ms-2">
-              Enter Otp here
+          <div className="flex flex-col w-[400px] gap-2">
+            <Typography variant="P_Medium_H6" className="!ms-2">
+              Email
             </Typography>
 
-            <OtpInput
-              value={otp}
-              onChange={handleChange}
-              numInputs={6}
-              renderInput={(props) => (
-                <Input {...props} className="!border-2 m-1.5 !h-10 !w-10  " />
-              )}
-            />
-            <div className="flex justify-center">
+            <Input type="email" onChange={handleChange} />
+            {emailError && (
+              <Typography variant="P_Regular_H7" className="!text-danger">
+                Please enter a valid email here
+              </Typography>
+            )}
+
+            <div className="flex justify-center mt-3">
               <Button
                 block
                 loading={isLoading}
                 variant="solid"
-                className="!w-3/4"
-                onClick={handleVerify}
+                onClick={handleSubmit}
               >
-                Verify
+                Submit
               </Button>
             </div>
           </div>
@@ -136,4 +133,4 @@ const Verify = () => {
   );
 };
 
-export default Verify;
+export default ForgetPassword;

@@ -36,11 +36,11 @@ export const adminSignUp = async ({ ...payLoadObj }) => {
     });
     return response.data;
   } catch (error) {
-    console.error('An error occurred at adminSignUp:', adminSignUp);
+    console.error('An error occurred at adminSignUp:', error);
   }
 };
 
-// ** admin signUp V2
+// ** admin verify
 export const adminVerify = async (otp) => {
   try {
     const response = await axios.post(`admin/verify`, {
@@ -48,10 +48,11 @@ export const adminVerify = async (otp) => {
     });
     return response.data;
   } catch (error) {
-    console.error('An error occurred at adminVerify:', adminVerify);
+    console.error('An error occurred at adminVerify:', error);
   }
 };
 
+// ** admin update
 export const updateProfile = async (
   full_name,
   mobile,
@@ -80,6 +81,7 @@ export const updateProfile = async (
   }
 };
 
+// ** admin change password
 export const changePassword = async (current_pass, new_pass) => {
   try {
     const res = await axios.post('/admin/change-password', {
@@ -96,5 +98,48 @@ export const changePassword = async (current_pass, new_pass) => {
       success: false,
       message: error.response.data.message,
     };
+  }
+};
+
+// ** admin reset password
+export const adminResetPassword = async ({ ...payLoadObj }) => {
+  try {
+    const res = await axios.post('/admin/reset-password', {
+      ...payLoadObj,
+    });
+    if (res.data.success) {
+      return res.data;
+    } else {
+      return res.data;
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response.data.message,
+    };
+  }
+};
+
+// ** admin forget password
+export const adminForgetPassword = async (email) => {
+  try {
+    const response = await axios.post(`admin/forgot-password`, {
+      unique_id: email,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred at adminForgetPassword:', error);
+  }
+};
+
+// ** admin resend otp
+export const adminResendOtp = async (userEmail) => {
+  try {
+    const response = await axios.post(`admin/resend-otp`, {
+      unique_id: userEmail,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred at adminResendOtp:', error);
   }
 };
