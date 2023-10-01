@@ -7,13 +7,15 @@ import Billing from "@pages/Profile/billing";
 import Feedbacks from "@pages/Feedbacks";
 import OrderManagement from "@pages/OrderManagement";
 import CustomerManagement from "@pages/CustomerManagement";
-import NextFoodList from "@pages/NextFoodList";
+
 import NextCategory from "@pages/NextCategory";
 import NextTableManagement from "@pages/NextTableManagement";
 import AddCategory from "@pages/AddCategory";
-import AddMeals from "@pages/AddMeals";
-import EditMeals from "@src/pages/EditMeals";
-import ViewMeals from "@src/pages/ViewMeals";
+import NextFoodList from "@pages/Meals/NextFoodList";
+import AddMeals from "@pages/Meals/AddMeals";
+import EditMeals from "@pages/Meals/EditMeals";
+import ViewMeals from "@pages/Meals/ViewMeals";
+
 
 const auth = [
   {
@@ -24,7 +26,7 @@ const auth = [
   },
   {
     path: '/food-list',
-    element: <NextFoodList />,
+    element: <NextFoodList/>,
     nodeRef: createRef(),
     meta: {},
   },

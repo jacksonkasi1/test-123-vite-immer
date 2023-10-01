@@ -12,11 +12,6 @@ import { getFoodList } from '@api/foodList';
 
 // ** import from next ui
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Pagination,
 } from '@nextui-org/react';
 
@@ -26,8 +21,6 @@ import { formatDate } from '@utils';
 
 // ** import sub pages
 import TableSkeleton from './TableSkeleton';
-import { VerticalDotsIcon } from '@icons/VerticalDotsIcon';
-import Typography from '@src/components/shared/Typography';
 
 export default function NextFoodList() {
 
@@ -105,7 +98,7 @@ export default function NextFoodList() {
     },
   ];
 
-  // ** Action in table
+  // ** Action function for table
 
   const handleActions = (key,id) => {
     if (key == 'edit') {
@@ -174,6 +167,7 @@ export default function NextFoodList() {
   };
 
   // ******************* multiFilter function ends here
+
   return (
     <div>
       <NextTable
@@ -199,7 +193,7 @@ export default function NextFoodList() {
         handleDateFilterCancel={handleDateFilterCancel}
         handleActions={handleActions}
         setDateSelect={setDateSelect}
-        editKey={"meal_id"}
+        editKey={"meal_id"}                    //meal_id as a param
         activeDateSelect={dateSelect}
         dateValue={dateValue}
         setDateValue={setDateValue}
