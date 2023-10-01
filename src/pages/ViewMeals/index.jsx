@@ -37,16 +37,18 @@ import AddProductVariation from './AddProductVariation';
 import AddSizePriceComponent from './AddSizePriceComponent';
 
 // ** import apis
-import { addMeal } from '@api/foodList';
+import { addMeal, getMealById } from '@api/foodList';
 import { getAllCategory } from '@api/category';
 import { getRestaurants } from '@api/restaurants';
+import { useParams } from 'react-router-dom';
+import { convertDecimalTimeToTimeString } from '@src/utils';
 
 const tagOptions = [
   { label: 'Veg', value: 'Veg_Food', icon: <VegSvg /> },
   { label: 'Non-Veg', value: 'Non_Veg_Food', icon: <NonVegSvg /> },
   { label: 'Halal', value: 'Halal', icon: <NonVegSvg /> },
 ];
-const AddMeals = () => {
+const ViewMeals = () => {
   let limit = 10;
 
   const [searchValue, setSearchValue] = useState('');
@@ -54,6 +56,9 @@ const AddMeals = () => {
   // swr api call
   const allCategory = getAllCategory(limit, 1, searchValue);
   const restaurantDetail = getRestaurants();
+  const {id}=useParams()
+  const mealDetails=getMealById(id)
+  console.log("mealDetails.data------->",mealDetails?.data?.data)
 
   const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
     value: item.name,
@@ -63,8 +68,8 @@ const AddMeals = () => {
 
   // ** form states
   const [errorCPic, setErrorCPic] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [mealPicUrls, setMealPicUrls] = useState([]); // state to store multiple images
+  const [isVisible, setIsVisible] = useState(mealDetails?.data?.data?.is_available??true);
+  const [mealPicUrls, setMealPicUrls] = useState(mealDetails?.data?.data?.thumbnail??[]); // state to store multiple images
 
   // ** state as props
   const [variations, setVariations] = useState([
@@ -210,18 +215,18 @@ const AddMeals = () => {
 
   return (
     <div className="py-4 px-6">
-      <Loader isLoading={loader} />
+      <Loader isLoading={mealDetails?.isLoading} />
       <div className="py-4">
         <Typography variant="P_Medium_H5">Add New Meal</Typography>
       </div>
       <Formik
         initialValues={{
-          name: '',
-          description: '',
+          name: mealDetails?.data?.data?.name??'',
+          description: mealDetails?.data?.data?.description??'',
           category: '',
-          timeFrom: '',
-          timeTo: '',
-          price: '',
+          timeFrom:convertDecimalTimeToTimeString(mealDetails?.data?.data?.tbl_available_time?.[0]?.start_hour)??'',
+          timeTo: convertDecimalTimeToTimeString(mealDetails?.data?.data?.tbl_available_time?.[0]?.end_hour)??'',
+          price:mealDetails?.data?.data?.price?? '',
           tags: '',
         }}
         enableReinitialize
@@ -522,7 +527,7 @@ const AddMeals = () => {
                 ease={'linear'}
                 duration={200}
               />
-              <div className="flex justify-between gap-8 pt-8">
+              {/* <div className="flex justify-between gap-8 pt-8">
                 <Button
                   variant="bordered"
                   className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ `}
@@ -557,7 +562,7 @@ const AddMeals = () => {
                     {isSubmitting ? 'submitting' : 'Submit'}
                   </Typography>
                 </Button>
-              </div>
+              </div> */}
             </Form>
           );
         }}
@@ -566,4 +571,4 @@ const AddMeals = () => {
   );
 };
 
-export default AddMeals;
+export default ViewMeals;

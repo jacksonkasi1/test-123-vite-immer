@@ -12,6 +12,8 @@ import NextCategory from "@pages/NextCategory";
 import NextTableManagement from "@pages/NextTableManagement";
 import AddCategory from "@pages/AddCategory";
 import AddMeals from "@pages/AddMeals";
+import EditMeals from "@src/pages/EditMeals";
+import ViewMeals from "@src/pages/ViewMeals";
 
 const auth = [
   {
@@ -29,6 +31,18 @@ const auth = [
   {
     path: '/add-meal',
     element: <AddMeals />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/edit-meal/:id',
+    element: <EditMeals />,
+    nodeRef: createRef(),
+    meta: {},
+  },
+  {
+    path: '/view-meal/:id',
+    element: <ViewMeals />,
     nodeRef: createRef(),
     meta: {},
   },

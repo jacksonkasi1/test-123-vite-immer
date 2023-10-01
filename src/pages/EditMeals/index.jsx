@@ -37,16 +37,17 @@ import AddProductVariation from './AddProductVariation';
 import AddSizePriceComponent from './AddSizePriceComponent';
 
 // ** import apis
-import { addMeal } from '@api/foodList';
+import { addMeal, getMealById } from '@api/foodList';
 import { getAllCategory } from '@api/category';
 import { getRestaurants } from '@api/restaurants';
+import { useParams } from 'react-router-dom';
 
 const tagOptions = [
   { label: 'Veg', value: 'Veg_Food', icon: <VegSvg /> },
   { label: 'Non-Veg', value: 'Non_Veg_Food', icon: <NonVegSvg /> },
   { label: 'Halal', value: 'Halal', icon: <NonVegSvg /> },
 ];
-const AddMeals = () => {
+const EditMeals = () => {
   let limit = 10;
 
   const [searchValue, setSearchValue] = useState('');
@@ -54,6 +55,9 @@ const AddMeals = () => {
   // swr api call
   const allCategory = getAllCategory(limit, 1, searchValue);
   const restaurantDetail = getRestaurants();
+  const {id}=useParams()
+  const mealDetails=getMealById(id)
+  console.log("mealDetails.data------->",mealDetails.data)
 
   const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
     value: item.name,
@@ -210,7 +214,7 @@ const AddMeals = () => {
 
   return (
     <div className="py-4 px-6">
-      <Loader isLoading={loader} />
+      <Loader isLoading={mealDetails?.isLoading} />
       <div className="py-4">
         <Typography variant="P_Medium_H5">Add New Meal</Typography>
       </div>
@@ -566,4 +570,4 @@ const AddMeals = () => {
   );
 };
 
-export default AddMeals;
+export default EditMeals;

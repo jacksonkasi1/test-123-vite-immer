@@ -86,7 +86,6 @@ const VariationComponent = ({
 }) => {
   useEffect(() => {
     handleVariationChange(index, variationData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [required, setRequired] = useState(true);

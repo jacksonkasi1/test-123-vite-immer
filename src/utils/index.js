@@ -49,6 +49,37 @@ export const resizeImage = (file, maxWidth, maxHeight) => {
   });
 };
 
+
+/**
+ * Converts a decimal time value to a formatted time string (HH:MM).
+ *
+ * @param {number} decimalTime - The decimal time value to convert, e.g., 15.41666666666667.
+ * @returns {string} The formatted time string in the "HH:MM" format.
+ * @throws {TypeError} If the input is not a valid number.
+ * @throws {RangeError} If the input is negative or exceeds 24 hours.
+ * @example
+ * const decimalTime = 15.41666666666667;
+ * const formattedTime = convertDecimalTimeToTimeString(decimalTime);
+ * // Returns: "15:25"
+ */
+export function convertDecimalTimeToTimeString(decimalTime) {
+  console.log("decimalTime",decimalTime)
+
+  if (decimalTime < 0 || decimalTime >= 24) {
+    throw new RangeError('Input must be between 0 and 24.');
+  }
+
+  const hours = Math.floor(decimalTime);
+  const minutes = Math.round((decimalTime - hours) * 60);
+
+  const hoursString = hours < 10 ? `0${hours}` : `${hours}`;
+  const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+  return `${hoursString}:${minutesString}`;
+}
+
+
+
 const darkModeSelectTheme = {
     colors: {
       primary25: '#7367f01a', // for option hover bg-color

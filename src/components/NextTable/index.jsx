@@ -36,10 +36,11 @@ import { INITIAL_VISIBLE_COLUMNS, dateFilter, rowCount } from './data';
 // ** import third party library
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_orange.css';
+import { useNavigate } from 'react-router-dom';
 
 const NextTable = (props) => {
   const themeConfig = useSelector((state) => state.themeConfigs);
-
+ const navigate=useNavigate()
   const {
     classNames,
     data,
@@ -70,6 +71,8 @@ const NextTable = (props) => {
     handleDateFilterCancel,
     handleApplyMultiFilter,
     handleMultiFilterCancel,
+    handleActions,
+    editKey
   } = props;
 
   const [filterValue, setFilterValue] = React.useState('');
@@ -164,6 +167,7 @@ const NextTable = (props) => {
   }, [page, filteredItems, rowsPerPage, data, selectedKeys]);
 
   // ** set cell data here
+
   const renderCell = React.useCallback(
     (item, columnKey) => {
       const cellValue = item[columnKey];
@@ -322,24 +326,25 @@ const NextTable = (props) => {
         case 'actions':
           return (
             <div className="relative flex justify-end items-center gap-2">
-              <Dropdown className="bg-background border-1 border-default-200">
-                <DropdownTrigger>
-                  <Button isIconOnly radius="full" size="sm" variant="light">
-                    <VerticalDotsIcon className="text-default-400" />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem>
-                    <Typography variant="P_Regular_H6">View</Typography>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <Typography variant="P_Regular_H6">Edit</Typography>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <Typography variant="P_Regular_H6">Delete</Typography>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+             {/* {ActionDropdown} */}
+             <Dropdown className="bg-background border-1 border-default-200">
+        <DropdownTrigger>
+          <Button isIconOnly radius="full" size="sm" variant="light">
+            <VerticalDotsIcon className="text-default-400" />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu onAction={(key) => handleActions(key,item[editKey])}>
+          <DropdownItem key="view">
+            <Typography variant="P_Regular_H6">View</Typography>
+          </DropdownItem>
+          <DropdownItem key="edit">
+            <Typography variant="P_Regular_H6">Edit</Typography>
+          </DropdownItem>
+          <DropdownItem key="delete">
+            <Typography variant="P_Regular_H6">Delete</Typography>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
             </div>
           );
         default:

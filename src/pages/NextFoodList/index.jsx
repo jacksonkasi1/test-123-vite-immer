@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // ** import table data
 import { columns, availableOptions, categoryOptions } from './data';
@@ -10,8 +11,14 @@ import NextTable from '@components/NextTable';
 import { getFoodList } from '@api/foodList';
 
 // ** import from next ui
-import { Pagination } from '@nextui-org/react';
-
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Pagination,
+} from '@nextui-org/react';
 
 // ** import utils
 import { toasterX } from '@utils/toastMessages';
@@ -19,8 +26,13 @@ import { formatDate } from '@utils';
 
 // ** import sub pages
 import TableSkeleton from './TableSkeleton';
+import { VerticalDotsIcon } from '@icons/VerticalDotsIcon';
+import Typography from '@src/components/shared/Typography';
 
 export default function NextFoodList() {
+
+  const navigate=useNavigate()
+
   // ** states for query parameters
   const [pageIndex, setPageIndex] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -92,6 +104,22 @@ export default function NextFoodList() {
       placeholder: 'Check for availability',
     },
   ];
+
+  // ** Action in table
+
+  const handleActions = (key,id) => {
+    if (key == 'edit') {
+      navigate(`/edit-meal/${id}`);
+      return;
+    } else if (key == 'view') {
+      navigate(`/view-meal/${id}`);
+      return;
+    } else if (key == 'delete') {
+      alert(key);
+      return;
+    }
+    return;
+  };
 
   // ******************* Date Range and date function starts here
 
@@ -169,7 +197,9 @@ export default function NextFoodList() {
         handleMultiFilterCancel={handleMultiFilterCancel}
         handleApplyDateFilter={applyDateFilter}
         handleDateFilterCancel={handleDateFilterCancel}
+        handleActions={handleActions}
         setDateSelect={setDateSelect}
+        editKey={"meal_id"}
         activeDateSelect={dateSelect}
         dateValue={dateValue}
         setDateValue={setDateValue}

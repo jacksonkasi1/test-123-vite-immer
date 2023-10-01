@@ -50,11 +50,27 @@ export const getFoodList = (
 // ** post api for creating category
 export const addMeal = async ({ ...payLoadObj }) => {
   try {
-    const response = await axios.post(`admin/restaurant/meal/add-v2?lang_key=en`, {
-      ...payLoadObj,
-    });
+    const response = await axios.post(
+      `admin/restaurant/meal/add-v2?lang_key=en`,
+      {
+        ...payLoadObj,
+      },
+    );
     return response.data;
   } catch (error) {
     console.error('An error occurred at addMeal:', error);
   }
+};
+
+export const getMealById = (meal_id) => {
+  const cacheKey = `admin/restaurant/meal/by-id?meal_id=${meal_id}`;
+
+  const { error, ...data } = useSWR(cacheKey, fetcher, {
+    revalidateOnFocus: true,
+  });
+  if (error) {
+    console.error('An error occurred at getFoodDetails:', getMealById);
+  }
+  data.mutate;
+  return data;
 };
