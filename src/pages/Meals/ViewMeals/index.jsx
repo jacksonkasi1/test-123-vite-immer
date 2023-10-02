@@ -56,9 +56,12 @@ const ViewMeals = () => {
   // swr api call
   const allCategory = getAllCategory(limit, 1, searchValue);
   const restaurantDetail = getRestaurants();
-  const {id}=useParams()
-  const mealDetails=getMealById(id)
-  console.log("mealDetails.data------->",mealDetails?.data?.data)
+  const { id } = useParams();
+  const mealDetails = getMealById(id);
+  console.log(
+    'mealDetails.data------->',
+    mealDetails?.data?.data,
+  );
 
   const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
     value: item.name,
@@ -68,8 +71,10 @@ const ViewMeals = () => {
 
   // ** form states
   const [errorCPic, setErrorCPic] = useState(false);
-  const [isVisible, setIsVisible] = useState(mealDetails?.data?.data?.is_available??true);
-  const [mealPicUrls, setMealPicUrls] = useState(mealDetails?.data?.data?.thumbnail??[]); // state to store multiple images
+  const [isVisible, setIsVisible] = useState(
+    mealDetails?.data?.data?.is_available ?? true,
+  );
+  const [mealPicUrls, setMealPicUrls] = useState([]); // state to store multiple images
 
   // ** state as props
   const [variations, setVariations] = useState([
@@ -80,10 +85,47 @@ const ViewMeals = () => {
       options: [{ name: '', price: '', thumbnail: '' }],
     },
   ]);
+  // const [inputFields, setInputFields] = useState([{ size: '', price: '' }]);
   const [inputFields, setInputFields] = useState([{ size: '', price: '' }]);
+
+  useEffect(() => {
+    setInputFields(mealDetails?.data?.data?.tbl_meals_size?.[0]?.size);
+  }, [mealDetails?.data?.data?.tbl_meals_size?.[0]?.size]);
+
+  useEffect(() => {
+    setVariations(
+      mealDetails?.data?.data?.tbl_meals_variant?.map((variant) => {
+        return {
+          title: variant.title,
+          required: variant.is_required,
+          type: variant.variant_type,
+          options: variant.variant.map((option) => {
+            return {
+              name: option?.name,
+              price: option?.price,
+              thumbnail: option?.thumbnail,
+              id: option?.id,
+            };
+          }),
+        };
+      }),
+    );
+  }, [mealDetails?.data?.data?.tbl_meals_variant]);
+
+  useEffect(() => {
+    setMealPicUrls(mealDetails?.data?.data?.thumbnail);
+  }, [mealDetails?.data?.data?.thumbnail]);
+
 
   // for custom async swr+react select
   const [selectValues, setSelectValues] = useState([]);
+
+  
+  useEffect(() => {
+
+    setSelectValues(mealDetails?.data?.data?.tbl_category)
+  }, [mealDetails?.data?.data?.tbl_category]);
+
 
   // ** handle loading
   const [loader, setLoader] = useState(false);
@@ -112,7 +154,7 @@ const ViewMeals = () => {
   };
 
   const handleImageDelete = (urlToDelete) => {
-    const imageUrls = mealPicUrls.filter((url) => url !== urlToDelete);
+    const imageUrls = mealPicUrls?.filter((url) => url !== urlToDelete);
     setMealPicUrls(imageUrls);
   };
 
@@ -127,7 +169,7 @@ const ViewMeals = () => {
       return;
     }
 
-    if (mealPicUrls.length == 0) {
+    if (mealPicUrls?.length == 0) {
       setErrorCPic(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -221,12 +263,18 @@ const ViewMeals = () => {
       </div>
       <Formik
         initialValues={{
-          name: mealDetails?.data?.data?.name??'',
-          description: mealDetails?.data?.data?.description??'',
+          name: mealDetails?.data?.data?.name ?? '',
+          description: mealDetails?.data?.data?.description ?? '',
           category: '',
-          timeFrom:convertDecimalTimeToTimeString(mealDetails?.data?.data?.tbl_available_time?.[0]?.start_hour)??'',
-          timeTo: convertDecimalTimeToTimeString(mealDetails?.data?.data?.tbl_available_time?.[0]?.end_hour)??'',
-          price:mealDetails?.data?.data?.price?? '',
+          timeFrom:
+            convertDecimalTimeToTimeString(
+              mealDetails?.data?.data?.tbl_available_time?.[0]?.start_hour,
+            ) ?? '',
+          timeTo:
+            convertDecimalTimeToTimeString(
+              mealDetails?.data?.data?.tbl_available_time?.[0]?.end_hour,
+            ) ?? '',
+          price: mealDetails?.data?.data?.price ?? '',
           tags: '',
         }}
         enableReinitialize
@@ -302,7 +350,7 @@ const ViewMeals = () => {
 
                   <div className="flex flex-col w-full gap-6">
                     <div className="flex gap-3  items-start">
-                      {mealPicUrls.length == 0 ? (
+                      {mealPicUrls?.length == 0 ? (
                         <div className="flex justify-center items-start flex-[1] rounded-xl">
                           <Image
                             src={noImage}
@@ -311,7 +359,7 @@ const ViewMeals = () => {
                           />
                         </div>
                       ) : (
-                        mealPicUrls.map((url, index) => (
+                        mealPicUrls?.map((url, index) => (
                           <div
                             key={index}
                             className="relative w-max flex   justify-center items-start flex-[1] rounded-xl"
@@ -369,7 +417,7 @@ const ViewMeals = () => {
                             onClose={() => removeItem(option)}
                             variant="flat"
                           >
-                            {option.label}
+                            {option.label??option.name}
                           </Chip>
                         ))}
                     </div>
@@ -387,6 +435,7 @@ const ViewMeals = () => {
                     isLoading={allCategory?.isLoading}
                     controlShouldRenderValue={false}
                     value={selectValues}
+                    isDisabled
                   />
                 </div>
                 <div className="flex justify-between items-center border-[1px] shadow-sm w-full  rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
@@ -399,6 +448,7 @@ const ViewMeals = () => {
                     <Switch
                       isSelected={isVisible}
                       onValueChange={setIsVisible}
+                      isDisabled
                     />
                   </div>
                 </div>
@@ -497,6 +547,7 @@ const ViewMeals = () => {
                           form.setFieldValue('tags', selectedOptions);
                         }}
                         value={values.tags}
+                        isDisabled
                       />
                     )}
                   />

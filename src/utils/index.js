@@ -63,7 +63,6 @@ export const resizeImage = (file, maxWidth, maxHeight) => {
  * // Returns: "15:25"
  */
 export function convertDecimalTimeToTimeString(decimalTime) {
-  console.log("decimalTime",decimalTime)
 
   if (decimalTime < 0 || decimalTime >= 24) {
     throw new RangeError('Input must be between 0 and 24.');
