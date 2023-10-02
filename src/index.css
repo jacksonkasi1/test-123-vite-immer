@@ -136,7 +136,7 @@ body {
   }
 }
 
-/*For fixing time input click anywhere to open default popup */
+/*For fixing time input click anywhere to open default html dropdown */
 
 input[type='time'] {
   position: relative;
@@ -151,6 +151,7 @@ input[type='time']::-webkit-calendar-picker-indicator {
   position: absolute;
   background: transparent;
 }
+
 
 /* for verify test*/
 @keyframes blink {

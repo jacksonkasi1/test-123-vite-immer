@@ -14,6 +14,7 @@ function PrivateRoute({ children, route }) {
 
   const getUser = async () => {
     try {
+      console.log("In private route............................")
       if (userToken) {
         if (!user?.email) {
           setLoader(true);

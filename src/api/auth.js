@@ -18,9 +18,9 @@ export const login = async (unique_id, password) => {
   }
 };
 
-export const logout = async (unique_id, password) => {
+export const logout = async () => {
   try {
-    await axios.get('/logout');
+    await axios.get('/admin/sign-out', { withCredentials: true });
   } catch (error) {
     return {
       success: false,
@@ -28,4 +28,5 @@ export const logout = async (unique_id, password) => {
     };
   }
 };
+
 

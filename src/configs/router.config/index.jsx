@@ -7,7 +7,6 @@ import Billing from "@pages/Profile/billing";
 import Feedbacks from "@pages/Feedbacks";
 import OrderManagement from "@pages/OrderManagement";
 import CustomerManagement from "@pages/CustomerManagement";
-
 import NextCategory from "@pages/NextCategory";
 import NextTableManagement from "@pages/NextTableManagement";
 import AddCategory from "@pages/AddCategory";

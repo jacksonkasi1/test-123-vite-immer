@@ -50,7 +50,7 @@ const SignUp = (props) => {
       const response = await adminSignUp(payloadObj);
 
       if (response?.success) {
-        //   localStorage.setItem('userToken', response.data.token);
+          // localStorage.setItem('userToken', response.data.token);
         console.log('response:', response);
         toasterX.success('SignUp successful please check your email to verify');
         resetForm();

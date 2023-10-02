@@ -24,6 +24,7 @@ import dummyProfile from '@assets/Images/dummyProfile.png';
 
 // ** import shared components
 import Typography from '@shared/Typography';
+import env from '@src/configs';
 
 const UserDropDown = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const UserDropDown = () => {
   const dispatch = useDispatch();
 
   const signOut = async () => {
-    await logout('/logout');
+    window.location.href = `${env.BASE_URL}/api/v1/admin/sign-out`;
     localStorage.clear('userToken');
     dispatch(
       setUser({
@@ -43,8 +44,6 @@ const UserDropDown = () => {
         phone: '',
       }),
     );
-    navigate('/sign-in');
-    window.location.reload();
   };
 
   return (
