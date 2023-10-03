@@ -6,7 +6,6 @@ import Typography from '@shared/Typography';
 // ** import ui component
 import Select from '@ui/Select';
 import Input from '@ui/Input';
-import ImageUpload from '@ui/ImageUpload';
 import FormItem from '@ui/FormItem';
 import Loader from '@ui/Loader';
 
@@ -38,8 +37,6 @@ import AddSizePriceComponent from './AddSizePriceComponent';
 
 // ** import apis
 import { addMeal, getMealById } from '@api/foodList';
-import { getAllCategory } from '@api/category';
-import { getRestaurants } from '@api/restaurants';
 import { useParams } from 'react-router-dom';
 import { convertDecimalTimeToTimeString } from '@src/utils';
 
@@ -48,26 +45,17 @@ const tagOptions = [
   { label: 'Non-Veg', value: 'Non_Veg_Food', icon: <NonVegSvg /> },
   { label: 'Halal', value: 'Halal', icon: <NonVegSvg /> },
 ];
-const ViewMeals = () => {
-  let limit = 10;
 
+const getTagOptionByValue = (value) => {
+  return tagOptions.find((option) => option.value === value);
+};
+
+const ViewMeals = () => {
   const [searchValue, setSearchValue] = useState('');
 
   // swr api call
-  const allCategory = getAllCategory(limit, 1, searchValue);
-  const restaurantDetail = getRestaurants();
   const { id } = useParams();
   const mealDetails = getMealById(id);
-  console.log(
-    'mealDetails.data------->',
-    mealDetails?.data?.data,
-  );
-
-  const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
-    value: item.name,
-    label: item.name,
-    id: item.category_id,
-  }));
 
   // ** form states
   const [errorCPic, setErrorCPic] = useState(false);
@@ -116,16 +104,12 @@ const ViewMeals = () => {
     setMealPicUrls(mealDetails?.data?.data?.thumbnail);
   }, [mealDetails?.data?.data?.thumbnail]);
 
-
   // for custom async swr+react select
   const [selectValues, setSelectValues] = useState([]);
 
-  
   useEffect(() => {
-
-    setSelectValues(mealDetails?.data?.data?.tbl_category)
+    setSelectValues(mealDetails?.data?.data?.tbl_category);
   }, [mealDetails?.data?.data?.tbl_category]);
-
 
   // ** handle loading
   const [loader, setLoader] = useState(false);
@@ -151,11 +135,6 @@ const ViewMeals = () => {
     } catch (error) {
       console.error('error at handleImageUpload:', error);
     }
-  };
-
-  const handleImageDelete = (urlToDelete) => {
-    const imageUrls = mealPicUrls?.filter((url) => url !== urlToDelete);
-    setMealPicUrls(imageUrls);
   };
 
   const submitHandler = async (values, { setSubmitting, resetForm }) => {
@@ -275,7 +254,9 @@ const ViewMeals = () => {
               mealDetails?.data?.data?.tbl_available_time?.[0]?.end_hour,
             ) ?? '',
           price: mealDetails?.data?.data?.price ?? '',
-          tags: '',
+          tags: mealDetails?.data?.data?.tags
+            ? getTagOptionByValue(mealDetails?.data?.data?.tags)
+            : '',
         }}
         enableReinitialize
         validationSchema={validationSchema}
@@ -309,6 +290,7 @@ const ViewMeals = () => {
                           name="name"
                           placeholder="Name"
                           component={Input}
+                          disabled
                         />
                       </FormItem>
                     </div>
@@ -334,6 +316,7 @@ const ViewMeals = () => {
                             input:
                               'rounded-lg bg-primary_white dark:!bg-transparent dark:text-default-600 shadow-none',
                           }}
+                          disabled
                         />
                       )}
                     </Field>
@@ -346,10 +329,14 @@ const ViewMeals = () => {
                   </div>
                 </div>
                 <div className="md:row-span-2 border-[1px] shadow-sm w-full flex flex-col justify-center rounded-lg bg-primary-white border-mid-dark p-6 gap-3">
-                  <Typography variant="P_Regular_H6">Meal Image</Typography>
-
+                  <Typography
+                    variant="P_SemiBold_H6"
+                    className="text-text_light"
+                  >
+                    Meal Image
+                  </Typography>
                   <div className="flex flex-col w-full gap-6">
-                    <div className="flex gap-3  items-start">
+                    <div className="flex gap-3 items-start">
                       {mealPicUrls?.length == 0 ? (
                         <div className="flex justify-center items-start flex-[1] rounded-xl">
                           <Image
@@ -362,36 +349,17 @@ const ViewMeals = () => {
                         mealPicUrls?.map((url, index) => (
                           <div
                             key={index}
-                            className="relative w-max flex   justify-center items-start flex-[1] rounded-xl"
+                            className="relative w-max  rounded-xl"
                           >
                             <div className="relative">
-                              {' '}
-                              {/* Add relative div here */}
                               <Image
                                 src={url ? url : noImage}
                                 className="flex w-36 h-36 object-cover"
                                 fallbackSrc={noImage}
                               />
-                              <XCircle
-                                className="absolute top-1 cursor-pointer right-1 fill-primary_white text-danger z-10"
-                                onClick={() => handleImageDelete(url)}
-                              />{' '}
-                              {/* Button to delete image */}
                             </div>
                           </div>
                         ))
-                      )}
-                    </div>
-
-                    <div className="flex flex-col w-full flex-start flex-[3] justify-end">
-                      <ImageUpload uploadHandler={handleImageUpload} multiple />
-                      {errorCPic && (
-                        <Typography
-                          variant="P_Regular_H7"
-                          className="!text-danger"
-                        >
-                          Please upload meal Image here
-                        </Typography>
                       )}
                     </div>
                   </div>
@@ -414,29 +382,13 @@ const ViewMeals = () => {
                               base: '!p-1 !text-ellipsis',
                               content: 'text-[12px] !text-ellipsis',
                             }}
-                            onClose={() => removeItem(option)}
                             variant="flat"
                           >
-                            {option.label??option.name}
+                            {option.label ?? option.name}
                           </Chip>
                         ))}
                     </div>
                   </div>
-                  <Select
-                    isMulti
-                    isSearchable
-                    isClearable={true}
-                    cacheOptions
-                    defaultOptions
-                    options={dropDownData}
-                    onChange={handleChange}
-                    onInputChange={handleInputChange} // Handle user input changes
-                    inputValue={searchValue} // Controlled input value to sync with user input
-                    isLoading={allCategory?.isLoading}
-                    controlShouldRenderValue={false}
-                    value={selectValues}
-                    isDisabled
-                  />
                 </div>
                 <div className="flex justify-between items-center border-[1px] shadow-sm w-full  rounded-lg bg-primary-white border-mid-dark p-6 gap-4">
                   <Typography variant="P_Regular_H6">
@@ -470,6 +422,7 @@ const ViewMeals = () => {
                         autoComplete="off"
                         name="timeFrom"
                         placeholder="Name"
+                        disabled
                         component={Input}
                         suffix={
                           <div className="relative left-56 pointer-events-none">
@@ -497,6 +450,7 @@ const ViewMeals = () => {
                         name="timeTo"
                         placeholder="Name"
                         component={Input}
+                        disabled
                         suffix={
                           <div className="relative left-56 pointer-events-none">
                             <Clock className="text-text_light pointer-events-none " />
@@ -524,6 +478,7 @@ const ViewMeals = () => {
                       name="price"
                       placeholder="eg:100"
                       component={Input}
+                      disabled
                     />
                   </FormItem>
                 </div>
