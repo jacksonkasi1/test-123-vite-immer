@@ -26,7 +26,7 @@ const AddSizePriceComponent = ({inputFields,setInputFields}) => {
 
   return (
     <div className='pt-2'>
-      {inputFields.map((inputField, index) => (
+      {inputFields?.map((inputField, index) => (
         <div key={`${inputField}-${index}`} className="flex items-center mb-3">
           <Input
             type="text"

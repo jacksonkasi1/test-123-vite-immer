@@ -47,7 +47,7 @@ export const getFoodList = (
   return data;
 };
 
-// ** post api for creating category
+// ** post api for creating meal for specific restaurant by getting id
 export const addMeal = async ({ ...payLoadObj }) => {
   try {
     const response = await axios.post(
@@ -59,6 +59,33 @@ export const addMeal = async ({ ...payLoadObj }) => {
     return response.data;
   } catch (error) {
     console.error('An error occurred at addMeal:', error);
+  }
+};
+
+// ** patch api for update meal for specific restaurant by getting id
+export const updateMeal = async (meal_id, payLoadObj) => {
+  try {
+    const response = await axios.patch(
+      `admin/restaurant/meal/update-v2?meal_id=${meal_id}&lang_key=en`,
+      {
+        ...payLoadObj,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred at updateMeal:', error);
+  }
+};
+
+// ** delete api for update meal for specific restaurant by getting id
+export const removeMeal = async (meal_id) => {
+  try {
+    const response = await axios.delete(
+      `admin/restaurant/meal/remove?meal_id=${meal_id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred at removeMeal:', error);
   }
 };
 

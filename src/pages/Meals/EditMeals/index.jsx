@@ -37,27 +37,34 @@ import AddProductVariation from './AddProductVariation';
 import AddSizePriceComponent from './AddSizePriceComponent';
 
 // ** import apis
-import { addMeal, getMealById } from '@api/foodList';
+import {  getMealById, updateMeal } from '@api/foodList';
 import { getAllCategory } from '@api/category';
 import { getRestaurants } from '@api/restaurants';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { convertDecimalTimeToTimeString } from '@src/utils';
 
 const tagOptions = [
   { label: 'Veg', value: 'Veg_Food', icon: <VegSvg /> },
   { label: 'Non-Veg', value: 'Non_Veg_Food', icon: <NonVegSvg /> },
   { label: 'Halal', value: 'Halal', icon: <NonVegSvg /> },
 ];
+
+const getTagOptionByValue = (value) => {
+  return tagOptions.find((option) => option.value === value);
+};
+
 const EditMeals = () => {
   let limit = 10;
+  const navigate=useNavigate()
 
   const [searchValue, setSearchValue] = useState('');
 
   // swr api call
   const allCategory = getAllCategory(limit, 1, searchValue);
   const restaurantDetail = getRestaurants();
-  const {id}=useParams()
-  const mealDetails=getMealById(id)
-  console.log("mealDetails.data------->",mealDetails.data)
+  const { id } = useParams();
+  const mealDetails = getMealById(id);
+  console.log('mealDetails.data------->', mealDetails.data);
 
   const dropDownData = allCategory?.data?.data?.getCategory?.map((item) => ({
     value: item.name,
@@ -86,11 +93,56 @@ const EditMeals = () => {
 
   // ** handle loading
   const [loader, setLoader] = useState(false);
+  const [disConCat, setDisConCategoryIds] = useState([]);
+
+  useEffect(() => {
+    setInputFields(mealDetails?.data?.data?.tbl_meals_size?.[0]?.size);
+  }, [mealDetails?.data?.data?.tbl_meals_size?.[0]?.size]);
+
+  useEffect(() => {
+    setVariations(
+      mealDetails?.data?.data?.tbl_meals_variant?.map((variant) => {
+        return {
+          title: variant.title,
+          required: variant.is_required,
+          type: variant.variant_type,
+          options: variant.variant?.map((option) => {
+            return {
+              name: option?.name,
+              price: option?.price,
+              thumbnail: option?.thumbnail,
+              id: option?.id,
+            };
+          }),
+        };
+      }),
+    );
+  }, [mealDetails?.data?.data?.tbl_meals_variant]);
+
+  useEffect(() => {
+    setMealPicUrls(mealDetails?.data?.data?.thumbnail);
+  }, [mealDetails?.data?.data?.thumbnail]);
+
+  useEffect(() => {
+    const newArray = mealDetails?.data?.data?.tbl_category.map((item) => ({
+      value: item.name,
+      label: item.name,
+      id: item.category_id,
+    }));
+
+    setSelectValues(newArray);
+    setDisConCategoryIds(newArray?.map((item) => item.id));
+  }, [mealDetails?.data?.data?.tbl_category]);
+
+  useEffect(() => {
+    console.log('mealDetails?.isLoading', mealDetails?.isLoading);
+    setLoader(mealDetails?.isLoading);
+  }, [mealDetails?.isLoading]);
 
   // ** handle Image upload
 
   const handleImageUpload = async (event) => {
-    if (mealPicUrls.length == 5) {
+    if (mealPicUrls?.length == 5) {
       toasterX.info('Please remove one image to upload more');
       return;
     }
@@ -98,7 +150,7 @@ const EditMeals = () => {
       const files = event?.target?.files;
       let imageUrls = [...mealPicUrls]; // Spread current images into a new array to avoid losing previous uploads
 
-      for (let i = 0; i < files.length; i++) {
+      for (let i = 0; i < files?.length; i++) {
         const resizedImage = await resizeImage(files[i], 500, 500);
         imageUrls.push(resizedImage); // Add each new upload to the array
       }
@@ -116,17 +168,15 @@ const EditMeals = () => {
   };
 
   const submitHandler = async (values, { setSubmitting, resetForm }) => {
-    setSubmitting(true);
+    setSubmitting(false);
     event.preventDefault();
-
-    resetForm();
 
     if (!restaurantDetail?.data?.data?.data?.[0]?.restaurant_id) {
       toasterX.warning('No restaurants associated with your id');
       return;
     }
 
-    if (mealPicUrls.length == 0) {
+    if (mealPicUrls?.length == 0) {
       setErrorCPic(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -134,9 +184,13 @@ const EditMeals = () => {
 
     let categoryArray = [];
 
-    selectValues.map((val) => {
+    selectValues?.map((val) => {
       categoryArray.push(val.id);
     });
+
+    const disConCategoryIds = disConCat.filter(
+      (item) => !categoryArray.includes(item),
+    );
 
     const time_availablity = values.timeFrom && values.timeTo ? true : false;
 
@@ -153,31 +207,20 @@ const EditMeals = () => {
       variations,
       time_availablity,
       restaurant_id: restaurantDetail?.data?.data?.data?.[0]?.restaurant_id,
+      disConCategoryIds,
     };
     console.log('values', payLoadObj);
+
     try {
       setLoader(true);
-      await addMeal(payLoadObj);
-      toasterX.success('Meal added successfully');
-      setErrorCPic(false);
-      setMealPicUrls('');
+      await updateMeal(id, payLoadObj);
+      mealDetails.mutate();
+      toasterX.success('Meal updated successfully');
       setLoader(false);
-      setSubmitting(false);
-      resetForm();
-      setIsVisible(true);
-      setSelectValues([]);
-      setInputFields([{ size: '', price: '' }]);
-      setVariations([
-        {
-          title: '',
-          required: '',
-          type: '',
-          options: [{ name: '', price: '', thumbnail: '' }],
-        },
-      ]);
+      navigate('/food-list')
     } catch (error) {
       setLoader(false);
-      toasterX.error('Some problem while adding meal');
+      toasterX.error('Some problem while updating meal');
     }
   };
 
@@ -214,19 +257,27 @@ const EditMeals = () => {
 
   return (
     <div className="py-4 px-6">
-      <Loader isLoading={mealDetails?.isLoading} />
+      <Loader isLoading={loader} />
       <div className="py-4">
         <Typography variant="P_Medium_H5">Add New Meal</Typography>
       </div>
       <Formik
         initialValues={{
-          name: '',
-          description: '',
+          name: mealDetails?.data?.data?.name ?? '',
+          description: mealDetails?.data?.data?.description ?? '',
           category: '',
-          timeFrom: '',
-          timeTo: '',
-          price: '',
-          tags: '',
+          timeFrom:
+            convertDecimalTimeToTimeString(
+              mealDetails?.data?.data?.tbl_available_time?.[0]?.start_hour,
+            ) ?? '',
+          timeTo:
+            convertDecimalTimeToTimeString(
+              mealDetails?.data?.data?.tbl_available_time?.[0]?.end_hour,
+            ) ?? '',
+          price: mealDetails?.data?.data?.price ?? '',
+          tags: mealDetails?.data?.data?.tags
+            ? getTagOptionByValue(mealDetails?.data?.data?.tags)
+            : '',
         }}
         enableReinitialize
         validationSchema={validationSchema}
@@ -301,7 +352,7 @@ const EditMeals = () => {
 
                   <div className="flex flex-col w-full gap-6">
                     <div className="flex gap-3  items-start">
-                      {mealPicUrls.length == 0 ? (
+                      {mealPicUrls?.length == 0 ? (
                         <div className="flex justify-center items-start flex-[1] rounded-xl">
                           <Image
                             src={noImage}
@@ -310,7 +361,7 @@ const EditMeals = () => {
                           />
                         </div>
                       ) : (
-                        mealPicUrls.map((url, index) => (
+                        mealPicUrls?.map((url, index) => (
                           <div
                             key={index}
                             className="relative w-max flex   justify-center items-start flex-[1] rounded-xl"
@@ -357,7 +408,7 @@ const EditMeals = () => {
                     </Typography>
                     <div className="flex flex-wrap gap-2 pt-1">
                       {selectValues &&
-                        selectValues.map((option, index) => (
+                        selectValues?.map((option, index) => (
                           <Chip
                             key={index}
                             color="primary"
@@ -526,8 +577,8 @@ const EditMeals = () => {
                 ease={'linear'}
                 duration={200}
               />
-              <div className="flex justify-between gap-8 pt-8">
-                <Button
+              <div className="flex justify-end gap-8 pt-8">
+                {/* <Button
                   variant="bordered"
                   className={`!rounded-[5px] flex items-center gap-x-3 text-text-light_ `}
                   type="button"
@@ -548,7 +599,7 @@ const EditMeals = () => {
                   }}
                 >
                   <Typography variant="P_Regular_H6">Reset</Typography>
-                </Button>
+                </Button> */}
                 <Button
                   variant="bordered"
                   className={`!rounded-[5px] cursor-pointer flex items-center gap-x-3 !bg-primary-600 border-none `}
@@ -558,7 +609,7 @@ const EditMeals = () => {
                     variant="P_Medium_H6"
                     className="!text-primary_white"
                   >
-                    {isSubmitting ? 'submitting' : 'Submit'}
+                    {isSubmitting ? 'Updating' : 'Update'}
                   </Typography>
                 </Button>
               </div>

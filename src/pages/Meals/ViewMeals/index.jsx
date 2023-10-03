@@ -51,7 +51,6 @@ const getTagOptionByValue = (value) => {
 };
 
 const ViewMeals = () => {
-  const [searchValue, setSearchValue] = useState('');
 
   // swr api call
   const { id } = useParams();
@@ -114,28 +113,6 @@ const ViewMeals = () => {
   // ** handle loading
   const [loader, setLoader] = useState(false);
 
-  // ** handle Image upload
-
-  const handleImageUpload = async (event) => {
-    if (mealPicUrls.length == 5) {
-      toasterX.info('Please remove one image to upload more');
-      return;
-    }
-    try {
-      const files = event?.target?.files;
-      let imageUrls = [...mealPicUrls]; // Spread current images into a new array to avoid losing previous uploads
-
-      for (let i = 0; i < files.length; i++) {
-        const resizedImage = await resizeImage(files[i], 500, 500);
-        imageUrls.push(resizedImage); // Add each new upload to the array
-      }
-
-      setMealPicUrls(imageUrls);
-      setErrorCPic(false);
-    } catch (error) {
-      console.error('error at handleImageUpload:', error);
-    }
-  };
 
   const submitHandler = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
@@ -203,22 +180,6 @@ const ViewMeals = () => {
     }
   };
 
-  const handleChange = (selectedValues) => {
-    // Handle selected values here
-    console.log('Selected Values:', selectedValues);
-    setSelectValues(selectedValues);
-  };
-
-  const removeItem = (selectedItem) => {
-    const filteredArray = selectValues.filter(
-      (item) => item.value !== selectedItem.value,
-    );
-    setSelectValues(filteredArray);
-  };
-
-  const handleInputChange = (inputValue) => {
-    setSearchValue(inputValue);
-  };
 
   // Define custom option component
   const CustomOption = ({ innerProps, label, data }) => (
@@ -513,7 +474,7 @@ const ViewMeals = () => {
                   />
                 </div>
                 <div className=" border-[1px] shadow-sm w-full flex flex-col rounded-lg bg-primary-white border-mid-dark p-8 ">
-                  <Typography variant="P_Medium_H6">+ Add Size</Typography>
+                  <Typography variant="P_Medium_H6">Size</Typography>
                   <AddSizePriceComponent
                     setInputFields={setInputFields}
                     inputFields={inputFields}

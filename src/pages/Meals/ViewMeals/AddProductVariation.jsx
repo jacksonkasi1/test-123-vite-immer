@@ -36,8 +36,8 @@ const OptionComponent = ({ index, optionData }) => {
 };
 
 const VariationComponent = ({ index, variationData }) => {
-  const [required, setRequired] = useState(true);
-  const [selectionType, setSelectionType] = useState(variationData?.type ?? '');
+  const [required, setRequired] = useState(variationData?.required);
+  const [selectionType, setSelectionType] = useState(variationData?.type??"");
 
   return (
     <div className=" mt-4 p-8 border-[1px] shadow-sm rounded-lg">
@@ -97,7 +97,7 @@ const AddProductVariation = ({ variations }) => {
   return (
     <div>
       <Typography variant="P_Bold_H6" className="mb-2 pe-3">
-        Add Product Variation
+        Product Variation
       </Typography>
 
       {variations?.map((variation, index) => (

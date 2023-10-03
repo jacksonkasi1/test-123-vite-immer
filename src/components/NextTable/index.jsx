@@ -333,7 +333,7 @@ const NextTable = (props) => {
             <VerticalDotsIcon className="text-default-400" />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu onAction={(key) => handleActions(key,item[editKey])}>
+        <DropdownMenu onAction={handleActions!='undefined'?(key) => handleActions(key,item[editKey]):""}>
           <DropdownItem key="view">
             <Typography variant="P_Regular_H6">View</Typography>
           </DropdownItem>

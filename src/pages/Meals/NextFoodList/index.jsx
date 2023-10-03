@@ -8,12 +8,10 @@ import { columns, availableOptions, categoryOptions } from './data';
 import NextTable from '@components/NextTable';
 
 // ** import api
-import { getFoodList } from '@api/foodList';
+import { getFoodList, removeMeal } from '@api/foodList';
 
 // ** import from next ui
-import {
-  Pagination,
-} from '@nextui-org/react';
+import { Pagination } from '@nextui-org/react';
 
 // ** import utils
 import { toasterX } from '@utils/toastMessages';
@@ -21,10 +19,10 @@ import { formatDate } from '@utils';
 
 // ** import sub pages
 import TableSkeleton from './TableSkeleton';
+import Loader from '@src/components/ui/Loader';
 
 export default function NextFoodList() {
-
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   // ** states for query parameters
   const [pageIndex, setPageIndex] = useState(1);
@@ -41,6 +39,8 @@ export default function NextFoodList() {
   // ** stated to be consumed in multiFiler
   const [categoryFilter, setCategoryFilter] = useState('');
   const [availableFilter, setAvailableFilter] = useState('');
+
+  const [loader, setLoader] = useState(false);
 
   // ** calling api with swr
   const foodList = getFoodList(
@@ -100,7 +100,7 @@ export default function NextFoodList() {
 
   // ** Action function for table
 
-  const handleActions = (key,id) => {
+  const handleActions = async (key, id) => {
     if (key == 'edit') {
       navigate(`/edit-meal/${id}`);
       return;
@@ -108,8 +108,16 @@ export default function NextFoodList() {
       navigate(`/view-meal/${id}`);
       return;
     } else if (key == 'delete') {
-      alert(key);
-      return;
+      try {
+        setLoader(true);
+        await removeMeal(id);
+        toasterX.success('Meal deleted successfully ');
+        setLoader(false);
+        foodList.mutate()
+      } catch (error) {
+        console.error('Error at deleting meal', error);
+        setLoader(false);
+      }
     }
     return;
   };
@@ -170,6 +178,7 @@ export default function NextFoodList() {
 
   return (
     <div>
+      <Loader isLoading={loader} />
       <NextTable
         classNames={classNames}
         data={foodList?.data?.data?.meals}
@@ -193,7 +202,7 @@ export default function NextFoodList() {
         handleDateFilterCancel={handleDateFilterCancel}
         handleActions={handleActions}
         setDateSelect={setDateSelect}
-        editKey={"meal_id"}                    //meal_id as a param
+        editKey={'meal_id'} //meal_id as a param
         activeDateSelect={dateSelect}
         dateValue={dateValue}
         setDateValue={setDateValue}

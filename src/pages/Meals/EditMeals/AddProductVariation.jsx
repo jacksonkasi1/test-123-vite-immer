@@ -89,7 +89,8 @@ const VariationComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [required, setRequired] = useState(true);
+
+  const [required, setRequired] = useState(variationData?.required);
   const [selectionType, setSelectionType] = useState(variationData?.type??"");
 
   const handleChange = (e) => {
@@ -180,7 +181,7 @@ const VariationComponent = ({
         </div>
       </div>
       <div className="pt-2">
-        {variationData.options.map((option, optionIndex) => (
+        {variationData.options?.map((option, optionIndex) => (
           <OptionComponent
             key={optionIndex}
             index={optionIndex}
@@ -236,7 +237,7 @@ const AddProductVariation = ({ variations, setVariations }) => {
         Add Product Variation
       </Typography>
 
-      {variations.map((variation, index) => (
+      {variations?.map((variation, index) => (
         <VariationComponent
           key={index}
           index={index}
